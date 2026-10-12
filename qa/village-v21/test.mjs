@@ -11,7 +11,7 @@ fs.mkdirSync(output, { recursive: true });
 const html = fs.readFileSync('candidate.html');
 const commit = execFileSync('git', ['rev-parse', 'HEAD'], {encoding:'utf8'}).trim();
 assert.equal(commit, process.env.EXPECTED_HEAD, 'Test must run the exact PR head');
-const report = {commit, candidateSha256:crypto.createHash('sha256').update(html).digest('hex'), startedAt:new Date().toISOString(), inputMethod:'Playwright real mouse and keyboard events; QA state reads, projection, and fixed simulation stepping only', cases:[], console:[], pageErrors:[], requestFailures:[]};
+const report = {commit, candidateSha256:crypto.createHash('sha256').update(html).digest('hex'), startedAt:new Date().toISOString(), inputMethod:'Playwright real mouse and keyboard events; QA state reads, projection, and fixed simulation stepping only', rendering:'Software WebGL. Idle waits use six render samples per simulated second; gestures retain 60. Native physics subdivisions stay 1/120 second.', cases:[], console:[], pageErrors:[], requestFailures:[]};
 const server = http.createServer((req,res) => {
   if(req.url.split('?')[0] === '/favicon.ico') {res.writeHead(204); res.end();return;}
   res.setHeader('Content-Type','text/html');res.end(html);
@@ -23,7 +23,10 @@ report.browser = browser.version();
 let page;
 const state = () => page.evaluate(()=>SETTLEMENTQA.state());
 async function tick(n=1){
-  for(let i=0;i<n;i+=30) await page.evaluate(count=>{for(let j=0;j<count;j++)SETTLEMENTQA.step(1/60);},Math.min(30,n-i));
+  // Native BattlePhysics subdivides dt into 1/120-second physics steps.
+  // Keep 60 rendered samples/sec near gestures; use 6/sec for idle waits.
+  const stride=n>=30?10:1;
+  for(let i=0;i<n;i+=30) await page.evaluate(({count,stride})=>{for(let j=0;j<count;j+=stride)SETTLEMENTQA.step(Math.min(stride,count-j)/60);},{count:Math.min(30,n-i),stride});
   return state();
 }
 async function shot(name){await page.screenshot({path:path.join(output,`${name}.png`)});}
@@ -105,17 +108,29 @@ await run('garden-order-physical-work',async()=>{
 });
 await run('quarry-order-physical-work',async()=>{
   const id='villager-0';await select(id);
-  const before=await state(),start=before.jobs.villagers.find(w=>w.id===id).position;
+  const before=await state(),start=before.jobs.villagers.find(w=>w.id===id).position,q=before.jobs.quarry.position;
+  // The economy intentionally uses available quarry-local stones before mining.
+  // Preserve source provenance at order time, then require this same worker to
+  // acquire and deliver the same real load. Walking alone cannot pass.
+  const quarryLoads=new Map(before.jobs.loads.filter(l=>l.kind==='stone'&&l.status==='available'&&
+    (l.sourceId==='quarry'||Math.hypot(l.position.x-q.x,l.position.y-q.y,l.position.z-q.z)<=1.3)).map(l=>[l.id,{...l.position}]));
   await clickSign('quarry');const ordered=await state();assert(ordered.events.some(e=>e.type==='click-work-order'&&e.villagerId===id&&e.sourceId==='quarry'),'Quarry sign accepted selected worker order');
-  await shot('quarry-order');const samples=[];let produced=false,maxDistance=0;
+  await shot('quarry-order');const samples=[];let produced=false,maxDistance=0,deliveredLoad=null;const acquired=new Set();
   for(let i=0;i<45;i++){
     const s=await tick(60),w=s.jobs.villagers.find(w=>w.id===id);maxDistance=Math.max(maxDistance,Math.hypot(w.position.x-start.x,w.position.z-start.z));
     samples.push({time:s.time,worker:w,physical:s.villagers.find(w=>w.id===id),events:s.events});
-    if(s.events.some(e=>e.type==='resource-produced'&&e.villagerId===id&&e.sourceId==='quarry')){produced=true;break;}
+    for(const e of s.events){
+      if(e.villagerId!==id)continue;
+      if(e.type==='resource-produced'&&e.sourceId==='quarry'&&e.kind==='stone'){produced=true;quarryLoads.set(e.loadId??e.stoneId,e.position);}
+      if(e.type==='stone-picked-up'&&e.kind==='stone'&&quarryLoads.has(e.loadId??e.stoneId))acquired.add(e.loadId??e.stoneId);
+      if(e.type==='stone-delivered'&&e.kind==='stone'&&acquired.has(e.loadId??e.stoneId))deliveredLoad=e.loadId??e.stoneId;
+    }
+    if(deliveredLoad)break;
     if(s.jobs.outcome.status!=='playing')break;
   }
-  await save('quarry-physical-samples',samples);await shot('quarry-work');assert(maxDistance>1,'Ordered worker physically walked');assert(produced,'Ordered worker physically mined stone');
-  return {worker:id,maxDistance,produced,final:await state()};
+  await save('quarry-physical-samples',samples);await shot('quarry-work');
+  assert(maxDistance>1,'Ordered worker physically walked');assert(acquired.size>0,'Ordered worker acquired actual quarry-local or newly mined stone');assert(deliveredLoad,'Ordered worker delivered the same quarry stone');
+  return {worker:id,maxDistance,produced,acquired:[...acquired],deliveredLoad,quarryLoadOrigins:Object.fromEntries(quarryLoads),final:await state()};
 });
 await run('drag-grab-and-cancel',async()=>{
   await select('villager-0');const p=await bodyPoint('villager-0');

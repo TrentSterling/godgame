@@ -31,6 +31,7 @@ jobs:
         working-directory: qa/village-v21
         run: npx playwright install --with-deps chromium
       - name: Exercise exact candidate in a real browser
+        timeout-minutes: 15
         working-directory: qa/village-v21
         env:
           EXPECTED_HEAD: ${{ github.event.pull_request.head.sha }}
