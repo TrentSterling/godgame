@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        scope: [preview]
+        scope: [preview, core, powers, campaign]
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -35,7 +35,7 @@ jobs:
         working-directory: qa/village-archipelago
         run: npx playwright install --with-deps chromium
       - name: Exercise exact candidate in a real browser
-        timeout-minutes: 15
+        timeout-minutes: 25
         working-directory: qa/village-archipelago
         env:
           QA_SCOPE: ${{ matrix.scope }}
