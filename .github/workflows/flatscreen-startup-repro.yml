@@ -32,7 +32,7 @@ jobs:
         working-directory: qa/flatscreen-startup
         env:
           EXPECTED_HEAD: ${{ github.event.pull_request.head.sha }}
-        run: node observe.mjs
+        run: node ordinary-input.mjs
       - name: Preserve screenshots and real-time video
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
