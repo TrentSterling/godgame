@@ -1,6 +1,7 @@
 {
-  "htmlSHA256": "d738c3d4e1b5907ac82ce7a7386d252a21be23cb62431373d171bc92e24db2aa",
-  "htmlBytes": 8490553,
+  "scope": "Frozen combined Village XR plus desktop camera correction; hardware unverified. Tests do not publish root/main.",
+  "htmlSHA256": "30610830deea8acf73cc812bb9c61b2d15321751bbf9036e1e727052f013c63b",
+  "htmlBytes": 8491010,
   "runtimeHashes": {
     "anatomical-joints.js": "95c89d6eea7f2898ce87bcd4bcbe5a95e91311897b48ce2b4affb5a75164bf4d",
     "arena-art.js": "8e6c8a852bf18c674afdfb3cca5a68b25f1af73226154aefccc324d1d61d6a39",
@@ -73,7 +74,7 @@
     "settlement-hud.js": "cd0a97dcf7ab51835c291d4464c5d2b21af61bafd9152f40bbf6423bbd6df9d2",
     "settlement-jobs.js": "9445c7aadf93d8590b5a1134013c22f4bce905a364e59b09807858823825ea4e",
     "settlement-land-regions.js": "f888731a62186510344fd1a6775d140c4db0ecb8b7eeb212ef6f651d498d8ff3",
-    "settlement-main.js": "21e2d1d0bc9bc757b7038a539108d5a9008f8583fd0d965c017b8a94e3796f0f",
+    "settlement-main.js": "574abca06a85e378ccaba4d5939df052cc44e5aa67c6eb4b6f0710ed1a74252f",
     "settlement-minimal-hud.js": "d071bff0378764b57ca8e33cb1f067afdd397506e4ee21eae558b75aab23e865",
     "settlement-next-need.js": "eb94fef48fda4c753fe57bb8ab4fe988fe409bd59c5e70f51385e74ae112449d",
     "settlement-quarry-geology.js": "d77d3a2604fca2b4b96e8a91b78cab67b8bee445e03e15ab3eb07dd5b8d9a77e",
@@ -85,7 +86,7 @@
     "settlement-world-actions.js": "05461514c2b9a3a63c07dd59771d2ca31bda2eae9cbee20c846c484cf9df8144",
     "settlement-world-cues.js": "225fc5ec68f53b6fae8187b7df0baaed111360b8e30fbf973ec667de53ecb2a8",
     "settlement-world.js": "075e7fda02180bc83a462ce49d38cdc1f63d95d1035695dff17b8d6118604079",
-    "settlement-xr.js": "b194a2b3b7682cd37e12a1dd63ffe0bfd5d23eb3a78224fe7916e361f2a6e40a",
+    "settlement-xr.js": "b5aa0abdd08c8b502e9c4860c494929baceaeb50ee21c16a5230073c2987f9c6",
     "shared-hero-visuals.js": "74037f4cd03e12812d64aecb8301d7baedcf2ad07c136833b74c12f442acb4b1",
     "shield-hit-knockback.js": "2a64f9122fcc951cd93a58ffaab45cf4484c3f05987e64c5b4ed134649e8753f",
     "shrine-campaign.js": "90ca7e8bb73ae4378f7cd3664d495c44011a5d3a22f8a666f81db97a7989031c",

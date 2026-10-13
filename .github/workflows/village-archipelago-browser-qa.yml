@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        scope: [camera, synthetic-xr]
+        scope: [synthetic-xr]
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -41,7 +41,7 @@ jobs:
           QA_SCOPE: ${{ matrix.scope }}
           EXPECTED_HEAD: ${{ github.event.pull_request.head.sha }}
           EXPECTED_CANDIDATE_SHA256: 81a818be6dacf9113ff4a4332ab3edd5ee51d5282d08d79c98324a168d55e2b8
-          EXPECTED_XR_CANDIDATE_SHA256: d738c3d4e1b5907ac82ce7a7386d252a21be23cb62431373d171bc92e24db2aa
+          EXPECTED_XR_CANDIDATE_SHA256: 30610830deea8acf73cc812bb9c61b2d15321751bbf9036e1e727052f013c63b
         run: |
           if [ "$QA_SCOPE" = "synthetic-xr" ]; then node xr-test.mjs; else node test.mjs; fi
       - name: Save browser evidence even on failure
