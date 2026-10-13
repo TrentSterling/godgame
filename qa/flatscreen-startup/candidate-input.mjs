@@ -8,11 +8,11 @@ const out='artifacts';fs.mkdirSync(out,{recursive:true});
 const head=execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim();assert.equal(head,process.env.EXPECTED_HEAD);
 const hash=b=>crypto.createHash('sha256').update(b).digest('hex');
 const baseline='30610830deea8acf73cc812bb9c61b2d15321751bbf9036e1e727052f013c63b';
-assert.equal(hash(fs.readFileSync('../../index.html')),baseline,'Live root must stay untouched in test branch');
+assert.equal(hash(fs.readFileSync('../../index.html')),process.env.EXPECTED_ROOT_SHA256||baseline,'Exact expected root identity');
 const candidateHash=process.env.CANDIDATE_SHA256;assert(candidateHash);
 const onlyCase=process.env.CASE;assert(onlyCase);
 let server;
-if(candidateHash){const candidate=fs.readFileSync('candidate.html');assert.equal(hash(candidate),candidateHash);server=http.createServer((req,res)=>{if(req.url!=='/'){res.writeHead(404);res.end();return;}res.setHeader('Content-Type','text/html');res.end(candidate);});await new Promise(r=>server.listen(0,'127.0.0.1',r));}
+if(candidateHash){const candidate=fs.readFileSync(process.env.CANDIDATE_PATH||'candidate.html');assert.equal(hash(candidate),candidateHash);server=http.createServer((req,res)=>{if(req.url!=='/'){res.writeHead(404);res.end();return;}res.setHeader('Content-Type','text/html');res.end(candidate);});await new Promise(r=>server.listen(0,'127.0.0.1',r));}
 const cases=[{name:'wide-dpr1',width:2048,height:1044,dpr:1},{name:'wide-dpr125',width:2048,height:1044,dpr:1.25},{name:'wide-dpr2',width:2048,height:1044,dpr:2},{name:'screenshot-80pct',width:2560,height:1305,dpr:.8}];
 // These points are chosen by inspecting the initial screenshot from run 38458267961.
 // They are fixed screen-space observations, never computed from game targets or projection.

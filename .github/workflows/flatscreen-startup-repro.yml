@@ -3,6 +3,7 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
     paths:
+      - 'index.html'
       - 'qa/flatscreen-startup/**'
       - '.github/workflows/flatscreen-startup-repro.yml'
 permissions:
@@ -36,6 +37,8 @@ jobs:
         working-directory: qa/flatscreen-startup
         env:
           EXPECTED_HEAD: ${{ github.event.pull_request.head.sha }}
+          CANDIDATE_PATH: ../../index.html
+          EXPECTED_ROOT_SHA256: d164d7e8a14d282faa871b125ccfe2515b80c8fd9dfd82ef4776fad3fb0b54e2
           CANDIDATE_SHA256: d164d7e8a14d282faa871b125ccfe2515b80c8fd9dfd82ef4776fad3fb0b54e2
           CASE: ${{ matrix.case }}
         run: node candidate-input.mjs
