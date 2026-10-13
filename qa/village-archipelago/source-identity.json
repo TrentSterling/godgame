@@ -1,9 +1,9 @@
 {
-  "scope": "Interim integrated archipelago facade snapshot; final controls pending; test-only browser evidence.",
-  "createdAt": "2026-10-13T08:30:36.919Z",
-  "candidateBytes": 8458399,
-  "candidateSha256": "cde304c0e73c2f5f7a620c2a7c73eccc54098a8c51fdc7a21e0591ccdd806e01",
-  "runtimeHashes": {
+  "sourceRoot": "/workspace/scratch/b075793454e7/hollow-hands-recovery-2026-10-11/village-archipelago/hollow-hands-settlement-food-mission",
+  "htmlPath": "/workspace/scratch/b075793454e7/hollow-hands-recovery-2026-10-11/village-archipelago/hollow-hands-settlement-food-mission/dist/HOLLOW_HANDS_SETTLEMENT_FOOD_MISSION.html",
+  "htmlSHA256": "5650d81453d0172bed217dce2497cd92b5fd72a34f9ec248108d8475fd8db401",
+  "htmlBytes": 8460526,
+  "sourceHashes": {
     "anatomical-joints.js": "95c89d6eea7f2898ce87bcd4bcbe5a95e91311897b48ce2b4affb5a75164bf4d",
     "arena-art.js": "8e6c8a852bf18c674afdfb3cca5a68b25f1af73226154aefccc324d1d61d6a39",
     "army-formation.js": "dbe7a1ef3eddb87256291bca8138c74fbb8e758b2b8263fac6fc9ace02217c7e",
@@ -35,6 +35,7 @@
     "desktop-hud-layout.js": "a0221ea2b638696de5b0ac68fc58f0b8305c3c73d3d6ec819ea3e29e6b6e3262",
     "desktop-palm-presentation.js": "64af1abc2468de3b84c7e91b93620794911019db3f77c1cee7edae3e9c875eb6",
     "desktop-power-hand.js": "6b6f6590f0cc1fad75a8832199e36af16b58b8dad713a3b9b45d648eb92bd718",
+    "desktop-settlement-navigation.js": "0d5286f338fae628a5f12d35d5fe7ca5bb520a29024456c91926f47d25b4ee32",
     "fixed-step.js": "dd940d52e6efbea62d0cbf16b470f5af22a86f1ef673ca2fd91fbebfc165e17c",
     "floating-world.js": "cdb7ace59a4c6fd3f4fdae9d16e5a8636dc4e5dfebeb5871c36a1604e3f006c0",
     "garden-improvement-art.js": "d29064a3b10c07d8ddf751cf11f7dccc606d3ed7b68fae286223885c1ee04bdd",
@@ -74,8 +75,8 @@
     "settlement-hud.js": "cd0a97dcf7ab51835c291d4464c5d2b21af61bafd9152f40bbf6423bbd6df9d2",
     "settlement-jobs.js": "9445c7aadf93d8590b5a1134013c22f4bce905a364e59b09807858823825ea4e",
     "settlement-land-regions.js": "f888731a62186510344fd1a6775d140c4db0ecb8b7eeb212ef6f651d498d8ff3",
-    "settlement-main.js": "879d5717280e0cc6d2ce12de8cfa544e890344a802f38a50be8219ddaf241eba",
-    "settlement-minimal-hud.js": "d3699397bb3ed83473404d86b02aa8297b04793650de8e6cc28898431b15a7df",
+    "settlement-main.js": "b6482bd4404839a3569611cd0d0b989307b0cd6344f365ccd33ec9a70495d45b",
+    "settlement-minimal-hud.js": "d071bff0378764b57ca8e33cb1f067afdd397506e4ee21eae558b75aab23e865",
     "settlement-next-need.js": "eb94fef48fda4c753fe57bb8ab4fe988fe409bd59c5e70f51385e74ae112449d",
     "settlement-quarry-geology.js": "d77d3a2604fca2b4b96e8a91b78cab67b8bee445e03e15ab3eb07dd5b8d9a77e",
     "settlement-raid.js": "4f9cb7b400c6c906981cb4697e11a94bede502ce36797fc581b3e4fd062498f2",
@@ -114,5 +115,6 @@
     "xr-hand-math.js": "029ee70430552eeb7ddae4beb38e694bf673167ff68c7e746cbd284c0b4cc11f",
     "xr-hands.js": "c39045dfe9036b71608aa2b893f476792b7d53ed92d4788b8a861975ac365d27",
     "xr-palm-intent.js": "52c66284dfd7be9753064ca22f27bd08b90784124f40c93a397e5c787292bd67"
-  }
+  },
+  "scope": "Frozen final integrated facade and desktop navigation candidate; native four-suite and browser checks running."
 }

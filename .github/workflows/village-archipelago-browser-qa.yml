@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        scope: [preview, core, powers, campaign]
+        scope: [preview, camera, core, powers, campaign]
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -40,7 +40,7 @@ jobs:
         env:
           QA_SCOPE: ${{ matrix.scope }}
           EXPECTED_HEAD: ${{ github.event.pull_request.head.sha }}
-          EXPECTED_CANDIDATE_SHA256: cde304c0e73c2f5f7a620c2a7c73eccc54098a8c51fdc7a21e0591ccdd806e01
+          EXPECTED_CANDIDATE_SHA256: 5650d81453d0172bed217dce2497cd92b5fd72a34f9ec248108d8475fd8db401
         run: node test.mjs
       - name: Save browser evidence even on failure
         if: always()
