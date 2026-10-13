@@ -1,9 +1,7 @@
 {
-  "sourceRoot": "/workspace/scratch/b075793454e7/hollow-hands-recovery-2026-10-11/village-archipelago/hollow-hands-settlement-food-mission",
-  "htmlPath": "/workspace/scratch/b075793454e7/hollow-hands-recovery-2026-10-11/village-archipelago/hollow-hands-settlement-food-mission/dist/HOLLOW_HANDS_SETTLEMENT_FOOD_MISSION.html",
-  "htmlSHA256": "5650d81453d0172bed217dce2497cd92b5fd72a34f9ec248108d8475fd8db401",
-  "htmlBytes": 8460526,
-  "sourceHashes": {
+  "htmlSHA256": "81a818be6dacf9113ff4a4332ab3edd5ee51d5282d08d79c98324a168d55e2b8",
+  "htmlBytes": 8461071,
+  "runtimeHashes": {
     "anatomical-joints.js": "95c89d6eea7f2898ce87bcd4bcbe5a95e91311897b48ce2b4affb5a75164bf4d",
     "arena-art.js": "8e6c8a852bf18c674afdfb3cca5a68b25f1af73226154aefccc324d1d61d6a39",
     "army-formation.js": "dbe7a1ef3eddb87256291bca8138c74fbb8e758b2b8263fac6fc9ace02217c7e",
@@ -75,7 +73,7 @@
     "settlement-hud.js": "cd0a97dcf7ab51835c291d4464c5d2b21af61bafd9152f40bbf6423bbd6df9d2",
     "settlement-jobs.js": "9445c7aadf93d8590b5a1134013c22f4bce905a364e59b09807858823825ea4e",
     "settlement-land-regions.js": "f888731a62186510344fd1a6775d140c4db0ecb8b7eeb212ef6f651d498d8ff3",
-    "settlement-main.js": "b6482bd4404839a3569611cd0d0b989307b0cd6344f365ccd33ec9a70495d45b",
+    "settlement-main.js": "d3817c8e4a76b2e1bd3a84516c45aa7605c28fb6e06f90dd0c701c1cb1e36604",
     "settlement-minimal-hud.js": "d071bff0378764b57ca8e33cb1f067afdd397506e4ee21eae558b75aab23e865",
     "settlement-next-need.js": "eb94fef48fda4c753fe57bb8ab4fe988fe409bd59c5e70f51385e74ae112449d",
     "settlement-quarry-geology.js": "d77d3a2604fca2b4b96e8a91b78cab67b8bee445e03e15ab3eb07dd5b8d9a77e",
@@ -115,6 +113,5 @@
     "xr-hand-math.js": "029ee70430552eeb7ddae4beb38e694bf673167ff68c7e746cbd284c0b4cc11f",
     "xr-hands.js": "c39045dfe9036b71608aa2b893f476792b7d53ed92d4788b8a861975ac365d27",
     "xr-palm-intent.js": "52c66284dfd7be9753064ca22f27bd08b90784124f40c93a397e5c787292bd67"
-  },
-  "scope": "Frozen final integrated facade and desktop navigation candidate; native four-suite and browser checks running."
+  }
 }
