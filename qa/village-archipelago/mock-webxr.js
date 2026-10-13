@@ -1,0 +1,17 @@
+// Synthetic provider for real Chromium + Three WebXRManager. No headset data.
+window.__xrMock={requests:[],sessions:[],frames:0};
+for(const proto of [WebGLRenderingContext.prototype,WebGL2RenderingContext.prototype])proto.makeXRCompatible=async()=>{};
+class MockLayer {constructor(session,gl,init){this.framebuffer=null;this.framebufferWidth=1280;this.framebufferHeight=720;this.fixedFoveation=0;this.init=init;}getViewport(){return{x:0,y:0,width:1280,height:720};}}
+Object.defineProperty(window,'XRWebGLLayer',{configurable:true,value:MockLayer});
+class MockSession extends EventTarget{
+ constructor(mode){super();this.mode=mode;this.renderState={};this.visibilityState='visible';this.environmentBlendMode=mode==='immersive-ar'?'alpha-blend':'opaque';this.inputSources=[];this.ref=new EventTarget();this.callbacks=new Map();this.serial=0;this.ended=false;}
+ updateRenderState(update){Object.assign(this.renderState,update);}
+ async requestReferenceSpace(type){this.referenceType=type;return this.ref;}
+ requestAnimationFrame(cb){const id=++this.serial;this.callbacks.set(id,cb);return id;}
+ cancelAnimationFrame(id){this.callbacks.delete(id);}
+ async end(){this.ended=true;this.dispatchEvent(new Event('end'));this.callbacks.clear();}
+ pump(){const T=SETTLEMENTQA.context.THREE,cam=new T.PerspectiveCamera(65,1280/720,.02,12);cam.position.set(0,1.6,0);cam.rotation.x=window.__xrMock.pitch??-.35;cam.updateMatrixWorld(true);const transform={position:{x:0,y:1.6,z:0},orientation:{x:cam.quaternion.x,y:cam.quaternion.y,z:cam.quaternion.z,w:cam.quaternion.w},matrix:cam.matrixWorld.toArray()};const pose=this.hideViewer?null:{transform,emulatedPosition:false,views:[{eye:'none',transform,projectionMatrix:cam.projectionMatrix.toArray()}]};const frame={session:this,getViewerPose:()=>pose,getPose:space=>space?.pose??null,getJointPose:()=>null};const list=[...this.callbacks.values()];this.callbacks.clear();this.time=(this.time??performance.now())+1000/72;for(const cb of list)cb(this.time,frame);window.__xrMock.frames++;return SETTLEMENTQA.state().xr;}
+ addController(side='right'){const identity={position:{x:.12,y:1.2,z:-.3},orientation:{x:0,y:0,z:0,w:1}},source={handedness:side,targetRayMode:'tracked-pointer',profiles:['generic-trigger-squeeze-touchpad'],gripSpace:{pose:{transform:identity}},targetRaySpace:{pose:{transform:identity}},gamepad:{mapping:'xr-standard',buttons:[{pressed:false,value:0},{pressed:false,value:0}],axes:[0,0]}};this.inputSources.push(source);const e=new Event('inputsourceschange');Object.assign(e,{added:[source],removed:[]});this.dispatchEvent(e);return source;}
+ aimAt(name,pressed=false){const {THREE:T,scene}=SETTLEMENTQA.context,obj=scene.getObjectByName(name);if(!obj)throw Error('Missing '+name);scene.updateMatrixWorld(true);const at=obj.getWorldPosition(new T.Vector3()),origin=new T.Vector3(.12,1.4,.05),q=new T.Quaternion().setFromUnitVectors(new T.Vector3(0,0,-1),at.clone().sub(origin).normalize()),source=this.inputSources[0];source.targetRaySpace.pose={transform:{position:origin,orientation:q}};source.gamepad.buttons[0]={pressed,value:+pressed};return at.toArray();}
+}
+Object.defineProperty(navigator,'xr',{configurable:true,value:{isSessionSupported:async mode=>['immersive-ar','immersive-vr'].includes(mode),requestSession:async(mode,options)=>{window.__xrMock.requests.push({mode,options:{...options,domOverlay:{rootId:options.domOverlay.root.id}}});const session=new MockSession(mode);window.__xrMock.sessions.push(session);window.__xrSession=session;return session;}}});
