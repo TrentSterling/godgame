@@ -51,8 +51,8 @@ jobs:
           XR_CANDIDATE_PATH: ../../index.html
           QA_SCOPE: ${{ matrix.scope }}
           EXPECTED_HEAD: ${{ github.event.pull_request.head.sha }}
-          EXPECTED_CANDIDATE_SHA256: 30610830deea8acf73cc812bb9c61b2d15321751bbf9036e1e727052f013c63b
-          EXPECTED_XR_CANDIDATE_SHA256: 30610830deea8acf73cc812bb9c61b2d15321751bbf9036e1e727052f013c63b
+          EXPECTED_CANDIDATE_SHA256: d164d7e8a14d282faa871b125ccfe2515b80c8fd9dfd82ef4776fad3fb0b54e2
+          EXPECTED_XR_CANDIDATE_SHA256: d164d7e8a14d282faa871b125ccfe2515b80c8fd9dfd82ef4776fad3fb0b54e2
         run: |
           if [ "$QA_SCOPE" = "synthetic-xr" ]; then node xr-test.mjs; else node test.mjs; fi
       - name: Save browser evidence even on failure
@@ -63,4 +63,5 @@ jobs:
           path: qa/village-archipelago/artifacts/
           retention-days: 14
           if-no-files-found: error
+
 

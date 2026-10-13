@@ -1,0 +1,53 @@
+name: Flatscreen ordinary input reproduction
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'index.html'
+      - 'qa/flatscreen-startup/**'
+      - '.github/workflows/flatscreen-startup-repro.yml'
+permissions:
+  contents: read
+concurrency:
+  group: flatscreen-startup-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+jobs:
+  ordinary-input:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        case: [wide-dpr1, wide-dpr125, wide-dpr2, screenshot-80pct]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - name: Install pinned official Playwright Chromium
+        working-directory: qa/flatscreen-startup
+        run: |
+          npm install --ignore-scripts --no-audit --no-fund
+          npx playwright install --with-deps chromium
+      - name: Verify frozen candidate using ordinary real-time inputs
+        working-directory: qa/flatscreen-startup
+        env:
+          EXPECTED_HEAD: ${{ github.event.pull_request.head.sha }}
+          CANDIDATE_PATH: ../../index.html
+          EXPECTED_ROOT_SHA256: d164d7e8a14d282faa871b125ccfe2515b80c8fd9dfd82ef4776fad3fb0b54e2
+          CANDIDATE_SHA256: d164d7e8a14d282faa871b125ccfe2515b80c8fd9dfd82ef4776fad3fb0b54e2
+          CASE: ${{ matrix.case }}
+        run: node candidate-input.mjs
+      - name: Preserve screenshots and real-time video
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: flatscreen-startup-${{ github.event.pull_request.head.sha }}-${{ matrix.case }}
+          path: qa/flatscreen-startup/artifacts/
+          retention-days: 14
+          if-no-files-found: error
+
