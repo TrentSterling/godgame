@@ -14,7 +14,11 @@ jobs:
   ordinary-input:
     if: github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        case: [wide-dpr1, wide-dpr125, wide-dpr2, screenshot-80pct]
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
@@ -28,16 +32,19 @@ jobs:
         run: |
           npm install --ignore-scripts --no-audit --no-fund
           npx playwright install --with-deps chromium
-      - name: Observe public release using real browser time
+      - name: Verify frozen candidate using ordinary real-time inputs
         working-directory: qa/flatscreen-startup
         env:
           EXPECTED_HEAD: ${{ github.event.pull_request.head.sha }}
-        run: node ordinary-input.mjs
+          CANDIDATE_SHA256: d164d7e8a14d282faa871b125ccfe2515b80c8fd9dfd82ef4776fad3fb0b54e2
+          CASE: ${{ matrix.case }}
+        run: node candidate-input.mjs
       - name: Preserve screenshots and real-time video
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: flatscreen-startup-${{ github.event.pull_request.head.sha }}
+          name: flatscreen-startup-${{ github.event.pull_request.head.sha }}-${{ matrix.case }}
           path: qa/flatscreen-startup/artifacts/
           retention-days: 14
           if-no-files-found: error
+
