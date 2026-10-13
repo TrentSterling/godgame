@@ -1,0 +1,51 @@
+name: Godgame public deployment witness
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'shrine-v24.html'
+      - 'qa/village-archipelago/public-witness.mjs'
+      - '.github/workflows/godgame-public-witness.yml'
+permissions:
+  contents: read
+concurrency:
+  group: godgame-public-witness-main
+  cancel-in-progress: false
+jobs:
+  witness:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Check out exact merged main without saved credentials
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - name: Install pinned official browser tooling
+        working-directory: qa/village-archipelago
+        run: |
+          npm install --ignore-scripts --no-audit --no-fund
+          npx playwright install --with-deps chromium
+      - name: Observe accepted public bytes then exercise public Chromium
+        timeout-minutes: 20
+        working-directory: qa/village-archipelago
+        env:
+          EXPECTED_HEAD: ${{ github.sha }}
+          EXPECTED_CANDIDATE_SHA256: 30610830deea8acf73cc812bb9c61b2d15321751bbf9036e1e727052f013c63b
+          CANDIDATE_PATH: ../../index.html
+          EXPECTED_SHRINE_SHA256: ba699ca9ad9b393c0be3cfec528c4ff8bc391cd117d6edac7e56e47578a7cebc
+          PRESERVED_SHRINE_PATH: ../../shrine-v24.html
+          PUBLIC_GAME_URL: https://tront.xyz/godgame/
+        run: node public-witness.mjs
+      - name: Preserve public evidence even on failure
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: godgame-public-${{ github.sha }}
+          path: qa/village-archipelago/artifacts/
+          retention-days: 14
+          if-no-files-found: error

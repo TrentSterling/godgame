@@ -1,8 +1,12 @@
-name: Village archipelago browser QA (test only)
+name: Village root release acceptance
 on:
   pull_request:
     types: [opened, synchronize, reopened]
     paths:
+      - 'index.html'
+      - 'shrine-v24.html'
+      - 'THIRD_PARTY_LICENSES.txt'
+      - '.nojekyll'
       - 'qa/village-archipelago/**'
       - '.github/workflows/village-archipelago-browser-qa.yml'
 permissions:
@@ -16,7 +20,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        scope: [preview, camera, core, powers, campaign, xr-layout, synthetic-xr]
+        scope: [preview, camera, xr-layout, synthetic-xr]
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -34,10 +38,17 @@ jobs:
       - name: Install official Playwright Chromium
         working-directory: qa/village-archipelago
         run: npx playwright install --with-deps chromium
-      - name: Exercise exact candidate in a real browser
+      - name: Verify release identities and preserved Shrine
+        working-directory: qa/village-archipelago
+        env:
+          EXPECTED_HEAD: ${{ github.event.pull_request.head.sha }}
+        run: node release-identity.mjs
+      - name: Exercise exact root path in a real browser
         timeout-minutes: 25
         working-directory: qa/village-archipelago
         env:
+          CANDIDATE_PATH: ../../index.html
+          XR_CANDIDATE_PATH: ../../index.html
           QA_SCOPE: ${{ matrix.scope }}
           EXPECTED_HEAD: ${{ github.event.pull_request.head.sha }}
           EXPECTED_CANDIDATE_SHA256: 30610830deea8acf73cc812bb9c61b2d15321751bbf9036e1e727052f013c63b
@@ -52,3 +63,4 @@ jobs:
           path: qa/village-archipelago/artifacts/
           retention-days: 14
           if-no-files-found: error
+

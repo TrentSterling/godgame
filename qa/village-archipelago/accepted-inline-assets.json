@@ -1,0 +1,31 @@
+{
+  "htmlSHA256": "30610830deea8acf73cc812bb9c61b2d15321751bbf9036e1e727052f013c63b",
+  "htmlBytes": 8491010,
+  "coverage": "Whole standalone HTML SHA256 covers every embedded byte. Recognized inline base64 assets decoded without external requests; offsets identify exact encoded source. No claim that unrecognized inline data is a separate loaded request.",
+  "assets": [
+    {
+      "kind": "WASM",
+      "bytes": 3082103,
+      "sha256": "17cfa80eebd8de0291b948496dbffba724b98b489687f8272ca236a7bbf1dd4b",
+      "encodedCharacterOffset": 920737
+    },
+    {
+      "kind": "GLB",
+      "bytes": 1235684,
+      "sha256": "b22878a0b2397692a7f17722ae5124d055857942a2f87b5a6dd28dc63adc26c0",
+      "encodedCharacterOffset": 5160131
+    },
+    {
+      "kind": "PNG",
+      "bytes": 8156,
+      "sha256": "ba56ad88b5998f6b303d3cae8de2da82361cdada0a64e25a36c62948c7877227",
+      "encodedCharacterOffset": 6807721
+    },
+    {
+      "kind": "GLB",
+      "bytes": 1028252,
+      "sha256": "1c8e0bc6995f91341e3dd6bd8a864df0970265cf49baec3b1f97a24dcca13506",
+      "encodedCharacterOffset": 6846057
+    }
+  ]
+}
