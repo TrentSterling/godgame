@@ -1,0 +1,66 @@
+name: Village root release acceptance
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'index.html'
+      - 'shrine-v24.html'
+      - 'THIRD_PARTY_LICENSES.txt'
+      - '.nojekyll'
+      - 'qa/village-archipelago/**'
+      - '.github/workflows/village-archipelago-browser-qa.yml'
+permissions:
+  contents: read
+concurrency:
+  group: village-archipelago-browser-qa-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+jobs:
+  browser:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    strategy:
+      fail-fast: false
+      matrix:
+        scope: [preview, camera, xr-layout, synthetic-xr]
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out exact test commit without saved credentials
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - name: Install pinned Playwright from npm
+        working-directory: qa/village-archipelago
+        run: npm install --ignore-scripts --no-audit --no-fund
+      - name: Install official Playwright Chromium
+        working-directory: qa/village-archipelago
+        run: npx playwright install --with-deps chromium
+      - name: Verify release identities and preserved Shrine
+        working-directory: qa/village-archipelago
+        env:
+          EXPECTED_HEAD: ${{ github.event.pull_request.head.sha }}
+        run: node release-identity.mjs
+      - name: Exercise exact root path in a real browser
+        timeout-minutes: 25
+        working-directory: qa/village-archipelago
+        env:
+          CANDIDATE_PATH: ../../index.html
+          XR_CANDIDATE_PATH: ../../index.html
+          QA_SCOPE: ${{ matrix.scope }}
+          EXPECTED_HEAD: ${{ github.event.pull_request.head.sha }}
+          EXPECTED_CANDIDATE_SHA256: 30610830deea8acf73cc812bb9c61b2d15321751bbf9036e1e727052f013c63b
+          EXPECTED_XR_CANDIDATE_SHA256: 30610830deea8acf73cc812bb9c61b2d15321751bbf9036e1e727052f013c63b
+        run: |
+          if [ "$QA_SCOPE" = "synthetic-xr" ]; then node xr-test.mjs; else node test.mjs; fi
+      - name: Save browser evidence even on failure
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: village-archipelago-${{ matrix.scope }}-${{ github.event.pull_request.head.sha }}
+          path: qa/village-archipelago/artifacts/
+          retention-days: 14
+          if-no-files-found: error
+
