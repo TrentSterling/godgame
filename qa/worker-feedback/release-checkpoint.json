@@ -1,0 +1,23 @@
+{
+  "checkpoint": "worker-order-feedback-20261015",
+  "status": "Approved release integration; publication and live verification are recorded separately after merge",
+  "reviewCommit": "090b3dc4459f907ac058c6cc97330ecdf26945ca",
+  "baselineCommit": "79b01c5ce27ddfbe9000f214b10a7ee7b0315ec2",
+  "rootHTML": {
+    "sha256": "f830ef837a15d52df8f1afb966998fc68a5ea4bc4f9fe02b843cb40954230dba",
+    "bytes": 8494626,
+    "gitBlob": "28159b8262ccee931d4b49901acfdd51caa536fe"
+  },
+  "preservedShrineSHA256": "ba699ca9ad9b393c0be3cfec528c4ff8bc391cd117d6edac7e56e47578a7cebc",
+  "sourceModuleCount": 113,
+  "baselineLibrarySource": {
+    "libraryFileId": "libfile_fddee0fa33f88191be9d42813b64afd9",
+    "version": 24,
+    "sha256": "e3dd660ffa0632df89a8017ad081fb74abf3c43f5d276cad08a3289ade23f642"
+  },
+  "sourceManifest": "manifest.json",
+  "sourceOverlay": "source-overlay/src",
+  "scope": "Current worker activity and queued destination in existing desktop and XR panels only. Economy, physics, commands, art and navigation unchanged.",
+  "hardwareXR": "Unverified. Mocked tracked-ray browser and native tests do not establish headset results.",
+  "excludedFollowup": "Construction priority acknowledgement is outside this release."
+}
