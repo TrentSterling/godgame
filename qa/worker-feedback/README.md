@@ -1,4 +1,4 @@
-# Village worker feedback candidate
+# Village worker feedback
 
 After an ordinary click selects a worker and orders Garden work, the accepted v24 build's confirmation expires after three seconds. Its panel then says only that the worker is selected. The job and any queued destination disappear from the panel while work continues.
 
@@ -20,12 +20,12 @@ The original source archive rebuilt to the exact accepted HTML hash before editi
 
 ## Reproduce and integrate
 
-This is a review kit, not a new sealed release. The Git branch adds only this QA directory; root `index.html`, `shrine-v24.html`, previous QA and production remain intact.
+The original review kit is preserved by commit `090b3dc`. The approved release integration copies its exact `candidate.html` to root `index.html` and updates the existing release identity checks. `release-checkpoint.json` identifies this integration. `manifest.json` and the reports retain their original pre-publication status; they are review evidence, not a claim that the site has deployed. Shrine v24 and the previous startup candidate remain unchanged.
 
 1. Extract the accepted Library v24 source archive identified in `manifest.json` into a new folder. The handoff ZIP includes its unchanged bytes as `baseline-source-v24.zip`.
 2. Copy `source-overlay/src` over the extracted `src` folder, or apply `source-changes.patch`. Copy `worker-feedback.test.mjs` into its `qa` directory.
 3. Run `npm ci --ignore-scripts`, `node build.cjs`, and `node qa/worker-feedback.test.mjs`. The rebuilt HTML must match `candidateHTML.sha256` in the manifest.
 4. Run the inherited startup and XR native suites as documented in their scripts. For the browser scripts, set `CANDIDATE_HTML` to the candidate HTML path, `PLAYWRIGHT_MODULE` to an installed Playwright module, and `XR_MOCK_PATH` to this kit's `mock-webxr.js`. Defaults retain the exact Windows paths used here; Chrome's executable path is in the scripts. Run `node browser-playtest.cjs --candidate` and `node browser-xr-feedback.cjs` from a directory containing an `evidence` folder.
-5. Parent reviews this evidence and decides release integration. A new release source manifest/checkpoint and publication verification remain for that approved release step. Do not reuse v24's sealed checkpoint as proof for changed source.
+5. Verify the rebuilt HTML against `release-checkpoint.json`. PR checks rerun the inherited startup and village browser suites against the new root. After merge, the public witness must confirm the exact HTML and unchanged Shrine hashes. Do not reuse v24's sealed checkpoint as proof for changed source.
 
-No production merge or push has been performed. No real headset result is available.
+The dated source checkpoint and release receipt accompany the handoff. Publication is established only by the merged commit and successful public witness. No real headset result is available.
