@@ -1,0 +1,36 @@
+{
+  "passed": true,
+  "mode": "xr",
+  "scope": "CPU-only native Rapier and actual application callbacks under non-rendering DOM/WebXR fixtures. Pointer coordinates are projected fixture targeting; simulation clock is stepped. No ordinary-browser, GPU or headset claim.",
+  "checks": [
+    {
+      "name": "mocked-xr-world-sign-renders-complete-acknowledgement-in-existing-row",
+      "time": 0,
+      "text": [
+        "PAUSE",
+        "CONTROLS",
+        "DETAILS",
+        "BRACE IS NOW THE CONSTRUCTION PRIORITY."
+      ]
+    },
+    {
+      "name": "mocked-xr-session-exits",
+      "time": 0,
+      "text": [
+        "PAUSE",
+        "CONTROLS",
+        "DETAILS"
+      ]
+    }
+  ],
+  "inputs": [],
+  "final": {
+    "time": 0,
+    "priority": "brace",
+    "text": [
+      "PAUSE",
+      "CONTROLS",
+      "DETAILS"
+    ]
+  }
+}

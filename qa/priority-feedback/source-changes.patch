@@ -1,0 +1,67 @@
+--- a/src/settlement-main.js
++++ b/src/settlement-main.js
+@@ -48,6 +48,12 @@
+ let villageXR=null,xrHands=null,surfacePicker=null;
+ let renderer,scene,camera,world,sim,rig,hero,environment,motion,traffic,navigation,jobs,hud,picker,selectionCue,hand,handMotion,quarrySafety,quarryContact,recruit,loadHandoff,foodArt,worldCues,worldActions,pickupCarrier=null;
+ let controlsOpen=false,detailsOpen=false,worldPress=null,planningPress=null,hoveredWorldSite=null,worldNotice='',worldNoticeUntil=0;
++let priorityNotice='',priorityNoticeUntil=0;
++function currentWorldNotice(){
++ if(sim.time<worldNoticeUntil)return worldNotice;
++ const heldFood=sim.activeGrabs().some(g=>loads.some(r=>r.kind==='food'&&r.body===g.body));
++ return sim.time<priorityNoticeUntil&&!heldFood?priorityNotice:'';
++}
+ const supplyNeedCue=createSettlementNeedCue(),strandedCourierCue=createStrandedFoodCourierCue();let needPresentation=null,courierPresentation=null;
+ const heldFoodDestinationCue=createHeldFoodDestinationCue();
+ let defense=null,raid=null,raiderPool=null,windupCue=null,combatFeedback=null;
+@@ -183,7 +189,7 @@
+  const heldFood=heldFoodDestinationCue.update({active:frame.active,snapshot:frame.snapshot,sim,world,loads,pantry:foodArt.pantry,control:worldCues?.getControl('stockpile')});
+  const foodDestination=heldFood&&!heldWorker&&!controlsOpen&&!detailsOpen&&!(worldNotice&&sim.time<worldNoticeUntil)&&quarrySafety.state().phase!=='warning'&&!blessHint?heldFood:null;
+  worldCues?.update({selectedWorker,defenseConstruction:defense?.state(),jobs:frame.snapshot,camera:presentationCamera,heldWorker,placementPreview,placementAssessment,hoveredSite:hoveredWorldSite,workers:frame.workers,needCue:needPresentation,courierCue:courierPresentation,courierHover:courierHover(),foodDestination});
+- hud.update({selectedWorker,width:innerWidth,height:innerHeight,started,paused,raid:raid?.state(),heldRaider:!!sim.grab&&raid?.raiders.some(c=>c.parts.some(p=>p.body===sim.grab.body)),fallenWorkers:frame.workers.filter(w=>w.hp>0&&w.mode==='ragdoll').length,jobs:frame.snapshot,recruit:recruit.state(motion),hazard:{...quarrySafety.state(),blockedLoads:loads.filter(r=>r.quarryBlocked).map(r=>r.id)},notice:sim.time<worldNoticeUntil?worldNotice:'',held:!!sim.grab,heldWorker,heldFood,placementPreview:displayPreview,blessHint,controlsOpen,detailsOpen,alive:villagers.filter(c=>c.hp>0).length});
++ hud.update({selectedWorker,width:innerWidth,height:innerHeight,started,paused,raid:raid?.state(),heldRaider:!!sim.grab&&raid?.raiders.some(c=>c.parts.some(p=>p.body===sim.grab.body)),fallenWorkers:frame.workers.filter(w=>w.hp>0&&w.mode==='ragdoll').length,jobs:frame.snapshot,recruit:recruit.state(motion),hazard:{...quarrySafety.state(),blockedLoads:loads.filter(r=>r.quarryBlocked).map(r=>r.id)},notice:currentWorldNotice(),held:!!sim.grab,heldWorker,heldFood,placementPreview:displayPreview,blessHint,controlsOpen,detailsOpen,alive:villagers.filter(c=>c.hp>0).length});
+  updateSelectionCue();const cue=selectionCue.state(),meshName=!cue.dirty?cue.query?.mesh:null;
+  const canHoverWorld=!sim.grab&&!pointer.down&&!pointer.orbit&&pointer.inside&&document.visibilityState==='visible'&&!paused&&!missionStopped&&!hud.contains(pointer.lastX,pointer.lastY);
+  if(!started&&canHoverWorld){
+@@ -303,7 +309,7 @@
+ function release(flick=true,{placement=false}={}){pointer.captureRecovery=null;blessIntent.cancel('release');grabIntent.cancel('release');selectionCue?.clear('release');pointer.down=false;desktopDrag.clear();if(!sim.grab)return;
+  let placementIntent=null;if(placement&&sim.grab.inputSource==='desktop'){const result=worldActions.release(worldActionFrame(),{intentional:true,button:0,pointerType:'mouse'});worldActionFeedback(result);placementIntent=result.ok?result.pending:null;}
+  const r=loads.find(r=>r.body===sim.grab.body);sim.releaseGrab(flick);if(placementIntent){const c=villagers.find(c=>id(c)===placementIntent.villagerId);if(c)motion.requestPlacement?.(c,placementIntent);}if(r){r.owner=null;const s=jobs.snapshot().stones.find(s=>s.id===r.id);process(jobs.command({type:'release-stone',stoneId:r.id,expectedRevision:s.revision,position:r.body.translation(),held:false,available:false}));pendingRelease.add(r);}pointer.down=false;}
+-function cancelInput({preserveOrders=false}={}){planningPress=null;if(villageXR?.isActive())villageXR.releaseAll('input cancelled');if(!preserveOrders){workerOrders.clear('input-cancelled');cancelPlacementTransitions('input-cancelled');worldActions?.cancel('input-cancelled');}worldPress=null;worldNotice='';worldNoticeUntil=0;release(false);pointer.orbit=false;pointer.pan=false;pointer.cameraButton=null;pointer.captureId=null;pointer.captureRecovery=null;pointer.inside=false;hoveredWorldSite=null;selectionCue?.clear('cancel');}
++function cancelInput({preserveOrders=false}={}){planningPress=null;if(villageXR?.isActive())villageXR.releaseAll('input cancelled');if(!preserveOrders){workerOrders.clear('input-cancelled');cancelPlacementTransitions('input-cancelled');worldActions?.cancel('input-cancelled');}worldPress=null;worldNotice='';worldNoticeUntil=0;priorityNoticeUntil=0;release(false);pointer.orbit=false;pointer.pan=false;pointer.cameraButton=null;pointer.captureId=null;pointer.captureRecovery=null;pointer.inside=false;hoveredWorldSite=null;selectionCue?.clear('cancel');}
+ function worldControlHit(queryRay=raycaster){if(!worldCues||!picker)return null;scene.updateMatrixWorld(true);
+  const visible=mesh=>{for(let o=mesh;o;o=o.parent)if(!o.visible)return false;return true;};
+  const hit=queryRay.intersectObjects(worldCues.hitMeshes.filter(visible),false)[0];if(!hit)return null;
+@@ -338,11 +344,22 @@
+  updatePointer(e);pointer.lastX=e.clientX;pointer.lastY=e.clientY;
+  const fresh=picker.pick(raycaster);if(fresh?.character!==target.character)return false;
+  const selected=workerOrders.select(worldActionFrame(),id(target.character));
+- if(selected.ok){worldNotice='';worldNoticeUntil=0;events.push({t:sim.time,type:'worker-selected',villagerId:id(target.character)});}
++ if(selected.ok){worldNotice='';worldNoticeUntil=0;priorityNoticeUntil=0;events.push({t:sim.time,type:'worker-selected',villagerId:id(target.character)});}
+  else{worldNotice=target.character===recruit.character&&!recruit.state(motion).joined?'BRING THIS VILLAGER HOME BEFORE GIVING ORDERS':'LET THE VILLAGER STAND BEFORE GIVING ORDERS';worldNoticeUntil=sim.time+3;}
+  return selected.ok;
+ }
+-function setPriority(siteId){if(paused||missionStopped)return{ok:false,reason:paused?'paused':'ended'};cancelInput({preserveOrders:true});const result=process(jobs.command({type:'set-priority',siteId:siteId==='stockpile'?'pantry':siteId}));if(result.ok){notice=siteId==='brace'?'BUILD THE QUARRY BRACE':siteId==='bridge'?'BUILD THE BRIDGE':siteId==='garden-upgrade'?'IMPROVE THE MAINLAND GARDEN':siteId==='defense'?'BUILD STONE BARRIER FOR 2 STONE':'STORE SPARE STONE';noticeUntil=sim.time+3;}render();return result;}
++function setPriority(siteId){
++ if(paused||missionStopped)return{ok:false,reason:paused?'paused':'ended'};
++ cancelInput({preserveOrders:true});
++ const result=process(jobs.command({type:'set-priority',siteId:siteId==='stockpile'?'pantry':siteId}));
++ if(result.ok){
++  const name={brace:'Brace',bridge:'Bridge','garden-upgrade':'Garden',defense:'Barrier',pantry:'Stores'}[result.prioritySiteId];
++  const committedElsewhere=result.villagers.some(w=>w.alive&&w.resourceKind==='stone'&&w.stoneId&&['to-site','delivering'].includes(w.phase)&&w.targetSiteId&&w.targetSiteId!==result.prioritySiteId);
++  priorityNotice=committedElsewhere?`${name} is next after current deliveries.`:result.prioritySiteId==='pantry'?'Stores now has priority for spare stone.':`${name} is now the construction priority.`;
++  priorityNoticeUntil=sim.time+3;
++ }
++ render();return result;
++}
+ function setRole(villagerId,role){if(paused||missionStopped)return{ok:false,reason:paused?'paused':'ended'};cancelInput({preserveOrders:true});const character=villagers.find(c=>id(c)===villagerId);if(character)motion.cancelPlacement?.(character,'role-override');worldActionFeedback(worldActions?.cancelWorker(villagerId,'role-override'));const v=jobs.snapshot().villagers.find(v=>v.id===villagerId);if(!v)return{ok:false};const result=process(jobs.command({type:'set-role',villagerId,role,expectedRevision:v.revision}));render();return result;}
+ function controlAction(control){
+  if(control==='controls'||control==='details'){cancelInput({preserveOrders:true});if(control==='controls'){controlsOpen=!controlsOpen;if(controlsOpen)detailsOpen=false;}else{detailsOpen=!detailsOpen;if(detailsOpen)controlsOpen=false;}render();return;}
+@@ -447,7 +464,7 @@
+   activate:action=>{if(['start','pause','replay'].includes(action))controlAction(action);else{const site=worldCues.getControl(action);if(site?.kind==='construction'||action==='stockpile')setPriority(action);else if(site)orderSelectedWorker(action);}},
+   grab:grabXRTarget,release:releaseXRTarget,
+   cast:(hit,viewer,side,mode)=>{if(blessing.targetPower(hit)!==mode)return null;return blessing.cast(hit,viewer,{source:'xr-'+side});},
+-  getStatus:()=>({started,paused,ended:missionStopped,message:sim.time<worldNoticeUntil?worldNotice:'',cooldown:blessing.state().cooldown,selectedWorkerId:workerOrders.state().selectedWorkerId,workerOrder:workerOrders.state().selectedWorkerId?settlementWorkerFeedback(jobs.snapshot().villagers.find(w=>w.id===workerOrders.state().selectedWorkerId)):''}),
++  getStatus:()=>({started,paused,ended:missionStopped,message:currentWorldNotice(),cooldown:blessing.state().cooldown,selectedWorkerId:workerOrders.state().selectedWorkerId,workerOrder:workerOrders.state().selectedWorkerId?settlementWorkerFeedback(jobs.snapshot().villagers.find(w=>w.id===workerOrders.state().selectedWorkerId)):''}),
+   onSessionChange:active=>{cancelInput();controlsOpen=detailsOpen=false;hand.group.visible=false;selectionCue.suspend(active?'xr-entry':'xr-exit');},
+   onCancel:reason=>{worldPress=null;grabIntent.cancel(reason);blessIntent.cancel(reason);workerOrders.clear(reason);cancelPlacementTransitions(reason);worldActions?.cancel(reason);}
+  });

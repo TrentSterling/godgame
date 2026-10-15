@@ -1,0 +1,60 @@
+{
+  "passed": true,
+  "mode": "held-food",
+  "scope": "CPU-only native Rapier and actual application callbacks under non-rendering DOM/WebXR fixtures. Pointer coordinates are projected fixture targeting; simulation clock is stepped. No ordinary-browser, GPU or headset claim.",
+  "checks": [
+    {
+      "name": "new-priority-ack-does-not-mask-real-held-food-pantry-cue-or-xr-row",
+      "time": 14.033333333333177,
+      "text": [
+        "PAUSE",
+        "CONTROLS",
+        "DETAILS"
+      ],
+      "foodId": "food-g1-1",
+      "pantry": {
+        "id": "stockpile",
+        "kind": "construction",
+        "position": [
+          8,
+          0.6513120868496308,
+          1.7
+        ],
+        "markerPosition": [
+          0.2641205390930176,
+          1.2557914900843912,
+          -0.3876080192565919
+        ],
+        "selected": false,
+        "hovered": false,
+        "preview": false,
+        "complete": false,
+        "needed": false,
+        "foodDestination": true,
+        "label": "PANTRY|BRING FOOD HERE",
+        "meshNames": [
+          "stockpile_control_plate"
+        ]
+      }
+    },
+    {
+      "name": "mocked-xr-session-exits",
+      "time": 14.033333333333177,
+      "text": [
+        "PAUSE",
+        "CONTROLS",
+        "DETAILS"
+      ]
+    }
+  ],
+  "inputs": [],
+  "final": {
+    "time": 14.033333333333177,
+    "priority": "brace",
+    "text": [
+      "PAUSE",
+      "CONTROLS",
+      "DETAILS"
+    ]
+  }
+}

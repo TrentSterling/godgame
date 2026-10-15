@@ -1,0 +1,50 @@
+{
+  "pass": true,
+  "scope": "Production Village bridge callbacks and native Rapier in non-rendering mocked DOM/WebXR. No browser, GPU, real permissions, HMD tracking, performance or comfort claims.",
+  "runs": [
+    {
+      "command": "node qa/xr-village/build-native.cjs",
+      "status": 0,
+      "elapsedMs": 269,
+      "stdout": "C:\\Users\\trent\\Documents\\Codex\\2026-10-14\\task-9\\priority-feedback-20261015\\source\\hollow-hands-settlement-food-mission\\qa\\xr-village\\generated\\native.mjs\n",
+      "stderr": ""
+    },
+    {
+      "command": "node qa/xr-village/transformed-picker.test.mjs",
+      "status": 0,
+      "elapsedMs": 1590,
+      "stdout": "{\"pass\":true,\"suite\":\"transformed-picker\",\"checks\":7}\n",
+      "stderr": ""
+    },
+    {
+      "command": "node qa/xr-village/bridge-lifecycle.test.mjs",
+      "status": 0,
+      "elapsedMs": 1548,
+      "stdout": "{\"pass\":true,\"suite\":\"bridge-lifecycle\",\"checks\":8,\"requests\":5,\"ends\":4}\n",
+      "stderr": ""
+    },
+    {
+      "command": "node qa/xr-village/native-interactions.test.mjs",
+      "status": 0,
+      "elapsedMs": 9290,
+      "stdout": "{\"checkpoint\":\"select-worker-and-order-existing-source\",\"time\":0.9999999999999989}\n{\"checkpoint\":\"desktop-input-isolated-during-xr\",\"time\":0.9999999999999989}\n{\"checkpoint\":\"two-hand-load-native-economy-ownership-and-viewer-loss-release\",\"time\":1.1999999999999982}\n{\"checkpoint\":\"xr-world-pause-resume\",\"time\":1.1999999999999982}\n{\"checkpoint\":\"xr-bless-exact-native-target-hp-only-cooldown-and-mode-gates\",\"time\":1.1999999999999982}\n{\"checkpoint\":\"controller-squeeze-takes-and-releases-real-carried-food\",\"time\":14.199999999999834}\n{\"checkpoint\":\"xr-lightning-real-native-raider\",\"time\":35.199999999998646}\n{\"checkpoint\":\"integrated-session-exit-restores-desktop\",\"time\":35.199999999998646}\n{\"pass\":true,\"suite\":\"native-interactions\",\"checks\":8,\"nativeSeconds\":35.199999999998646}\n",
+      "stderr": ""
+    },
+    {
+      "command": "node qa/xr-village/native-placement.test.mjs",
+      "status": 0,
+      "elapsedMs": 2465,
+      "stdout": "{\"checkpoint\":\"intentional-gentle-xr-release-creates-real-placement-intent\",\"time\":9.316666666666778}\n{\"checkpoint\":\"viewer-loss-cancels-without-placement-or-flick\",\"time\":9.316666666666778}\n{\"checkpoint\":\"session-hidden-cancels-without-placement-or-flick\",\"time\":9.316666666666778}\n{\"checkpoint\":\"reference-reset-cancels-without-placement-or-flick\",\"time\":9.316666666666778}\n{\"checkpoint\":\"opposite-hand-pause-cancels-without-placement-or-flick\",\"time\":9.316666666666778}\n{\"checkpoint\":\"opposite-hand-mode-ui-cancels-without-placement-or-flick\",\"time\":9.316666666666778}\n{\"pass\":true,\"suite\":\"native-placement\",\"checks\":6,\"nativeSeconds\":9.316666666666778}\n",
+      "stderr": ""
+    }
+  ],
+  "identity": {
+    "sourceFiles": 113,
+    "testFiles": 9,
+    "runtimeAssets": 3,
+    "settlementMainSHA256": "12be46b037fad111f35ea7687121bf787cea35c118c64d06ac209e51b68f9414",
+    "deliveredHTMLSHA256": "fff7bad7f5dce9114a522c140f5adb1613b0e04734305bc62f3547371bdf6f79",
+    "unchangedDuringRun": true,
+    "changed": []
+  }
+}

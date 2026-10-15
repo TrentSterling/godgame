@@ -1,0 +1,66 @@
+{
+  "passed": true,
+  "mode": "budgets",
+  "scope": "CPU-only native Rapier and actual application callbacks under non-rendering DOM/WebXR fixtures. Pointer coordinates are projected fixture targeting; simulation clock is stepped. No ordinary-browser, GPU or headset claim.",
+  "checks": [
+    {
+      "name": "real-model-access-stone-budget-keeps-existing-error",
+      "time": 0,
+      "text": [
+        "PAUSE",
+        "CONTROLS",
+        "DETAILS",
+        "KEEP STONE FOR FARM BRIDGE + STORES"
+      ],
+      "fixture": "Actual low-resource model rejection is routed through production setPriority; current app economy stays unchanged."
+    },
+    {
+      "name": "real-model-garden-stone-budget-keeps-existing-error",
+      "time": 0,
+      "text": [
+        "PAUSE",
+        "CONTROLS",
+        "DETAILS",
+        "KEEP STONE FOR STORES + CURRENT BUILD"
+      ],
+      "fixture": "Actual low-resource model rejection is routed through production setPriority; current app economy stays unchanged."
+    },
+    {
+      "name": "real-model-defense-stone-budget-keeps-existing-error",
+      "time": 0,
+      "text": [
+        "PAUSE",
+        "CONTROLS",
+        "DETAILS",
+        "KEEP STONE FOR STORES + CURRENT BUILD"
+      ],
+      "fixture": "Actual low-resource model rejection is routed through production setPriority; current app economy stays unchanged."
+    }
+  ],
+  "inputs": [
+    {
+      "type": "keydown",
+      "fields": {
+        "code": "Space"
+      },
+      "clock": 1000
+    },
+    {
+      "type": "keydown",
+      "fields": {
+        "code": "Digit1"
+      },
+      "clock": 1000
+    }
+  ],
+  "final": {
+    "time": 0,
+    "priority": "brace",
+    "text": [
+      "PAUSE",
+      "CONTROLS",
+      "DETAILS",
+      "KEEP STONE FOR STORES + CURRENT BUILD"
+    ]
+  }
+}
