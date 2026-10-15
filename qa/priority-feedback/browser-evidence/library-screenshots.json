@@ -1,0 +1,70 @@
+{
+  "results": [
+    {
+      "local_path": "C:\\Users\\trent\\Documents\\Codex\\2026-10-14\\task-9\\priority-browser-20261015\\delivery\\godgame-priority-desktop-accepted.png",
+      "purpose": "create_library_file",
+      "status": "succeeded",
+      "file_id": "file_00000000518881f5acb0e1d61103512f",
+      "library_file_id": "libfile_93009b1014e48191a33844149c6a07b1",
+      "file_name": "godgame-priority-desktop-accepted.png",
+      "local_metadata_applied": true,
+      "path": "/godgame-priority-desktop-accepted.png",
+      "current_version_number": 0
+    },
+    {
+      "local_path": "C:\\Users\\trent\\Documents\\Codex\\2026-10-14\\task-9\\priority-browser-20261015\\delivery\\godgame-priority-desktop-committed-switch.png",
+      "purpose": "create_library_file",
+      "status": "succeeded",
+      "file_id": "file_0000000045b081f6b26ce515711c7cc3",
+      "library_file_id": "libfile_8143308f8a988191940953775a016c16",
+      "file_name": "godgame-priority-desktop-committed-switch.png",
+      "local_metadata_applied": true,
+      "path": "/godgame-priority-desktop-committed-switch.png",
+      "current_version_number": 0
+    },
+    {
+      "local_path": "C:\\Users\\trent\\Documents\\Codex\\2026-10-14\\task-9\\priority-browser-20261015\\delivery\\godgame-priority-desktop-committed-narrow.png",
+      "purpose": "create_library_file",
+      "status": "succeeded",
+      "file_id": "file_00000000bef881f5a7cd31dd0a806d77",
+      "library_file_id": "libfile_3f62d199c0e48191ac8c146466fce365",
+      "file_name": "godgame-priority-desktop-committed-narrow.png",
+      "local_metadata_applied": true,
+      "path": "/godgame-priority-desktop-committed-narrow.png",
+      "current_version_number": 0
+    },
+    {
+      "local_path": "C:\\Users\\trent\\Documents\\Codex\\2026-10-14\\task-9\\priority-browser-20261015\\delivery\\godgame-priority-scripted-budget-brace.png",
+      "purpose": "create_library_file",
+      "status": "succeeded",
+      "file_id": "file_000000004f7481f4929780aaa20e626c",
+      "library_file_id": "libfile_34c628c8fed0819181060f97db123b8d",
+      "file_name": "godgame-priority-scripted-budget-brace.png",
+      "local_metadata_applied": true,
+      "path": "/godgame-priority-scripted-budget-brace.png",
+      "current_version_number": 0
+    },
+    {
+      "local_path": "C:\\Users\\trent\\Documents\\Codex\\2026-10-14\\task-9\\priority-browser-20261015\\delivery\\godgame-priority-xr-committed-synthetic.png",
+      "purpose": "create_library_file",
+      "status": "succeeded",
+      "file_id": "file_00000000fed481f5bca6d9e7ebbfdd9c",
+      "library_file_id": "libfile_b091acbd41f88191bacc227eb723b95e",
+      "file_name": "godgame-priority-xr-committed-synthetic.png",
+      "local_metadata_applied": true,
+      "path": "/godgame-priority-xr-committed-synthetic.png",
+      "current_version_number": 0
+    },
+    {
+      "local_path": "C:\\Users\\trent\\Documents\\Codex\\2026-10-14\\task-9\\priority-browser-20261015\\delivery\\godgame-priority-xr-held-food-precedence-synthetic.png",
+      "purpose": "create_library_file",
+      "status": "succeeded",
+      "file_id": "file_00000000443c81f58a411e760ef7225c",
+      "library_file_id": "libfile_8e8f3876437881918d7d463a86fe26cb",
+      "file_name": "godgame-priority-xr-held-food-precedence-synthetic.png",
+      "local_metadata_applied": true,
+      "path": "/godgame-priority-xr-held-food-precedence-synthetic.png",
+      "current_version_number": 0
+    }
+  ]
+}

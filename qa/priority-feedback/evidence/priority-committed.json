@@ -1,0 +1,112 @@
+{
+  "passed": true,
+  "mode": "committed",
+  "scope": "CPU-only native Rapier and actual application callbacks under non-rendering DOM/WebXR fixtures. Pointer coordinates are projected fixture targeting; simulation clock is stepped. No ordinary-browser, GPU or headset claim.",
+  "checks": [
+    {
+      "name": "switch-explains-and-preserves-real-committed-carrier",
+      "time": 11.549999999999985,
+      "text": [
+        "PAUSE",
+        "CONTROLS",
+        "DETAILS",
+        "BRIDGE IS NEXT AFTER CURRENT DELIVERIES."
+      ],
+      "carrier": {
+        "id": "villager-2",
+        "position": {
+          "x": 2.2536919140373963,
+          "y": 0.17,
+          "z": -8.757403505200358
+        },
+        "available": true,
+        "alive": true,
+        "role": "stone",
+        "phase": "to-site",
+        "stoneId": "stone-2",
+        "targetSiteId": "brace",
+        "sourceId": null,
+        "sourceSlot": null,
+        "workKind": "pickup",
+        "pendingRole": null,
+        "preferredSourceId": null,
+        "pendingSourceId": null,
+        "harvestBundleSize": null,
+        "elapsed": 0,
+        "jobsCompleted": 0,
+        "revision": 28,
+        "target": {
+          "x": 7.2,
+          "y": 0.13,
+          "z": -15.799999999999999
+        },
+        "intent": "move",
+        "blocked": null,
+        "resourceKind": "stone",
+        "workProgress": 0,
+        "productionBlocked": null
+      },
+      "load": {
+        "id": "stone-2",
+        "position": {
+          "x": 2.4994146823883057,
+          "y": 0.4595249891281128,
+          "z": -9.699999809265137
+        },
+        "available": true,
+        "kind": "stone",
+        "quantity": 1,
+        "status": "carried",
+        "siteId": null,
+        "owner": "villager-2",
+        "observedOwner": null,
+        "held": false,
+        "releasedByPlayer": false,
+        "revision": 27
+      }
+    },
+    {
+      "name": "committed-destination-survives-further-simulation",
+      "time": 12.049999999999956,
+      "text": [
+        "PAUSE",
+        "CONTROLS",
+        "DETAILS",
+        "BRIDGE IS NEXT AFTER CURRENT DELIVERIES."
+      ]
+    }
+  ],
+  "inputs": [
+    {
+      "type": "keydown",
+      "fields": {
+        "code": "Space"
+      },
+      "clock": 1000
+    },
+    {
+      "type": "keydown",
+      "fields": {
+        "code": "Digit1"
+      },
+      "clock": 1000
+    },
+    {
+      "type": "keydown",
+      "fields": {
+        "code": "Digit2"
+      },
+      "clock": 12549.999999999902
+    }
+  ],
+  "final": {
+    "time": 12.049999999999956,
+    "priority": "bridge",
+    "text": [
+      "PAUSE",
+      "CONTROLS",
+      "DETAILS",
+      "BRIDGE IS NEXT AFTER CURRENT DELIVERIES."
+    ]
+  }
+}

@@ -1,0 +1,122 @@
+{
+  "passed": true,
+  "mode": "ordinary",
+  "scope": "CPU-only native Rapier and actual application callbacks under non-rendering DOM/WebXR fixtures. Pointer coordinates are projected fixture targeting; simulation clock is stepped. No ordinary-browser, GPU or headset claim.",
+  "checks": [
+    {
+      "name": "accepted-world-sign-acknowledges-without-inventory-or-physics-change",
+      "time": 0,
+      "text": [
+        "PAUSE",
+        "CONTROLS",
+        "DETAILS",
+        "BRACE IS NOW THE CONSTRUCTION PRIORITY."
+      ]
+    },
+    {
+      "name": "existing-panel-bounds-390-640-1440",
+      "time": 0,
+      "text": [
+        "PAUSE",
+        "CONTROLS",
+        "DETAILS",
+        "BRACE IS NOW THE CONSTRUCTION PRIORITY."
+      ]
+    },
+    {
+      "name": "acknowledgement-expires-after-three-simulation-seconds",
+      "time": 3.0999999999999917,
+      "text": [
+        "PAUSE",
+        "CONTROLS",
+        "DETAILS"
+      ]
+    },
+    {
+      "name": "stores-shortcut-uses-spare-stone-wording",
+      "time": 3.0999999999999917,
+      "text": [
+        "PAUSE",
+        "CONTROLS",
+        "DETAILS",
+        "STORES NOW HAS PRIORITY FOR SPARE STONE."
+      ]
+    },
+    {
+      "name": "paused-priority-still-rejected",
+      "time": 3.0999999999999917,
+      "text": [
+        "RESUME",
+        "CONTROLS",
+        "DETAILS",
+        "PAUSED",
+        "SPACE TO RESUME"
+      ]
+    }
+  ],
+  "inputs": [
+    {
+      "type": "keydown",
+      "fields": {
+        "code": "Space"
+      },
+      "clock": 1000
+    },
+    {
+      "type": "pointermove",
+      "fields": {
+        "clientX": 716.2357566338428,
+        "clientY": 234.23682908665484
+      },
+      "clock": 1000
+    },
+    {
+      "type": "mousedown",
+      "fields": {
+        "clientX": 716.2357566338428,
+        "clientY": 234.23682908665484
+      },
+      "clock": 1000
+    },
+    {
+      "type": "mouseup",
+      "fields": {
+        "clientX": 716.2357566338428,
+        "clientY": 234.23682908665484
+      },
+      "clock": 1080
+    },
+    {
+      "type": "keydown",
+      "fields": {
+        "code": "Digit3"
+      },
+      "clock": 4179.999999999987
+    },
+    {
+      "type": "keydown",
+      "fields": {
+        "code": "Space"
+      },
+      "clock": 4179.999999999987
+    },
+    {
+      "type": "keydown",
+      "fields": {
+        "code": "Digit1"
+      },
+      "clock": 4179.999999999987
+    }
+  ],
+  "final": {
+    "time": 3.0999999999999917,
+    "priority": "pantry",
+    "text": [
+      "RESUME",
+      "CONTROLS",
+      "DETAILS",
+      "PAUSED",
+      "SPACE TO RESUME"
+    ]
+  }
+}

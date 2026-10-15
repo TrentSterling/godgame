@@ -1,0 +1,120 @@
+{
+  "status": "Local browser verification passed; unpublished",
+  "commit": "c585731ae57363baa87af30cc23b085beddd3870",
+  "htmlSHA256": "fff7bad7f5dce9114a522c140f5adb1613b0e04734305bc62f3547371bdf6f79",
+  "ordinaryInput": [
+    "Accepted Brace sign click",
+    "Switch to Bridge while a stone carrier remains committed to Brace",
+    "Desktop and 640px panels",
+    "Acknowledgement expires"
+  ],
+  "scriptedBudgetRendering": {
+    "passed": true,
+    "cases": [
+      "access-stone-budget",
+      "garden-stone-budget",
+      "defense-stone-budget"
+    ],
+    "scope": "Separate scripted rendering fixture: real low-resource model rejections temporarily replace the command result, then production setPriority and renderer execute. Not an ordinary-play budget depletion claim."
+  },
+  "syntheticXR": {
+    "passed": true,
+    "checks": [
+      "Accepted priority status",
+      "Committed delivery status",
+      "Held food retains Pantry guidance",
+      "Desktop camera/scale restored on exit"
+    ],
+    "scope": "Real Chrome/Three WebXR renderer with mocked tracked-ray and near-grab inputs plus a pumped XR frame clock. Held-food case invokes the production priority callback while in grab mode. Synthetic browser evidence only; no headset, tracking, stereo, comfort or performance claim."
+  },
+  "pageErrors": [],
+  "harnessAdjustment": "First synthetic Bridge ray did not activate the sign; only the test ray origin was moved closer, after which the complete check passed. Runtime candidate unchanged. First attempt retained.",
+  "gpuRelease": {
+    "releasedAt": "2026-10-15T03:52:07.4007963Z",
+    "processQuerySucceeded": true,
+    "automationProcesses": [],
+    "activeRepoLeaseExists": false,
+    "noFurtherBrowserRunsPlanned": true
+  },
+  "sourceOrPublicationChanges": false,
+  "pending": [
+    "Specific release approval",
+    "Real headset testing remains unverified"
+  ],
+  "screenshots": [
+    {
+      "local_path": "C:\\Users\\trent\\Documents\\Codex\\2026-10-14\\task-9\\priority-browser-20261015\\delivery\\godgame-priority-desktop-accepted.png",
+      "purpose": "create_library_file",
+      "library_artifact_type": "image",
+      "sha256": "393fa3c8fe772f5176b82dd613353015d6e1db2d45e2f9051d38e8ac85b7a8f3"
+    },
+    {
+      "local_path": "C:\\Users\\trent\\Documents\\Codex\\2026-10-14\\task-9\\priority-browser-20261015\\delivery\\godgame-priority-desktop-committed-switch.png",
+      "purpose": "create_library_file",
+      "library_artifact_type": "image",
+      "sha256": "2131b1cc288c90261bba182a04f49f8eec2912a47ac258e9681a7f08f6d38315"
+    },
+    {
+      "local_path": "C:\\Users\\trent\\Documents\\Codex\\2026-10-14\\task-9\\priority-browser-20261015\\delivery\\godgame-priority-desktop-committed-narrow.png",
+      "purpose": "create_library_file",
+      "library_artifact_type": "image",
+      "sha256": "8c01552a8ab46f677a59290195b304eb92e33d240d253e3e73eb6e7008d7ad0c"
+    },
+    {
+      "local_path": "C:\\Users\\trent\\Documents\\Codex\\2026-10-14\\task-9\\priority-browser-20261015\\delivery\\godgame-priority-scripted-budget-brace.png",
+      "purpose": "create_library_file",
+      "library_artifact_type": "image",
+      "sha256": "8fcd85e53721b583f7d0d52f148d6cac489057cb711f6b445517f7f523158d7b"
+    },
+    {
+      "local_path": "C:\\Users\\trent\\Documents\\Codex\\2026-10-14\\task-9\\priority-browser-20261015\\delivery\\godgame-priority-xr-committed-synthetic.png",
+      "purpose": "create_library_file",
+      "library_artifact_type": "image",
+      "sha256": "8e38617b6aeeff2a663065721afb0cb67d0cf2f5d4ea2277f02dbb7670b33656"
+    },
+    {
+      "local_path": "C:\\Users\\trent\\Documents\\Codex\\2026-10-14\\task-9\\priority-browser-20261015\\delivery\\godgame-priority-xr-held-food-precedence-synthetic.png",
+      "purpose": "create_library_file",
+      "library_artifact_type": "image",
+      "sha256": "84303a1e4eb62e94e01314c2c846d13321235fb4ed031d44fa646354e8c1e74b"
+    }
+  ],
+  "libraryScreenshots": [
+    {
+      "file_name": "godgame-priority-desktop-accepted.png",
+      "library_file_id": "libfile_93009b1014e48191a33844149c6a07b1",
+      "file_id": "file_00000000518881f5acb0e1d61103512f",
+      "current_version_number": 0
+    },
+    {
+      "file_name": "godgame-priority-desktop-committed-switch.png",
+      "library_file_id": "libfile_8143308f8a988191940953775a016c16",
+      "file_id": "file_0000000045b081f6b26ce515711c7cc3",
+      "current_version_number": 0
+    },
+    {
+      "file_name": "godgame-priority-desktop-committed-narrow.png",
+      "library_file_id": "libfile_3f62d199c0e48191ac8c146466fce365",
+      "file_id": "file_00000000bef881f5a7cd31dd0a806d77",
+      "current_version_number": 0
+    },
+    {
+      "file_name": "godgame-priority-scripted-budget-brace.png",
+      "library_file_id": "libfile_34c628c8fed0819181060f97db123b8d",
+      "file_id": "file_000000004f7481f4929780aaa20e626c",
+      "current_version_number": 0
+    },
+    {
+      "file_name": "godgame-priority-xr-committed-synthetic.png",
+      "library_file_id": "libfile_b091acbd41f88191bacc227eb723b95e",
+      "file_id": "file_00000000fed481f5bca6d9e7ebbfdd9c",
+      "current_version_number": 0
+    },
+    {
+      "file_name": "godgame-priority-xr-held-food-precedence-synthetic.png",
+      "library_file_id": "libfile_8e8f3876437881918d7d463a86fe26cb",
+      "file_id": "file_00000000443c81f58a411e760ef7225c",
+      "current_version_number": 0
+    }
+  ]
+}
