@@ -1,0 +1,1859 @@
+{
+  "xr": {
+    "active": false,
+    "busy": false,
+    "supported": false,
+    "placed": false,
+    "placing": false,
+    "mode": "select",
+    "scale": 0.024,
+    "sessionMode": null,
+    "referenceSpace": "local-floor",
+    "hardwareVerified": false,
+    "controllerFallback": true,
+    "frames": 0,
+    "hands": {
+      "left": "not tracked",
+      "right": "not tracked"
+    },
+    "status": "No immersive WebXR session available. Hardware not tested.",
+    "held": [],
+    "placement": {
+      "scale": 0.024,
+      "distance": 0.68,
+      "height": -0.43,
+      "center": [
+        6.878310871124267,
+        0,
+        -5.566332530975341
+      ],
+      "widthMetres": 0.9370410781860351,
+      "depthMetres": 0.8080160385131836
+    },
+    "controls": [
+      "select",
+      "grab",
+      "bless",
+      "lightning",
+      "pause",
+      "place",
+      "exit"
+    ]
+  },
+  "desktopCamera": {
+    "yaw": 0.14,
+    "pitch": 0.62,
+    "distance": 44,
+    "target": [
+      5.2,
+      -0.75,
+      -5.8
+    ]
+  },
+  "navigation": {
+    "queries": 0,
+    "queryBudget": 120,
+    "plans": 5,
+    "failures": 1,
+    "workers": [
+      {
+        "id": 0,
+        "reason": "no-route",
+        "goal": {
+          "x": -5.5,
+          "z": 2.1,
+          "y": 0.864994654677312
+        },
+        "goalRadius": 0.5,
+        "goalRegion": {
+          "center": {
+            "x": -5.5,
+            "y": 1.162430500713065,
+            "z": 3.2
+          },
+          "radius": 1.25
+        },
+        "segmentGoal": null,
+        "giveWay": true,
+        "supportEscape": false,
+        "route": null,
+        "searching": false,
+        "blockedFor": 1.5083333333333304
+      },
+      {
+        "id": 2,
+        "reason": "route",
+        "goal": {
+          "x": 2.4994146823883057,
+          "z": -9.699999809265137,
+          "y": 0.4595249891281128
+        },
+        "goalRadius": 0.97,
+        "goalRegion": null,
+        "segmentGoal": null,
+        "giveWay": false,
+        "supportEscape": false,
+        "route": [
+          {
+            "x": 2.4994146823883057,
+            "y": 0.17,
+            "z": -9.699999809265137
+          }
+        ],
+        "searching": false,
+        "blockedFor": 0
+      }
+    ]
+  },
+  "traffic": {
+    "yielding": [],
+    "passing": {
+      "active": null,
+      "last": null
+    }
+  },
+  "workerOrders": {
+    "selectedWorkerId": "villager-1",
+    "generation": 1,
+    "reason": "ordered"
+  },
+  "defense": {
+    "siteId": "defense",
+    "delivered": 0,
+    "built": 0,
+    "pending": 0,
+    "blocked": false,
+    "disposed": false,
+    "required": 2,
+    "complete": false,
+    "openEnds": true,
+    "destructible": false,
+    "bounds": {
+      "minX": -8.6,
+      "maxX": -5.800000000000001,
+      "minZ": -1.875,
+      "maxZ": -1.3250000000000002,
+      "minY": 0.0053488115073312276,
+      "maxY": 0.0053488115073312276
+    },
+    "courses": [
+      {
+        "course": 1,
+        "built": false,
+        "position": [
+          -7.2,
+          0.2153488115073312,
+          -1.6
+        ],
+        "size": [
+          2.8,
+          0.42,
+          0.55
+        ],
+        "collider": null
+      },
+      {
+        "course": 2,
+        "built": false,
+        "position": [
+          -7.2,
+          0.6353488115073312,
+          -1.6
+        ],
+        "size": [
+          2.8,
+          0.42,
+          0.55
+        ],
+        "collider": null
+      }
+    ],
+    "obstacle": null
+  },
+  "raid": {
+    "enabled": true,
+    "phase": "dormant",
+    "warningAt": null,
+    "nextIn": null,
+    "spawned": 0,
+    "total": 2,
+    "resolved": false,
+    "blockedSince": null,
+    "entrance": {
+      "x": -8.8,
+      "z": -3.6
+    },
+    "raiders": []
+  },
+  "combatFeedback": {
+    "confirmedHits": 0,
+    "criticalHits": 0,
+    "observerErrors": 0,
+    "damageBursts": 0,
+    "contactBursts": 0,
+    "droppedParticles": 0,
+    "peakParticles": 0,
+    "source": "Actual solver contacts and confirmed hit events only",
+    "stone": {
+      "sampledSteps": 1024,
+      "sampledRocks": 9216,
+      "forcePairs": 365,
+      "accepted": 2,
+      "lowEnergy": 355,
+      "throttled": 8,
+      "stale": 0,
+      "observerErrors": 0,
+      "droppedParticles": 0,
+      "peakParticles": 10
+    }
+  },
+  "blessing": {
+    "casts": 0,
+    "cooldown": 0,
+    "readyAt": 0,
+    "last": null,
+    "effectAge": null,
+    "active": false
+  },
+  "blessIntent": {
+    "pending": false,
+    "reason": "release",
+    "character": null
+  },
+  "worldActions": {
+    "phase": "idle",
+    "reason": "initial",
+    "selectedWorkerId": null,
+    "pending": null,
+    "pendingOrders": [],
+    "awaiting": null,
+    "preview": null
+  },
+  "worldCues": {
+    "selectedWorker": {
+      "id": "villager-1",
+      "position": [
+        -6.236624240875244,
+        1.050533963996068,
+        2.8063430786132812
+      ]
+    },
+    "controls": [
+      {
+        "id": "brace",
+        "kind": "construction",
+        "position": [
+          7.2,
+          0.13,
+          -15.799999999999999
+        ],
+        "markerPosition": [
+          7.98,
+          1.01,
+          -15.459999999999999
+        ],
+        "selected": false,
+        "hovered": false,
+        "preview": false,
+        "complete": false,
+        "needed": false,
+        "foodDestination": false,
+        "label": null,
+        "meshNames": [
+          "brace_control_plate"
+        ]
+      },
+      {
+        "id": "bridge",
+        "kind": "construction",
+        "position": [
+          9.5,
+          1,
+          -2
+        ],
+        "markerPosition": [
+          10.28,
+          0.8704580476316542,
+          -1.66
+        ],
+        "selected": true,
+        "hovered": false,
+        "preview": false,
+        "complete": false,
+        "needed": false,
+        "foodDestination": false,
+        "label": "ISLAND BRIDGE|0/5 STONE",
+        "meshNames": [
+          "bridge_control_plate"
+        ]
+      },
+      {
+        "id": "garden-upgrade",
+        "kind": "construction",
+        "position": [
+          -5.5,
+          0.43893257061226365,
+          0.1
+        ],
+        "markerPosition": [
+          -4.72,
+          1.3189325706122637,
+          0.44000000000000006
+        ],
+        "selected": false,
+        "hovered": false,
+        "preview": false,
+        "complete": false,
+        "needed": false,
+        "foodDestination": false,
+        "label": null,
+        "meshNames": [
+          "garden-upgrade_control_plate"
+        ]
+      },
+      {
+        "id": "defense",
+        "kind": "construction",
+        "position": [
+          -4.9,
+          0.3063200791583204,
+          -1.6
+        ],
+        "markerPosition": [
+          -4.12,
+          1.1863200791583204,
+          -1.26
+        ],
+        "selected": false,
+        "hovered": false,
+        "preview": false,
+        "complete": false,
+        "needed": false,
+        "foodDestination": false,
+        "label": null,
+        "meshNames": [
+          "defense_control_plate"
+        ]
+      },
+      {
+        "id": "quarry",
+        "kind": "assignment",
+        "position": [
+          2.5,
+          0.13,
+          -12.2
+        ],
+        "markerPosition": [
+          3.33,
+          0.98,
+          -11.92
+        ],
+        "selected": false,
+        "hovered": false,
+        "preview": false,
+        "complete": false,
+        "needed": false,
+        "foodDestination": false,
+        "label": null,
+        "meshNames": [
+          "quarry_control_plate"
+        ]
+      },
+      {
+        "id": "stockpile",
+        "kind": "construction",
+        "position": [
+          8,
+          0.6513120868496308,
+          1.7
+        ],
+        "markerPosition": [
+          9.55,
+          1.4913120868496308,
+          2.45
+        ],
+        "selected": false,
+        "hovered": false,
+        "preview": false,
+        "complete": false,
+        "needed": false,
+        "foodDestination": false,
+        "label": null,
+        "meshNames": [
+          "stockpile_control_plate"
+        ]
+      },
+      {
+        "id": "mainland-forage",
+        "kind": "assignment",
+        "position": [
+          -5.5,
+          1.162430500713065,
+          3.2
+        ],
+        "markerPosition": [
+          -4.67,
+          2.012430500713065,
+          3.4800000000000004
+        ],
+        "selected": false,
+        "hovered": true,
+        "preview": false,
+        "complete": false,
+        "needed": false,
+        "foodDestination": false,
+        "label": "GARDEN|CLICK TO SEND WORKER",
+        "meshNames": [
+          "mainland-forage_control_plate"
+        ]
+      },
+      {
+        "id": "island-garden",
+        "kind": "assignment",
+        "position": [
+          20,
+          0.175,
+          -0.7
+        ],
+        "markerPosition": [
+          20.83,
+          1.025,
+          -0.41999999999999993
+        ],
+        "selected": false,
+        "hovered": false,
+        "preview": false,
+        "complete": false,
+        "needed": false,
+        "foodDestination": false,
+        "label": null,
+        "meshNames": [
+          "island-garden_control_plate"
+        ]
+      }
+    ],
+    "hungryWorkers": [],
+    "strandedCouriers": [],
+    "placementFootprint": null
+  },
+  "placementReadiness": null,
+  "supplyNeed": {
+    "need": null,
+    "reveal": false,
+    "remaining": 0
+  },
+  "strandedCouriers": {
+    "requests": [],
+    "excludedDeliveries": []
+  },
+  "controlsOpen": false,
+  "detailsOpen": false,
+  "time": 8.53333333333349,
+  "started": true,
+  "paused": false,
+  "drawCount": 545,
+  "grabIntent": {
+    "phase": "idle",
+    "reason": "release",
+    "movePx": 4,
+    "holdMs": 140,
+    "pending": false,
+    "bodyHandle": null,
+    "character": null,
+    "resource": null,
+    "local": null,
+    "startX": null,
+    "startY": null,
+    "startedAt": null
+  },
+  "selectionCue": {
+    "mode": "none",
+    "reason": "scenery",
+    "powerAvailability": "grab",
+    "markerShape": "closed-ring",
+    "target": null,
+    "part": null,
+    "bodyHandle": null,
+    "surface": null,
+    "dirty": false,
+    "outlineVisible": false,
+    "markerVisible": false,
+    "health": null,
+    "healthVisible": false,
+    "depthTest": true,
+    "query": {
+      "query": 58,
+      "candidates": 10,
+      "exactMeshes": 2,
+      "exactSkins": 0,
+      "skinnedVertices": 0,
+      "elapsedMs": 0.7999999523162842,
+      "kind": "scenery",
+      "mesh": "mainland-forage_control_plate",
+      "surface": [
+        -4.682458611920058,
+        2.023400603789179,
+        3.51901267943511
+      ],
+      "worldSurface": [
+        -4.682458611920058,
+        2.023400603789179,
+        3.51901267943511
+      ],
+      "faceIndex": 8,
+      "selected": null,
+      "part": null,
+      "bodyHandle": null,
+      "colliderHandle": null,
+      "anchor": null,
+      "projectionDistance": null,
+      "partialSkins": 0,
+      "exactChunks": 0,
+      "chunkTriangles": 0,
+      "resourceTolerance": {
+        "limitPx": 8,
+        "mode": "miss",
+        "distancePx": null,
+        "exactRayQueries": 1,
+        "surfaceRays": 0,
+        "projectedTriangles": 288,
+        "contacts": 0,
+        "foregroundRejected": 0
+      }
+    },
+    "stats": {
+      "queries": 54,
+      "dirtyQueries": 3,
+      "poseQueries": 51,
+      "totalMs": 45.89999985694885,
+      "maxMs": 4,
+      "maxExactSkins": 0,
+      "maxSkinnedVertices": 8974
+    }
+  },
+  "picking": {
+    "query": 58,
+    "candidates": 10,
+    "exactMeshes": 2,
+    "exactSkins": 0,
+    "skinnedVertices": 0,
+    "elapsedMs": 0.7999999523162842,
+    "kind": "scenery",
+    "mesh": "mainland-forage_control_plate",
+    "surface": [
+      -4.682458611920058,
+      2.023400603789179,
+      3.51901267943511
+    ],
+    "worldSurface": [
+      -4.682458611920058,
+      2.023400603789179,
+      3.51901267943511
+    ],
+    "faceIndex": 8,
+    "selected": null,
+    "part": null,
+    "bodyHandle": null,
+    "colliderHandle": null,
+    "anchor": null,
+    "projectionDistance": null,
+    "partialSkins": 0,
+    "exactChunks": 0,
+    "chunkTriangles": 0,
+    "resourceTolerance": {
+      "limitPx": 8,
+      "mode": "miss",
+      "distancePx": null,
+      "exactRayQueries": 1,
+      "surfaceRays": 0,
+      "projectedTriangles": 288,
+      "contacts": 0,
+      "foregroundRejected": 0
+    }
+  },
+  "jobs": {
+    "generation": 1,
+    "time": 8.53333333333349,
+    "prioritySiteId": "bridge",
+    "priorityRevision": 1,
+    "activeSiteId": "bridge",
+    "waitingForPriority": false,
+    "villagers": [
+      {
+        "id": "villager-0",
+        "position": {
+          "x": -5.051103400683869,
+          "y": 0.6662583264046305,
+          "z": 1.2992655358636187
+        },
+        "available": true,
+        "alive": true,
+        "role": "food",
+        "phase": "to-source",
+        "stoneId": null,
+        "targetSiteId": "pantry",
+        "sourceId": "mainland-forage",
+        "sourceSlot": 1,
+        "workKind": "gather",
+        "pendingRole": null,
+        "preferredSourceId": null,
+        "pendingSourceId": null,
+        "harvestBundleSize": 3,
+        "elapsed": 0,
+        "jobsCompleted": 0,
+        "revision": 21,
+        "target": {
+          "x": -5.5,
+          "y": 0.864994654677312,
+          "z": 2.1
+        },
+        "intent": "move",
+        "blocked": null,
+        "resourceKind": "food",
+        "workProgress": 0,
+        "productionBlocked": null
+      },
+      {
+        "id": "villager-1",
+        "position": {
+          "x": -6.236624270605816,
+          "y": 1.050533932229124,
+          "z": 2.8063429637335644
+        },
+        "available": true,
+        "alive": true,
+        "role": "food",
+        "phase": "working",
+        "stoneId": null,
+        "targetSiteId": "pantry",
+        "sourceId": "mainland-forage",
+        "sourceSlot": 0,
+        "workKind": "gather",
+        "pendingRole": null,
+        "preferredSourceId": "mainland-forage",
+        "pendingSourceId": null,
+        "harvestBundleSize": 3,
+        "elapsed": 1.5083333333333304,
+        "jobsCompleted": 0,
+        "revision": 25,
+        "target": null,
+        "intent": "stop",
+        "blocked": null,
+        "resourceKind": "food",
+        "workProgress": 0.21547619047619007,
+        "productionBlocked": null
+      },
+      {
+        "id": "villager-2",
+        "position": {
+          "x": 1.6274227430289052,
+          "y": 0.038966840745378054,
+          "z": -6.355025370263699
+        },
+        "available": true,
+        "alive": true,
+        "role": "stone",
+        "phase": "to-stone",
+        "stoneId": "stone-2",
+        "targetSiteId": "bridge",
+        "sourceId": null,
+        "sourceSlot": null,
+        "workKind": "pickup",
+        "pendingRole": null,
+        "preferredSourceId": null,
+        "pendingSourceId": null,
+        "harvestBundleSize": null,
+        "elapsed": 0,
+        "jobsCompleted": 0,
+        "revision": 24,
+        "target": {
+          "x": 2.4994146823883057,
+          "y": 0.4595249891281128,
+          "z": -9.699999809265137
+        },
+        "intent": "move",
+        "blocked": null,
+        "resourceKind": "stone",
+        "workProgress": 0,
+        "productionBlocked": null
+      },
+      {
+        "id": "villager-3",
+        "position": {
+          "x": 19.200000762939453,
+          "y": 0.175,
+          "z": -2
+        },
+        "available": false,
+        "alive": true,
+        "role": "stone",
+        "phase": "idle",
+        "stoneId": null,
+        "targetSiteId": null,
+        "sourceId": null,
+        "sourceSlot": null,
+        "workKind": null,
+        "pendingRole": null,
+        "preferredSourceId": null,
+        "pendingSourceId": null,
+        "harvestBundleSize": null,
+        "elapsed": 0,
+        "jobsCompleted": 0,
+        "revision": 5,
+        "target": null,
+        "intent": "stop",
+        "blocked": "unavailable",
+        "resourceKind": "stone",
+        "workProgress": 0,
+        "productionBlocked": null
+      }
+    ],
+    "stones": [
+      {
+        "id": "stone-0",
+        "position": {
+          "x": 2.4868273735046387,
+          "y": 0.3762984871864319,
+          "z": -14.548871994018555
+        },
+        "available": true,
+        "kind": "stone",
+        "quantity": 1,
+        "status": "available",
+        "siteId": null,
+        "owner": null,
+        "observedOwner": null,
+        "held": false,
+        "releasedByPlayer": false,
+        "revision": 6
+      },
+      {
+        "id": "stone-1",
+        "position": {
+          "x": 2.500267744064331,
+          "y": 0.41954565048217773,
+          "z": -12.199999809265137
+        },
+        "available": true,
+        "kind": "stone",
+        "quantity": 1,
+        "status": "available",
+        "siteId": null,
+        "owner": null,
+        "observedOwner": null,
+        "held": false,
+        "releasedByPlayer": false,
+        "revision": 7
+      },
+      {
+        "id": "stone-2",
+        "position": {
+          "x": 2.4994146823883057,
+          "y": 0.4595249891281128,
+          "z": -9.699999809265137
+        },
+        "available": true,
+        "kind": "stone",
+        "quantity": 1,
+        "status": "claimed",
+        "siteId": null,
+        "owner": "villager-2",
+        "observedOwner": null,
+        "held": false,
+        "releasedByPlayer": false,
+        "revision": 23
+      },
+      {
+        "id": "stone-3",
+        "position": {
+          "x": 4.486710548400879,
+          "y": 0.37629857659339905,
+          "z": -14.549330711364746
+        },
+        "available": true,
+        "kind": "stone",
+        "quantity": 1,
+        "status": "available",
+        "siteId": null,
+        "owner": null,
+        "observedOwner": null,
+        "held": false,
+        "releasedByPlayer": false,
+        "revision": 9
+      },
+      {
+        "id": "stone-4",
+        "position": {
+          "x": 4.2951788902282715,
+          "y": 0.41939592361450195,
+          "z": -11.590280532836914
+        },
+        "available": true,
+        "kind": "stone",
+        "quantity": 1,
+        "status": "available",
+        "siteId": null,
+        "owner": null,
+        "observedOwner": null,
+        "held": false,
+        "releasedByPlayer": false,
+        "revision": 10
+      },
+      {
+        "id": "stone-5",
+        "position": {
+          "x": 3.9503769874572754,
+          "y": 0.4195455312728882,
+          "z": -13.649999618530273
+        },
+        "available": true,
+        "kind": "stone",
+        "quantity": 1,
+        "status": "available",
+        "siteId": null,
+        "owner": null,
+        "observedOwner": null,
+        "held": false,
+        "releasedByPlayer": false,
+        "revision": 11
+      },
+      {
+        "id": "stone-6",
+        "position": {
+          "x": 4.738078594207764,
+          "y": 0.419545441865921,
+          "z": -13.600000381469727
+        },
+        "available": true,
+        "kind": "stone",
+        "quantity": 1,
+        "status": "available",
+        "siteId": null,
+        "owner": null,
+        "observedOwner": null,
+        "held": false,
+        "releasedByPlayer": false,
+        "revision": 12
+      },
+      {
+        "id": "stone-7",
+        "position": {
+          "x": 4.3274383544921875,
+          "y": 0.41954952478408813,
+          "z": -12.899999618530273
+        },
+        "available": true,
+        "kind": "stone",
+        "quantity": 1,
+        "status": "available",
+        "siteId": null,
+        "owner": null,
+        "observedOwner": null,
+        "held": false,
+        "releasedByPlayer": false,
+        "revision": 13
+      }
+    ],
+    "loads": [
+      {
+        "id": "stone-0",
+        "position": {
+          "x": 2.4868273735046387,
+          "y": 0.3762984871864319,
+          "z": -14.548871994018555
+        },
+        "available": true,
+        "kind": "stone",
+        "quantity": 1,
+        "status": "available",
+        "siteId": null,
+        "owner": null,
+        "observedOwner": null,
+        "held": false,
+        "releasedByPlayer": false,
+        "revision": 6
+      },
+      {
+        "id": "stone-1",
+        "position": {
+          "x": 2.500267744064331,
+          "y": 0.41954565048217773,
+          "z": -12.199999809265137
+        },
+        "available": true,
+        "kind": "stone",
+        "quantity": 1,
+        "status": "available",
+        "siteId": null,
+        "owner": null,
+        "observedOwner": null,
+        "held": false,
+        "releasedByPlayer": false,
+        "revision": 7
+      },
+      {
+        "id": "stone-2",
+        "position": {
+          "x": 2.4994146823883057,
+          "y": 0.4595249891281128,
+          "z": -9.699999809265137
+        },
+        "available": true,
+        "kind": "stone",
+        "quantity": 1,
+        "status": "claimed",
+        "siteId": null,
+        "owner": "villager-2",
+        "observedOwner": null,
+        "held": false,
+        "releasedByPlayer": false,
+        "revision": 23
+      },
+      {
+        "id": "stone-3",
+        "position": {
+          "x": 4.486710548400879,
+          "y": 0.37629857659339905,
+          "z": -14.549330711364746
+        },
+        "available": true,
+        "kind": "stone",
+        "quantity": 1,
+        "status": "available",
+        "siteId": null,
+        "owner": null,
+        "observedOwner": null,
+        "held": false,
+        "releasedByPlayer": false,
+        "revision": 9
+      },
+      {
+        "id": "stone-4",
+        "position": {
+          "x": 4.2951788902282715,
+          "y": 0.41939592361450195,
+          "z": -11.590280532836914
+        },
+        "available": true,
+        "kind": "stone",
+        "quantity": 1,
+        "status": "available",
+        "siteId": null,
+        "owner": null,
+        "observedOwner": null,
+        "held": false,
+        "releasedByPlayer": false,
+        "revision": 10
+      },
+      {
+        "id": "stone-5",
+        "position": {
+          "x": 3.9503769874572754,
+          "y": 0.4195455312728882,
+          "z": -13.649999618530273
+        },
+        "available": true,
+        "kind": "stone",
+        "quantity": 1,
+        "status": "available",
+        "siteId": null,
+        "owner": null,
+        "observedOwner": null,
+        "held": false,
+        "releasedByPlayer": false,
+        "revision": 11
+      },
+      {
+        "id": "stone-6",
+        "position": {
+          "x": 4.738078594207764,
+          "y": 0.419545441865921,
+          "z": -13.600000381469727
+        },
+        "available": true,
+        "kind": "stone",
+        "quantity": 1,
+        "status": "available",
+        "siteId": null,
+        "owner": null,
+        "observedOwner": null,
+        "held": false,
+        "releasedByPlayer": false,
+        "revision": 12
+      },
+      {
+        "id": "stone-7",
+        "position": {
+          "x": 4.3274383544921875,
+          "y": 0.41954952478408813,
+          "z": -12.899999618530273
+        },
+        "available": true,
+        "kind": "stone",
+        "quantity": 1,
+        "status": "available",
+        "siteId": null,
+        "owner": null,
+        "observedOwner": null,
+        "held": false,
+        "releasedByPlayer": false,
+        "revision": 13
+      }
+    ],
+    "sites": [
+      {
+        "id": "brace",
+        "position": {
+          "x": 7.2,
+          "y": 0.13,
+          "z": -15.799999999999999
+        },
+        "required": 3,
+        "delivered": 0,
+        "remaining": 3,
+        "complete": false,
+        "accessBudget": {
+          "allowed": true,
+          "reason": "ready",
+          "complete": false,
+          "available": 24,
+          "required": 10,
+          "usableStone": 24,
+          "storedStone": 0,
+          "quarryStone": 16,
+          "looseStone": 8,
+          "missionStone": 2,
+          "commitmentStone": 5,
+          "investmentStone": 3,
+          "requiredStone": 10,
+          "shortfall": 0,
+          "spareAfterInvestment": 21,
+          "commitments": [
+            {
+              "siteId": "bridge",
+              "remaining": 5,
+              "reasons": [
+                "selected",
+                "required-access"
+              ]
+            }
+          ],
+          "protectedSiteIds": [],
+          "message": "IMPROVE GARDEN"
+        },
+        "reserved": 0,
+        "finishing": 0,
+        "priority": false,
+        "active": false
+      },
+      {
+        "id": "bridge",
+        "position": {
+          "x": 9.5,
+          "y": 1,
+          "z": -2
+        },
+        "required": 5,
+        "delivered": 0,
+        "remaining": 5,
+        "complete": false,
+        "accessBudget": null,
+        "reserved": 1,
+        "finishing": 0,
+        "priority": true,
+        "active": true
+      },
+      {
+        "id": "garden-upgrade",
+        "position": {
+          "x": -5.5,
+          "y": 0.43893257061226365,
+          "z": 0.1
+        },
+        "required": 3,
+        "delivered": 0,
+        "remaining": 3,
+        "complete": false,
+        "accessBudget": {
+          "allowed": true,
+          "reason": "ready",
+          "complete": false,
+          "available": 24,
+          "required": 10,
+          "usableStone": 24,
+          "storedStone": 0,
+          "quarryStone": 16,
+          "looseStone": 8,
+          "missionStone": 2,
+          "commitmentStone": 5,
+          "investmentStone": 3,
+          "requiredStone": 10,
+          "shortfall": 0,
+          "spareAfterInvestment": 21,
+          "commitments": [
+            {
+              "siteId": "bridge",
+              "remaining": 5,
+              "reasons": [
+                "selected",
+                "required-access"
+              ]
+            }
+          ],
+          "protectedSiteIds": [],
+          "message": "IMPROVE GARDEN"
+        },
+        "reserved": 0,
+        "finishing": 0,
+        "priority": false,
+        "active": false
+      },
+      {
+        "id": "defense",
+        "position": {
+          "x": -4.9,
+          "y": 0.3063200791583204,
+          "z": -1.6
+        },
+        "required": 2,
+        "delivered": 0,
+        "remaining": 2,
+        "complete": false,
+        "accessBudget": {
+          "allowed": true,
+          "reason": "ready",
+          "complete": false,
+          "available": 24,
+          "required": 9,
+          "usableStone": 24,
+          "storedStone": 0,
+          "quarryStone": 16,
+          "looseStone": 8,
+          "missionStone": 2,
+          "commitmentStone": 5,
+          "investmentStone": 2,
+          "requiredStone": 9,
+          "shortfall": 0,
+          "spareAfterInvestment": 22,
+          "commitments": [
+            {
+              "siteId": "bridge",
+              "remaining": 5,
+              "reasons": [
+                "selected",
+                "required-access"
+              ]
+            }
+          ],
+          "protectedSiteIds": [],
+          "message": "IMPROVE GARDEN"
+        },
+        "selectionAccessBudget": {
+          "allowed": true,
+          "reason": "ready",
+          "complete": false,
+          "available": 24,
+          "required": 9,
+          "usableStone": 24,
+          "storedStone": 0,
+          "quarryStone": 16,
+          "looseStone": 8,
+          "missionStone": 2,
+          "commitmentStone": 5,
+          "investmentStone": 2,
+          "requiredStone": 9,
+          "shortfall": 0,
+          "spareAfterInvestment": 22,
+          "commitments": [
+            {
+              "siteId": "bridge",
+              "remaining": 5,
+              "reasons": [
+                "required-access"
+              ]
+            }
+          ],
+          "protectedSiteIds": [],
+          "message": "IMPROVE GARDEN"
+        },
+        "reserved": 0,
+        "finishing": 0,
+        "priority": false,
+        "active": false
+      }
+    ],
+    "site": {
+      "id": "brace",
+      "position": {
+        "x": 7.2,
+        "y": 0.13,
+        "z": -15.799999999999999
+      },
+      "required": 3,
+      "delivered": 0,
+      "remaining": 3,
+      "complete": false,
+      "accessBudget": {
+        "allowed": true,
+        "reason": "ready",
+        "complete": false,
+        "available": 24,
+        "required": 10,
+        "usableStone": 24,
+        "storedStone": 0,
+        "quarryStone": 16,
+        "looseStone": 8,
+        "missionStone": 2,
+        "commitmentStone": 5,
+        "investmentStone": 3,
+        "requiredStone": 10,
+        "shortfall": 0,
+        "spareAfterInvestment": 21,
+        "commitments": [
+          {
+            "siteId": "bridge",
+            "remaining": 5,
+            "reasons": [
+              "selected",
+              "required-access"
+            ]
+          }
+        ],
+        "protectedSiteIds": [],
+        "message": "IMPROVE GARDEN"
+      },
+      "reserved": 0,
+      "finishing": 0,
+      "priority": false,
+      "active": false
+    },
+    "construction": {
+      "required": 13,
+      "delivered": 0,
+      "remaining": 13,
+      "lost": 0,
+      "resourcesRemaining": 24,
+      "shortfall": 0,
+      "feasible": true,
+      "complete": false
+    },
+    "totals": {
+      "total": 8,
+      "available": 7,
+      "claimed": 1,
+      "carried": 0,
+      "playerHeld": 0,
+      "delivered": 0,
+      "lost": 0
+    },
+    "pantry": {
+      "id": "pantry",
+      "position": {
+        "x": 8,
+        "y": 0.6513120868496308,
+        "z": 1.7
+      },
+      "workPoints": [
+        {
+          "x": 8,
+          "y": 0.2772095384273306,
+          "z": 0.5999999999999999
+        }
+      ],
+      "food": 3,
+      "spareStone": 0,
+      "foodDelivered": 0,
+      "islandFoodDelivered": 0,
+      "stoneDelivered": 0,
+      "stoneWithdrawn": 0,
+      "foodConsumed": 0,
+      "empty": false
+    },
+    "quarry": {
+      "id": "quarry",
+      "regionId": "quarry",
+      "position": {
+        "x": 2.5,
+        "y": 0.13,
+        "z": -12.2
+      },
+      "reserve": 16,
+      "workSeconds": 6,
+      "workPoints": [
+        {
+          "x": 1.4,
+          "y": 0.13,
+          "z": -12.2
+        },
+        {
+          "x": 2.5,
+          "y": 0.13,
+          "z": -13.299999999999999
+        },
+        {
+          "x": 3.6,
+          "y": 0.13,
+          "z": -12.2
+        },
+        {
+          "x": 2.5,
+          "y": 0.13,
+          "z": -11.1
+        }
+      ],
+      "remaining": 16,
+      "accessible": true,
+      "accessibleWorkerIds": [
+        "villager-0",
+        "villager-1",
+        "villager-2"
+      ],
+      "produced": 0,
+      "lost": 0
+    },
+    "forageSources": [
+      {
+        "id": "mainland-forage",
+        "position": {
+          "x": -5.5,
+          "y": 1.162430500713065,
+          "z": 3.2
+        },
+        "regionId": "home",
+        "island": false,
+        "reserve": 90,
+        "bundleSize": 3,
+        "workSeconds": 7,
+        "order": 0,
+        "workPoints": [
+          {
+            "x": -6.6,
+            "y": 1.1602510257045828,
+            "z": 3.2
+          },
+          {
+            "x": -5.5,
+            "y": 0.864994654677312,
+            "z": 2.1
+          },
+          {
+            "x": -5.5,
+            "y": 1.3853279452051979,
+            "z": 4.300000000000001
+          }
+        ],
+        "remaining": 90,
+        "accessible": true,
+        "accessibleWorkerIds": [
+          "villager-0",
+          "villager-1",
+          "villager-2"
+        ]
+      },
+      {
+        "id": "island-garden",
+        "position": {
+          "x": 20,
+          "y": 0.175,
+          "z": -0.7
+        },
+        "regionId": "farm",
+        "island": true,
+        "reserve": 90,
+        "bundleSize": 6,
+        "workSeconds": 4,
+        "order": 1,
+        "workPoints": [
+          {
+            "x": 19.7,
+            "y": 0.175,
+            "z": -0.6
+          },
+          {
+            "x": 21.2,
+            "y": 0.175,
+            "z": -0.6
+          }
+        ],
+        "remaining": 90,
+        "accessible": false,
+        "accessibleWorkerIds": [
+          "villager-3"
+        ]
+      }
+    ],
+    "gardenUpgrade": {
+      "siteId": "garden-upgrade",
+      "sourceId": "mainland-forage",
+      "bundleSize": 6,
+      "complete": false,
+      "baseBundleSize": 3,
+      "delivered": 0,
+      "required": 3,
+      "protectedSiteIds": [],
+      "budget": {
+        "allowed": true,
+        "reason": "ready",
+        "complete": false,
+        "available": 24,
+        "required": 10,
+        "usableStone": 24,
+        "storedStone": 0,
+        "quarryStone": 16,
+        "looseStone": 8,
+        "missionStone": 2,
+        "commitmentStone": 5,
+        "investmentStone": 3,
+        "requiredStone": 10,
+        "shortfall": 0,
+        "spareAfterInvestment": 21,
+        "commitments": [
+          {
+            "siteId": "bridge",
+            "remaining": 5,
+            "reasons": [
+              "selected",
+              "required-access"
+            ]
+          }
+        ],
+        "protectedSiteIds": [],
+        "message": "IMPROVE GARDEN"
+      }
+    },
+    "defenseUpgrade": {
+      "siteId": "defense",
+      "complete": false,
+      "delivered": 0,
+      "required": 2,
+      "budget": {
+        "allowed": true,
+        "reason": "ready",
+        "complete": false,
+        "available": 24,
+        "required": 9,
+        "usableStone": 24,
+        "storedStone": 0,
+        "quarryStone": 16,
+        "looseStone": 8,
+        "missionStone": 2,
+        "commitmentStone": 5,
+        "investmentStone": 2,
+        "requiredStone": 9,
+        "shortfall": 0,
+        "spareAfterInvestment": 22,
+        "commitments": [
+          {
+            "siteId": "bridge",
+            "remaining": 5,
+            "reasons": [
+              "selected",
+              "required-access"
+            ]
+          }
+        ],
+        "protectedSiteIds": [],
+        "message": "BUILD STONE BARRIER"
+      },
+      "selectionBudget": {
+        "allowed": true,
+        "reason": "ready",
+        "complete": false,
+        "available": 24,
+        "required": 9,
+        "usableStone": 24,
+        "storedStone": 0,
+        "quarryStone": 16,
+        "looseStone": 8,
+        "missionStone": 2,
+        "commitmentStone": 5,
+        "investmentStone": 2,
+        "requiredStone": 9,
+        "shortfall": 0,
+        "spareAfterInvestment": 22,
+        "commitments": [
+          {
+            "siteId": "bridge",
+            "remaining": 5,
+            "reasons": [
+              "required-access"
+            ]
+          }
+        ],
+        "protectedSiteIds": [],
+        "message": "BUILD STONE BARRIER"
+      }
+    },
+    "production": {
+      "food": 0,
+      "stone": 0
+    },
+    "meal": {
+      "interval": 24,
+      "elapsed": 8.53333333333349,
+      "nextIn": 15.46666666666651,
+      "population": 3,
+      "cost": 3,
+      "count": 0,
+      "shortMeals": 0,
+      "unmetFood": 0,
+      "consumed": 0,
+      "lastMealAt": null,
+      "latest": null,
+      "replenishedAfterMeal": false
+    },
+    "recruit": {
+      "id": "villager-3",
+      "joined": false,
+      "worked": false,
+      "lost": false
+    },
+    "mission": {
+      "status": "playing",
+      "reason": null,
+      "at": null,
+      "recruitJoined": false,
+      "recruitWorked": false,
+      "mealConsumed": false,
+      "replenishedAfterMeal": false,
+      "feedingRequired": true,
+      "fullMealReady": false,
+      "foodReady": true,
+      "stoneReady": false,
+      "foodGoal": 3,
+      "spareStoneGoal": 2,
+      "requireIslandHarvest": true,
+      "islandHarvestReady": false,
+      "workersSafe": true
+    },
+    "outcome": {
+      "status": "playing",
+      "reason": null,
+      "at": null
+    },
+    "bridgeAvailable": false,
+    "events": []
+  },
+  "recruit": {
+    "villagerId": "villager-3",
+    "joined": false,
+    "joinedAt": null,
+    "phase": "stranded",
+    "firstDelivery": null,
+    "availableForJobs": false,
+    "bridgeOpen": false
+  },
+  "villagers": [
+    {
+      "id": "villager-0",
+      "hp": 100,
+      "available": true,
+      "mode": "idle",
+      "position": {
+        "x": -5.051103400683869,
+        "y": 0.6662583264046305,
+        "z": 1.2992655358636187
+      },
+      "carryPoint": {
+        "x": -5.0821934554794845,
+        "y": 1.7781290063261679,
+        "z": 1.3547231669923736
+      },
+      "yaw": -0.5109495819937527,
+      "blocked": true,
+      "settledFor": 0,
+      "recoveryProgress": null,
+      "placement": null,
+      "animationAssisted": true
+    },
+    {
+      "id": "villager-1",
+      "hp": 100,
+      "available": true,
+      "mode": "work",
+      "position": {
+        "x": -6.236624270605816,
+        "y": 1.050533932229124,
+        "z": 2.8063429637335644
+      },
+      "carryPoint": {
+        "x": -6.654579466112292,
+        "y": 2.582605203860163,
+        "z": 3.2591279256423444
+      },
+      "yaw": -0.7454194812252993,
+      "blocked": false,
+      "settledFor": 0,
+      "recoveryProgress": null,
+      "placement": null,
+      "animationAssisted": true
+    },
+    {
+      "id": "villager-2",
+      "hp": 100,
+      "available": true,
+      "mode": "walk",
+      "position": {
+        "x": 1.6297771384086364,
+        "y": 0.03914983271502569,
+        "z": -6.364056867011581
+      },
+      "carryPoint": {
+        "x": 1.6505653714907864,
+        "y": 1.1507215867283873,
+        "z": -6.404513526809304
+      },
+      "yaw": 2.8865810387946103,
+      "blocked": false,
+      "settledFor": 0,
+      "recoveryProgress": null,
+      "placement": null,
+      "animationAssisted": true
+    },
+    {
+      "id": "villager-3",
+      "hp": 100,
+      "available": true,
+      "mode": "idle",
+      "position": {
+        "x": 19.200000762939453,
+        "y": 0.175,
+        "z": -2
+      },
+      "carryPoint": {
+        "x": 19.263579432421132,
+        "y": 1.2868707489181397,
+        "z": -2.0000000596046448
+      },
+      "yaw": 1.5707963267948966,
+      "blocked": false,
+      "settledFor": 0,
+      "recoveryProgress": null,
+      "placement": null,
+      "animationAssisted": true
+    }
+  ],
+  "loads": [
+    {
+      "id": "stone-0",
+      "kind": "stone",
+      "quantity": 1,
+      "owner": null,
+      "position": {
+        "x": 2.4868273735046387,
+        "y": 0.3762984871864319,
+        "z": -14.548871994018555
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "enabled": true
+    },
+    {
+      "id": "stone-1",
+      "kind": "stone",
+      "quantity": 1,
+      "owner": null,
+      "position": {
+        "x": 2.500267744064331,
+        "y": 0.41954565048217773,
+        "z": -12.199999809265137
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "enabled": true
+    },
+    {
+      "id": "stone-2",
+      "kind": "stone",
+      "quantity": 1,
+      "owner": null,
+      "position": {
+        "x": 2.4994146823883057,
+        "y": 0.4595249891281128,
+        "z": -9.699999809265137
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "enabled": true
+    },
+    {
+      "id": "stone-3",
+      "kind": "stone",
+      "quantity": 1,
+      "owner": null,
+      "position": {
+        "x": 4.486710548400879,
+        "y": 0.37629857659339905,
+        "z": -14.549330711364746
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "enabled": true
+    },
+    {
+      "id": "stone-4",
+      "kind": "stone",
+      "quantity": 1,
+      "owner": null,
+      "position": {
+        "x": 4.2951788902282715,
+        "y": 0.41939592361450195,
+        "z": -11.590280532836914
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "enabled": true
+    },
+    {
+      "id": "stone-5",
+      "kind": "stone",
+      "quantity": 1,
+      "owner": null,
+      "position": {
+        "x": 3.9503769874572754,
+        "y": 0.4195455312728882,
+        "z": -13.649999618530273
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "enabled": true
+    },
+    {
+      "id": "stone-6",
+      "kind": "stone",
+      "quantity": 1,
+      "owner": null,
+      "position": {
+        "x": 4.738078594207764,
+        "y": 0.419545441865921,
+        "z": -13.600000381469727
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "enabled": true
+    },
+    {
+      "id": "stone-7",
+      "kind": "stone",
+      "quantity": 1,
+      "owner": null,
+      "position": {
+        "x": 4.3274383544921875,
+        "y": 0.41954952478408813,
+        "z": -12.899999618530273
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "enabled": true
+    }
+  ],
+  "events": [
+    {
+      "t": 0,
+      "type": "worker-selected",
+      "villagerId": "villager-1",
+      "planning": true
+    },
+    {
+      "t": 0,
+      "type": "role-changed",
+      "villagerId": "villager-1",
+      "role": "food",
+      "sourceId": "mainland-forage",
+      "deferred": false
+    },
+    {
+      "t": 0,
+      "type": "click-work-order",
+      "villagerId": "villager-1",
+      "sourceId": "mainland-forage",
+      "deferred": false,
+      "planning": true
+    },
+    {
+      "t": 0.6500000000000001,
+      "type": "source-assigned",
+      "villagerId": "villager-0",
+      "sourceId": "mainland-forage",
+      "kind": "food",
+      "siteId": "pantry"
+    },
+    {
+      "t": 0.6500000000000001,
+      "type": "source-assigned",
+      "villagerId": "villager-1",
+      "sourceId": "mainland-forage",
+      "kind": "food",
+      "siteId": "pantry"
+    },
+    {
+      "t": 0.6500000000000001,
+      "type": "stone-claimed",
+      "stoneId": "stone-2",
+      "loadId": "stone-2",
+      "kind": "stone",
+      "villagerId": "villager-2",
+      "siteId": "bridge"
+    },
+    {
+      "t": 3.2666666666666577,
+      "type": "worker-selected",
+      "villagerId": "villager-1"
+    },
+    {
+      "t": 3.3666666666666574,
+      "type": "role-changed",
+      "villagerId": "villager-1",
+      "role": "food",
+      "sourceId": "mainland-forage",
+      "deferred": false
+    },
+    {
+      "t": 3.3666666666666574,
+      "type": "click-work-order",
+      "villagerId": "villager-1",
+      "sourceId": "mainland-forage",
+      "deferred": false,
+      "planning": false
+    }
+  ],
+  "bridgeComplete": false,
+  "quarrySafety": {
+    "mined": 0,
+    "phase": "supported",
+    "warningRemaining": 0,
+    "released": false,
+    "brace": 0,
+    "position": {
+      "x": 4.001445770263672,
+      "y": 3.7006165981292725,
+      "z": -19.366252899169922
+    },
+    "events": [],
+    "blockedLoads": []
+  }
+}

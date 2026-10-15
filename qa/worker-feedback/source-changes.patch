@@ -1,0 +1,96 @@
+--- a/src/settlement-main.js
++++ b/src/settlement-main.js
+@@ -7,6 +7,7 @@
+ import {createDesktopDragSpace} from './desktop-drag-space.js';
+ import {createDesktopSettlementNavigation} from './desktop-settlement-navigation.js';
+ import {createSettlementWorkerOrders} from './settlement-worker-orders.js';
++import {settlementWorkerFeedback} from './settlement-worker-feedback.js';
+ import {createDesktopGrabIntent} from './desktop-grab-intent.js';
+ import {createDesktopBlessIntent} from './desktop-bless-intent.js';
+ import {createSettlementBlessing} from './settlement-blessing.js';
+@@ -446,7 +447,7 @@
+   activate:action=>{if(['start','pause','replay'].includes(action))controlAction(action);else{const site=worldCues.getControl(action);if(site?.kind==='construction'||action==='stockpile')setPriority(action);else if(site)orderSelectedWorker(action);}},
+   grab:grabXRTarget,release:releaseXRTarget,
+   cast:(hit,viewer,side,mode)=>{if(blessing.targetPower(hit)!==mode)return null;return blessing.cast(hit,viewer,{source:'xr-'+side});},
+-  getStatus:()=>({started,paused,ended:missionStopped,message:sim.time<worldNoticeUntil?worldNotice:'',cooldown:blessing.state().cooldown,selectedWorkerId:workerOrders.state().selectedWorkerId}),
++  getStatus:()=>({started,paused,ended:missionStopped,message:sim.time<worldNoticeUntil?worldNotice:'',cooldown:blessing.state().cooldown,selectedWorkerId:workerOrders.state().selectedWorkerId,workerOrder:workerOrders.state().selectedWorkerId?settlementWorkerFeedback(jobs.snapshot().villagers.find(w=>w.id===workerOrders.state().selectedWorkerId)):''}),
+   onSessionChange:active=>{cancelInput();controlsOpen=detailsOpen=false;hand.group.visible=false;selectionCue.suspend(active?'xr-entry':'xr-exit');},
+   onCancel:reason=>{worldPress=null;grabIntent.cancel(reason);blessIntent.cancel(reason);workerOrders.clear(reason);cancelPlacementTransitions(reason);worldActions?.cancel(reason);}
+  });
+--- a/src/settlement-minimal-hud.js
++++ b/src/settlement-minimal-hud.js
+@@ -1,6 +1,7 @@
+ import * as THREE from 'three';
+ import {FONT} from './gpu-hud.js';
+ import {normalizeFoodHUDState} from './settlement-food-hud.js';
++import {settlementWorkerFeedback} from './settlement-worker-feedback.js';
+ 
+ // This overlay deliberately leaves the settlement visible. Assignment, stores,
+ // and construction live in the world; the two drawers are opt-in fallbacks.
+@@ -54,7 +55,7 @@
+   else if(s.notice)help=s.notice;
+   else if(s.hazard.phase==='warning')help='QUARRY BOULDER COMING LOOSE';
+   else if(input.blessHint)help=input.blessHint;
+-  else if(input.selectedWorker){help=`WORKER ${Number(input.selectedWorker.id.split('-').at(-1))+1} SELECTED`;secondary='CLICK GARDEN / QUARRY. DRAG TO LIFT. F: FOCUS. ESC: CLEAR';}
++  else if(input.selectedWorker){help=`WORKER ${Number(input.selectedWorker.id.split('-').at(-1))+1} SELECTED`;secondary=settlementWorkerFeedback(input.selectedWorker);}
+   else if(input.raid?.enabled&&input.raid.resolved&&input.fallenWorkers)help='LIFT FALLEN WORKERS ONTO CLEAR GROUND';
+   else if(s.hazard.blockedLoads?.length&&!foodBlocked)help='MOVE THE BOULDER TO FREE THE QUARRY';
+   if(help&&!controlsOpen){
+--- /dev/null
++++ b/src/settlement-worker-feedback.js
+@@ -0,0 +1,34 @@
++// Read the live economy row instead of remembering the last accepted command.
++// A carrying worker keeps its delivery until the queued role takes effect.
++const sourceName = (id, role) => ({quarry:'Quarry', 'mainland-forage':'Garden', 'island-garden':'Island Garden', pantry:'Pantry'}[id]
++  ?? (role === 'food' ? 'food work' : 'stone work'));
++const destinationName = id => ({bridge:'Bridge', brace:'Quarry Brace', pantry:'Pantry', 'garden-upgrade':'Garden upgrade', defense:'Barrier'}[id] ?? 'the build site');
++
++export function settlementWorkerFeedback(worker) {
++  if (!worker || worker.alive === false || ['dead', 'lost'].includes(worker.phase)) return '';
++  const source = sourceName(worker.sourceId ?? worker.preferredSourceId, worker.role);
++  let current;
++  if (worker.blocked === 'empty-pantry') current = 'Waiting for food before stone work';
++  else if (worker.blocked === 'unavailable') current = 'Waiting to stand before working';
++  else if (worker.productionBlocked) current = 'Waiting for room to store another load';
++  else if (['to-site', 'delivering'].includes(worker.phase)) current = `Delivering ${worker.resourceKind === 'food' ? 'food' : 'stone'} to ${destinationName(worker.targetSiteId)}`;
++  else if (worker.phase === 'to-stone') current = 'Walking to loose stone';
++  else if (worker.phase === 'working' && worker.workKind === 'pickup') current = 'Picking up stone';
++  else if (worker.phase === 'working' && worker.workKind === 'withdraw') current = 'Collecting stored stone';
++  else if (worker.phase === 'working') current = worker.role === 'food' ? `Gathering food at ${source}` : `Mining at ${source}`;
++  else if (worker.phase === 'to-source') current = `Walking to ${source}`;
++  else current = worker.preferredSourceId ? `Assigned to ${source}` : `Waiting for ${source}`;
++  return current + (worker.pendingRole ? ` then ${sourceName(worker.pendingSourceId, worker.pendingRole)}.` : '.');
++}
++
++// The XR panel has two existing status rows. Wrap words rather than cutting
++// the queued destination off the end of its former single-row notice.
++export function workerFeedbackLines(text, limit = 42) {
++  const lines = [''];
++  for (const word of String(text).split(/\s+/).filter(Boolean)) {
++    const last = lines.length - 1;
++    if (lines[last] && lines[last].length + 1 + word.length > limit) lines.push(word);
++    else lines[last] += (lines[last] ? ' ' : '') + word;
++  }
++  return lines;
++}
+--- a/src/settlement-xr.js
++++ b/src/settlement-xr.js
+@@ -1,5 +1,6 @@
+ import * as T from 'three';
+ import {FONT} from './gpu-hud.js';
++import {workerFeedbackLines} from './settlement-worker-feedback.js';
+ import {makePlacement,readHandJoints,makePinchState,updatePinch,retargetHand} from './xr-hand-math.js';
+ import {pickXRTarget,createGrabFeedback,XR_GRAB_REACH} from './xr-grab-feedback.js';
+ 
+@@ -46,6 +47,11 @@
+   // Exit remains in one location even while placing; setup never covers it.
+   if(placing)buttons.exit.group.position.set(.20,.048,0);else buttons.exit.group.position.set(.19,-.041,0);
+   const lines=placing?['PLACE THE THREE ISLANDS','POINT + TRIGGER OR PINCH','DONE STARTS THE VILLAGE']:[s.ended?'MISSION ENDED':s.paused?'PAUSED - START / PAUSE':!s.started?'PRESS START / PAUSE':`${state.mode.toUpperCase()}${s.cooldown>0?' - RECHARGING':''}`,state.mode==='grab'?'PINCH / SQUEEZE NEAR A BODY':'POINT - SHORT TRIGGER / PINCH',String(s.message||'SELECT WORKER, THEN WORK SIGN').slice(0,42)];
++  if(!placing&&s.started&&!s.paused&&!s.ended&&state.mode==='select'&&!s.message&&s.workerOrder){
++   const orderLines=workerFeedbackLines(s.workerOrder);
++   lines[0]=`WORKER ${Number(s.selectedWorkerId.split('-').at(-1))+1} SELECTED`;
++   lines[1]=orderLines[0];lines[2]=orderLines[1]??'';
++  }
+   const key=lines.join('|');if(key!==panelKey){panelKey=key;if(statusText){worldUI.remove(statusText);statusText.traverse(o=>{o.geometry?.dispose();o.material?.dispose();});}statusText=new T.Group();for(const [i,text]of lines.entries()){const m=lettering(text,.00165);m.position.set(-.263,-.091-i*.024,.009);m.renderOrder=2002;statusText.add(m);}worldUI.add(statusText);statusText.visible=!placing;}
+   if(statusText)statusText.visible=!placing;
+  }
