@@ -1,0 +1,25 @@
+{
+  "checkpoint": "construction-priority-feedback-20261015",
+  "status": "Approved exact-candidate release integration; deployment established separately after merge",
+  "reviewCommit": "c585731ae57363baa87af30cc23b085beddd3870",
+  "baselineCommit": "70b3f726952422b608618ab04fee40a1845525e7",
+  "rootHTML": {
+    "sha256": "fff7bad7f5dce9114a522c140f5adb1613b0e04734305bc62f3547371bdf6f79",
+    "bytes": 8495013,
+    "gitBlob": "f0fd378b4512559dba18a67d66c257c6308a8c9a"
+  },
+  "preservedShrineSHA256": "ba699ca9ad9b393c0be3cfec528c4ff8bc391cd117d6edac7e56e47578a7cebc",
+  "sourceManifest": "manifest.json",
+  "sourceOverlay": "source-overlay/src",
+  "baselineSourceArchive": {
+    "filename": "Godgame-worker-order-feedback-20261015-source.zip",
+    "sha256": "a78095fede28201eaa6f958cb0e82fa1fd38ea3919ed6bc0b9ff968606286159"
+  },
+  "changedRuntimeModules": [
+    "settlement-main.js"
+  ],
+  "unchangedRuntimeModules": 112,
+  "browserEvidence": "browser-evidence/verification-receipt.json",
+  "scope": "Construction-priority acknowledgement in the existing desktop and XR status surfaces; explain committed deliveries and retain critical warning/Pantry precedence.",
+  "hardwareXR": "Unverified. Native and browser mocked XR tests do not establish headset behavior."
+}

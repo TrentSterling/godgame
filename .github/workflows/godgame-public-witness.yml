@@ -35,7 +35,7 @@ jobs:
         working-directory: qa/village-archipelago
         env:
           EXPECTED_HEAD: ${{ github.sha }}
-          EXPECTED_CANDIDATE_SHA256: f830ef837a15d52df8f1afb966998fc68a5ea4bc4f9fe02b843cb40954230dba
+          EXPECTED_CANDIDATE_SHA256: fff7bad7f5dce9114a522c140f5adb1613b0e04734305bc62f3547371bdf6f79
           CANDIDATE_PATH: ../../index.html
           EXPECTED_SHRINE_SHA256: ba699ca9ad9b393c0be3cfec528c4ff8bc391cd117d6edac7e56e47578a7cebc
           PRESERVED_SHRINE_PATH: ../../shrine-v24.html

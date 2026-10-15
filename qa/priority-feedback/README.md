@@ -1,4 +1,4 @@
-# Construction priority acknowledgement candidate
+# Construction priority acknowledgement
 
 An ordinary sign click can change construction priority while a stone carrier continues a committed delivery to the previous site. The published build updates the world sign but writes the confirmation to an unused notice variable, leaving the player without an explanation.
 
@@ -11,7 +11,7 @@ The acknowledgement is a fallback below existing notices and is hidden while foo
 - Baseline merge: `70b3f726952422b608618ab04fee40a1845525e7`.
 - Candidate HTML SHA256: `fff7bad7f5dce9114a522c140f5adb1613b0e04734305bc62f3547371bdf6f79` (8,495,013 bytes).
 - Only `settlement-main.js` changes; the other 112 runtime modules are byte-identical.
-- Root `index.html`, Shrine, release workflows and prior review kits are unchanged. This branch adds only this candidate directory. No push, merge or publication is authorized for this follow-up.
+- Original review commit `c585731` preserves the candidate-only checkpoint. The approved release integration copies its exact HTML to root `index.html` and updates the existing release identity checks. Shrine and earlier review kits remain unchanged. `release-checkpoint.json` identifies this integration; the original manifest retains the historical pre-publication state.
 
 ## CPU evidence
 
@@ -40,4 +40,10 @@ node qa/worker-feedback.test.mjs
 
 The generated HTML must match the candidate hash above. The inherited source archive's release seal describes the baseline; this directory's manifest describes the candidate delta.
 
-Ordinary-input browser checks and screenshots remain pending until the GPU window is available. Publication requires separate approval.
+## Browser evidence and release
+
+`browser-evidence/verification-receipt.json` records the completed local Chrome checks and Library screenshot IDs. Ordinary keyboard/mouse input verified accepted Brace priority, switching to Bridge while the same stone carrier remained committed to Brace, 1440px/640px layouts and message expiry. The budget cases are separate scripted rendering fixtures, not ordinary gameplay depletion. Mock WebXR verified the full status message, held-food Pantry guidance and desktop camera restoration; no headset result is available. No browser page errors occurred.
+
+The first synthetic Bridge ray did not activate the sign. Only the harness ray origin was moved closer; the complete rerun passed against unchanged candidate bytes. Both reports remain recorded.
+
+Publication is authorized for this tested fix. Existing PR checks rerun against the exact new root; merge and public deployment receipts establish publication separately.
