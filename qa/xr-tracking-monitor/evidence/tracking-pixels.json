@@ -1,0 +1,28 @@
+{
+  "passed": true,
+  "scope": "Exact same world pixels outside explicit monitor rectangles; synthetic XR and software WebGL, not headset evidence.",
+  "rows": [
+    {
+      "view": "desktop",
+      "changedPixels": 6674,
+      "outsideMonitorPixels": 0,
+      "monitorMask": [
+        990,
+        50,
+        1280,
+        105
+      ]
+    },
+    {
+      "view": "xr",
+      "changedPixels": 6020,
+      "outsideMonitorPixels": 0,
+      "monitorMask": [
+        535,
+        15,
+        745,
+        65
+      ]
+    }
+  ]
+}

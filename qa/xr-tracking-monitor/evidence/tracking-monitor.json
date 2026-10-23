@@ -1,0 +1,27 @@
+{
+  "pass": true,
+  "scope": "CPU sampling and production geometry; no GPU or Quest timing claim",
+  "checks": [
+    "measured-72hz-callback-cadence",
+    "desktop-xr-mode-transition-resets-window",
+    "irregular-interval-average-includes-long-frames",
+    "hidden-invalid-and-interrupted-callbacks-restart-measurement",
+    "calls-are-full-frame-count-without-eye-multiplier",
+    "single-preallocated-noninteractive-xr-overlay-preserves-metre-scale",
+    "low-refresh-display-tracks-measured-values-and-pose-retention",
+    "desktop-equivalent-does-not-add-a-render-draw-and-hidden-session-hides-both",
+    "desktop-monitor-clears-top-controls-and-mobile-xr-entry",
+    "stable-buffers-material-and-bounded-refresh-over-20000-callbacks",
+    "three-line-xr-monitor-fits-65-degree-view-above-initial-menu",
+    "dispose-detaches-owned-ui-and-geometry"
+  ],
+  "benchmark": {
+    "callbacks": 20000,
+    "cpuDurationMs": 11.514,
+    "cpuMicrosecondsPerCallback": 0.576,
+    "displayChanges": 870,
+    "geometryBytes": 245088,
+    "visibleTriangles": 558,
+    "xrDrawsPerEye": 1
+  }
+}

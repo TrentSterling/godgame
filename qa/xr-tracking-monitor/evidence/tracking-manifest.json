@@ -1,0 +1,72 @@
+{
+  "baseSource": "15d852ba9996bfb927c0f1ffc85c94a6b6b76b36",
+  "baseDeployment": "b13137d1b6b2c2b840c76f44ed9b29f47847d73b",
+  "previousCandidate": "7f3f26487c252373695d08e89c9e1130c5560cc2",
+  "html": {
+    "bytes": 8512029,
+    "sha256": "1b8fc09df172f33365b6e99dff278dc79e7aa511e09242883dd0783dce24e809"
+  },
+  "files": {
+    "tracking-baseline-tracking-desktop.png": {
+      "bytes": 244764,
+      "sha256": "77ed89f2bab691cfa8c594f860b1288cd42f28ba99bb30a77f91b86dd04e7f87"
+    },
+    "tracking-baseline-tracking-xr.png": {
+      "bytes": 168951,
+      "sha256": "38f51d384c57167aa2dab4312772220f37eeddcacc9dfb2769e49b42e30d4278"
+    },
+    "tracking-browser.json": {
+      "bytes": 11326,
+      "sha256": "8acd5169c072184309c3ffc116beeb1c6afcf71f8c5a805a0caa85ad9d287dbc"
+    },
+    "tracking-candidate-tracking-desktop.png": {
+      "bytes": 247188,
+      "sha256": "2ffd917ddce908b4012c3d41dbb1b2c1464a90ed22c9c5d257edcc21f1e99487"
+    },
+    "tracking-candidate-tracking-mobile.png": {
+      "bytes": 127654,
+      "sha256": "a2c56d2bcb6457fed5538ddd99065aa4483f4da56fb2baa97ce8c156b8758a41"
+    },
+    "tracking-candidate-tracking-stereo.png": {
+      "bytes": 251025,
+      "sha256": "0a91c6531c4e09863a33a73455fd4d44864130e1c14598befd0948bd0123b39f"
+    },
+    "tracking-candidate-tracking-xr.png": {
+      "bytes": 170521,
+      "sha256": "2960ebccb74b6f58bd62fa0921f133e861dd730b5aa38479f2a7ec8301d34a5c"
+    },
+    "tracking-follow.json": {
+      "bytes": 8321,
+      "sha256": "a855a8dfcb510fc798e43927dea1c3e6a5d04e7c553069e4937d8340f0882714"
+    },
+    "tracking-monitor.json": {
+      "bytes": 1111,
+      "sha256": "b06749d364dd447384a5b2af2a72eb64e1673573cd08ba5acc77fb4c27ab7b31"
+    },
+    "tracking-native.json": {
+      "bytes": 6077,
+      "sha256": "8053a759d0b68bbad3019367fa073e8283e0aa9e7e766c65207cf9e9a96f4ddd"
+    },
+    "tracking-pixels.json": {
+      "bytes": 550,
+      "sha256": "a03fd3cfd4b9a839d4310713bd8c7440137aea7388b80246daa5bc4e59389289"
+    },
+    "tracking-review-regressions.json": {
+      "bytes": 897,
+      "sha256": "d01d45ab3a228e840515a5c49d149364db395ec0b9cb1edf4f0fce51fd515667"
+    },
+    "tracking-simulation.json": {
+      "bytes": 30246,
+      "sha256": "35bc3553f0bf629916606eff629423068d299c4c8955e6175686e9529b8753b7"
+    },
+    "tracking-source.json": {
+      "bytes": 13790,
+      "sha256": "033bb836008ac2623b60b3d9cea4c5fb03cf9ef952f3ab0b54dc81461fc9c2ed"
+    },
+    "tracking-tracking.json": {
+      "bytes": 40964,
+      "sha256": "7f8b00ef318041308cb1661e0d3139a655cbc7b69530af0d321b95cf9beec80b"
+    }
+  },
+  "scope": "Corrected candidate evidence for independent re-review. Not published. No actual Quest acceptance."
+}

@@ -1,0 +1,71 @@
+{
+  "pass": true,
+  "scope": "Production Village bridge callbacks and native Rapier in non-rendering mocked DOM/WebXR. No browser, GPU, real permissions, HMD tracking, performance or comfort claims.",
+  "runs": [
+    {
+      "command": "node qa/xr-village/build-native.cjs",
+      "status": 0,
+      "elapsedMs": 319,
+      "stdout": "C:\\Users\\trent\\Documents\\Codex\\2026-10-22\\task-8\\godgame-tracking\\qa\\xr-village\\generated\\native.mjs\n",
+      "stderr": ""
+    },
+    {
+      "command": "node qa/xr-village/transformed-picker.test.mjs",
+      "status": 0,
+      "elapsedMs": 1753,
+      "stdout": "{\"pass\":true,\"suite\":\"transformed-picker\",\"checks\":7}\n",
+      "stderr": ""
+    },
+    {
+      "command": "node qa/xr-village/bridge-lifecycle.test.mjs",
+      "status": 0,
+      "elapsedMs": 1609,
+      "stdout": "{\"pass\":true,\"suite\":\"bridge-lifecycle\",\"checks\":8,\"requests\":5,\"ends\":4}\n",
+      "stderr": ""
+    },
+    {
+      "command": "node qa/xr-village/native-interactions.test.mjs",
+      "status": 0,
+      "elapsedMs": 10221,
+      "stdout": "{\"checkpoint\":\"select-worker-and-order-existing-source\",\"time\":0.9999999999999989}\n{\"checkpoint\":\"desktop-input-isolated-during-xr\",\"time\":0.9999999999999989}\n{\"checkpoint\":\"two-hand-load-native-economy-ownership-and-viewer-loss-release\",\"time\":1.1999999999999982}\n{\"checkpoint\":\"xr-world-pause-resume\",\"time\":1.1999999999999982}\n{\"checkpoint\":\"xr-bless-exact-native-target-hp-only-cooldown-and-mode-gates\",\"time\":1.1999999999999982}\n{\"checkpoint\":\"controller-squeeze-takes-and-releases-real-carried-food\",\"time\":14.199999999999834}\n{\"checkpoint\":\"xr-lightning-real-native-raider\",\"time\":35.199999999998646}\n{\"checkpoint\":\"integrated-session-exit-restores-desktop\",\"time\":35.199999999998646}\n{\"pass\":true,\"suite\":\"native-interactions\",\"checks\":8,\"nativeSeconds\":35.199999999998646}\n",
+      "stderr": ""
+    },
+    {
+      "command": "node qa/xr-village/native-placement.test.mjs",
+      "status": 0,
+      "elapsedMs": 2856,
+      "stdout": "{\"checkpoint\":\"intentional-gentle-xr-release-creates-real-placement-intent\",\"time\":9.316666666666778}\n{\"checkpoint\":\"viewer-loss-cancels-without-placement-or-flick\",\"time\":9.316666666666778}\n{\"checkpoint\":\"session-hidden-cancels-without-placement-or-flick\",\"time\":9.316666666666778}\n{\"checkpoint\":\"reference-reset-cancels-without-placement-or-flick\",\"time\":9.316666666666778}\n{\"checkpoint\":\"opposite-hand-pause-cancels-without-placement-or-flick\",\"time\":9.316666666666778}\n{\"checkpoint\":\"opposite-hand-mode-ui-cancels-without-placement-or-flick\",\"time\":9.316666666666778}\n{\"pass\":true,\"suite\":\"native-placement\",\"checks\":6,\"nativeSeconds\":9.316666666666778}\n",
+      "stderr": ""
+    },
+    {
+      "command": "node qa/xr-village/hand-ui.test.mjs",
+      "status": 0,
+      "elapsedMs": 1197,
+      "stdout": "{\"pass\":true,\"suite\":\"hand-ui\",\"checks\":[\"hands-present-before-session-and-visible\",\"fingertip-poke-completes-placement-and-starts-game\",\"paused-ui-poke-resumes-withdrawal-rearms-and-held-contact-does-not-repeat\",\"meta-emulated-ray-pinch-routes-to-ui-while-paused\",\"missing-joints-block-input-and-visual-expires-after-time-grace\",\"visual-only-joint-loss-is-distinct-from-grip-loss-and-time-grace-is-bounded\",\"repeated-controller-hand-switches-preserve-controller-and-hand-visibility\",\"hidden-session-exit-and-hands-first-reentry\",\"world-ui-uses-depth-test-for-hand-occlusion\"]}\n",
+      "stderr": ""
+    },
+    {
+      "command": "node qa/xr-village/tracking-retention.test.mjs",
+      "status": 0,
+      "elapsedMs": 1599,
+      "stdout": "{\"pass\":true,\"suite\":\"tracking-retention\",\"checks\":[\"one-and-two-joint-sample-gaps-retain-exact-native-joint-without-throw-samples\",\"irregular-cadence-grace-is-time-based\",\"short-viewer-loss-retains-render-pose-and-world-but-pauses-simulation-and-input\",\"intentional-open-after-gap-releases-without-stale-flick\",\"sustained-hand-loss-expires-and-requires-open-before-new-grab\",\"sustained-viewer-loss-hides-stale-world-and-recovery-keeps-placement\",\"visibility-change-immediately-invalidates-retention\",\"reference-reset-never-reuses-an-old-space-pose\",\"disconnect-immediately-releases-retained-grab\",\"controller-gap-retains-held-button-but-explicit-release-terminates-without-throw\",\"36-recovery-boundaries-use-last-valid-age-for-hand-viewer-and-controller\",\"16-controller-release-combinations-preserve-trigger-or-squeeze-during-gap\",\"long-callback-interruption-cannot-retain-or-reacquire\",\"missing-poke-contact-does-not-activate-paused-ui\",\"last-good-stereo-eye-transform-restored-without-fabricating-tracking\",\"session-end-clears-retained-pose-and-grab\"],\"recoveryCases\":36,\"buttonCases\":16}\n",
+      "stderr": ""
+    },
+    {
+      "command": "node qa/xr-village/grab-follow.test.mjs",
+      "status": 0,
+      "elapsedMs": 2960,
+      "stdout": "{\"pass\":true,\"suite\":\"grab-follow\",\"checks\":[\"Matched head-hold trajectories at three tabletop scales and .1/.3/.6m/s\",\"Floor/wall collision and anatomical-joint stability under obstructed targets\",\"Desktop and touch native snapshots remain byte-identical\",\"1/2/8 missed samples preserve joint and freeze anchor; reacquisition cannot fabricate flick\",\"Elapsed-time throw smoothing across60/72/90/120Hz and irregular intervals; .24m/s cap retained\"],\"trajectories\":18,\"collisions\":4,\"scope\":\"Deterministic production BattlePhysics and anatomical joints in native Rapier0.21 at120Hz. XR target coordinates are synthetic; no browser, Quest timing or comfort claims.\"}\n",
+      "stderr": ""
+    }
+  ],
+  "identity": {
+    "sourceFiles": 117,
+    "testFiles": 13,
+    "runtimeAssets": 3,
+    "settlementMainSHA256": "d379b11561323f5d0f0f9de22055353ce53c1d82a55f0238770b034a3f8491ec",
+    "deliveredHTMLSHA256": "1b8fc09df172f33365b6e99dff278dc79e7aa511e09242883dd0783dce24e809",
+    "unchangedDuringRun": true,
+    "changed": []
+  }
+}
