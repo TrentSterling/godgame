@@ -21,7 +21,7 @@ jobs:
       fail-fast: false
       matrix:
         scope: [preview, camera, xr-layout, synthetic-xr]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
       - name: Check out exact test commit without saved credentials
