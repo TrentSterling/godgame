@@ -1,0 +1,1785 @@
+diff --git a/qa/performance/REVIEW.md b/qa/performance/REVIEW.md
+new file mode 100644
+index 0000000..45edd4a
+--- /dev/null
++++ b/qa/performance/REVIEW.md
+@@ -0,0 +1,41 @@
++This candidate preserves the published hand/UI source `7bf720e6b3b805c80fe082cfd65c1e1ac8e0d366`, deployed in `02e7fdeff0d856b9c7868bfe75051258d3469c2a`. The CPU cleanup is isolated in `01d9ec2dd129dc7ae3857cc3d7b54d668af2111e`; the following commit adds local scenery batching and evidence. No publication has occurred for this candidate. Independent review precedes release integration and required hosted CI.
++
++The draw-call change touches `settlement-food-art.js`, `settlement-quarry-geology.js` and new `static-scenery-batch.js`. Each garden has a foliage batch and a produce batch. Produce uses the original prefix depletion order through a draw range; it is never rebuilt per frame. Quarry terraces use separate left/back/right chunks. All six merged chunks have bounds smaller than 6.5 game units on every axis. Original individual Rapier colliders remain byte-identical. Moving loads, villagers, ragdolls, hands, transparent objects, world controls and animated objects are excluded. Existing vertex colors/materials are retained; atlas or instancing changes would add scope without additional draw-call savings in these small fixed groups.
++
++Actual `renderer.info` counters from existing headless Chromium through Playwright 1.59.1, verified ANGLE SwiftShader, compare the exact old and new standalone HTML. Counters span world/shadow passes with `autoReset=false`; HUD is measured separately. The wide view is a single desktop camera with shadows disabled, not stereo or real XR.
++
++| Scene | World calls before | After | Triangles before and after |
++|---|---:|---:|---:|
++| Opening desktop, full crops, shadows | 322 | 268 | 172,818 |
++| Wide single view, full crops, no shadows | 192 | 165 | 90,211 |
++| Desktop, half crops, shadows | 310 | 268 | 172,098 |
++| Wide single view, half crops, no shadows | 186 | 165 | 89,851 |
++| Desktop, depleted crops, shadows | 296 | 264 | 171,258 |
++| Wide single view, depleted crops, no shadows | 179 | 163 | 89,431 |
++
++HUD remains one draw on desktop. Geometry object counts observed by the renderer change from 160 to 157; texture count stays six. These are object counts, not memory bytes. `evidence/browser-drawcalls.json` includes backend, exact build hashes, all counters and browser cleanup. Screenshots are in `generated/`; `evidence/pixel-comparison.json` records the small rasterization differences. These measurements make no Quest FPS, GPU-time or compositor claim.
++
++CPU cleanup in `settlement-main.js` shares snapshots only within an immediate read phase and skips the desktop HUD while XR is active. `settlement-economy.js` exposes a live scalar outcome getter instead of building snapshots for frame-loop gates. Neither the two economy observation/update phases nor 120 Hz physics cadence is removed. Both world-cue updates remain because the earlier one prepares hover query geometry. XR framebuffer scale and foveation are unchanged.
++
++The deterministic five-second XR phase executes 600 native physics steps and 1,200 economy updates in both versions. Full snapshot constructions fall from 4,200 to 1,560; HUD updates fall from 360 to zero; world-cue updates remain 720. In-process V8 allocation sampling (16 KiB average interval, including objects collected by minor/major GC) estimates 872,738,592 versus 614,322,632 total allocated bytes in that fixture. The snapshot subtree estimate is 432,365,976 versus 164,976,128 bytes. These are sampled host allocations, not retained heap, exact byte totals, Quest memory measurements or stable benchmarks. Host wall-time observations are diagnostic only and may include other work on this shared machine.
++
++Validation:
++
++- Build and all five existing native XR/picker/hand/UI/placement suites pass. Their production callbacks use mock DOM/WebXR and native Rapier, not physical headset tracking.
++- Thirteen deterministic phases match complete public state JSON and serialized Rapier world hashes: cold render, running, pause, commands, XR placement/running/pause, 80 ms callback gap, exit/resize refresh, production/meals/raid, lost load and terminal state. Commands, observations, economy updates and physics step counts match.
++- Geometry test compares 5,736 vertices, normals and colors against the pre-batching source, checks small bounds, unchanged collider serialization, depletion at five fractions, 140 surface rays and disposal. Transparent input is rejected.
++- Outcome getter tests cover playing/failed/won, reset, detached snapshots and rejected commands. Real model production/delivery reaches the winning state.
++- No local mouse/keyboard injection, foreground windows, pointer lock, audio, hardware GPU capture, headset debugging or security changes were used. Chromium was headless, explicitly muted and configured for SwiftShader before any game page loaded; it was closed in `finally`.
++
++Reproduction from this source checkout:
++
++```text
++node build.cjs
++node qa/xr-village/run-checks.mjs
++node qa/performance/run-checks.mjs
++node qa/performance/batching.test.mjs
++```
++
++The CPU comparison requires the historical source commits in this repository. Source hashes in its fixture identities normalize CRLF to LF. Browser measurement requires an existing Playwright installation through `PLAYWRIGHT_PATH`, its existing browser cache through `PLAYWRIGHT_BROWSERS_PATH`, and the reviewed published HTML through `BASELINE_HTML`; it installs nothing. Run `node qa/performance/browser-drawcalls.cjs`. The baseline HTML SHA256 must be `0fc797800189e78e628cf81adf1f261b92ccae6656890e13a785de8803927e90`; candidate is `02362b3e8a92a4225ca05ec01377928b00de266a4354bdbf63cd41869e5dbf1d`, 8,503,547 bytes.
++
++The merge and draw-range APIs were checked against installed Three.js 0.160.0 and official [r160 BufferGeometryUtils](https://raw.githubusercontent.com/mrdoob/three.js/r160/examples/jsm/utils/BufferGeometryUtils.js) and [BufferGeometry](https://raw.githubusercontent.com/mrdoob/three.js/r160/src/core/BufferGeometry.js). Heap sampling follows [Node v24.22.1 inspector](https://raw.githubusercontent.com/nodejs/node/v24.22.1/doc/api/inspector.md) and the official [V8 inspector protocol](https://raw.githubusercontent.com/ChromeDevTools/devtools-protocol/master/pdl/js_protocol.pdl). No dependency upgrade was made.
+diff --git a/qa/performance/batching.test.mjs b/qa/performance/batching.test.mjs
+new file mode 100644
+index 0000000..34162ac
+--- /dev/null
++++ b/qa/performance/batching.test.mjs
+@@ -0,0 +1,51 @@
++import assert from 'node:assert/strict';
++import fs from 'node:fs';
++import {execFileSync} from 'node:child_process';
++import * as T from 'three';
++import R from '@dimforge/rapier3d-compat';
++import {createSettlementFoodArt} from '../../src/settlement-food-art.js';
++import {createQuarryGeology} from '../../src/settlement-quarry-geology.js';
++import {batchStaticScenery} from '../../src/static-scenery-batch.js';
++const baseline='01d9ec2dd129dc7ae3857cc3d7b54d668af2111e';
++const before=async name=>import('data:text/javascript;base64,'+Buffer.from(execFileSync('git',['show',`${baseline}:src/${name}.js`])).toString('base64'));
++const oldFood=(await before('settlement-food-art')).createSettlementFoodArt,oldQuarry=(await before('settlement-quarry-geology')).createQuarryGeology;
++await R.init();
++const worlds=[new R.World({x:0,y:-9.81,z:0}),new R.World({x:0,y:-9.81,z:0})],scenes=[new T.Scene(),new T.Scene()];
++const arts=[oldFood,createSettlementFoodArt].map((make,i)=>make({THREE:T,scene:scenes[i],support:(x,z)=>.01*x+.03*z}));
++const rocks=[oldQuarry,createQuarryGeology].map((make,i)=>make({THREE:T,RAPIER:R,world:worlds[i],scene:scenes[i],offset:new T.Vector3(2,1,-4)}));
++scenes.forEach(s=>s.updateMatrixWorld(true));
++let comparedVertices=0,batches=0;
++for(const mesh of scenes[1].children.filter(m=>m.userData.staticSceneryBatch)){
++ batches++;assert(mesh.geometry.boundingSphere);assert(mesh.geometry.boundingBox);assert(Math.max(...mesh.geometry.boundingBox.getSize(new T.Vector3()).toArray())<6.5,'Authored chunk stays local');assert.equal(mesh.geometry.groups.length,0,'One material is one draw, not merged material groups');
++ for(const range of mesh.userData.sources){
++  const original=scenes[0].getObjectByName(range.name);assert(original,range.name);
++  const geometry=original.geometry.index?original.geometry.toNonIndexed():original.geometry;
++  assert.equal(range.count,geometry.attributes.position.count);
++  for(let i=0;i<range.count;i++){
++   const a=new T.Vector3().fromBufferAttribute(geometry.attributes.position,i).applyMatrix4(original.matrixWorld),b=new T.Vector3().fromBufferAttribute(mesh.geometry.attributes.position,range.start+i).applyMatrix4(mesh.matrixWorld);
++   assert(a.distanceTo(b)<2e-6,range.name+' world vertex');
++   const na=new T.Vector3().fromBufferAttribute(geometry.attributes.normal,i).applyNormalMatrix(new T.Matrix3().getNormalMatrix(original.matrixWorld)),nb=new T.Vector3().fromBufferAttribute(mesh.geometry.attributes.normal,range.start+i).applyNormalMatrix(new T.Matrix3().getNormalMatrix(mesh.matrixWorld));assert(na.distanceTo(nb)<1e-6);
++   for(let axis=0;axis<3;axis++)assert.equal(mesh.geometry.attributes.color.getComponent(range.start+i,axis),geometry.attributes.color.getComponent(i,axis));comparedVertices++;
++  }
++  assert.equal(mesh.material.roughness,original.material.roughness);assert.equal(mesh.material.flatShading,original.material.flatShading);assert.equal(mesh.castShadow,original.castShadow);assert.equal(mesh.receiveShadow,original.receiveShadow);
++  if(geometry!==original.geometry)geometry.dispose();
++ }
++}
++assert.equal(batches,6);assert.deepEqual(Buffer.from(worlds[0].takeSnapshot()),Buffer.from(worlds[1].takeSnapshot()),'Rapier world and collider serialization unchanged');
++const count=scene=>{let draws=0,triangles=0;scene.traverseVisible(m=>{if(!m.isMesh)return;draws++;triangles+=Math.min(m.geometry.drawRange.count,m.geometry.index?.count??m.geometry.attributes.position.count)/3;});return{draws,triangles};};
++const states=[];
++for(const fraction of [1,.8,.5,.2,0]){
++ const state={pantry:{food:3,spareStone:2},forageSources:['mainland-forage','island-garden'].map(id=>({id,remaining:fraction*100,reserve:100}))};
++ arts.forEach(a=>a.sync(state));const counts=scenes.map(count);assert.equal(counts[0].triangles,counts[1].triangles,'Visible depletion triangles');assert(counts[1].draws<counts[0].draws);
++ // Scenery surface queries must retain depletion and foreground occlusion.
++ const ray=new T.Raycaster();let queries=0;
++ for(const x of [-6.22,-5.5,-4.78,19.665,20.055,20.445,20.835])for(const z of [3.935,4.465,-.87,-.53]){
++  ray.set(new T.Vector3(x,10,z),new T.Vector3(0,-1,0));
++  const hits=arts.map(a=>ray.intersectObjects(a.scenery.filter(m=>m.visible),false)[0]);assert.equal(!!hits[0],!!hits[1]);if(hits[0])assert(Math.abs(hits[0].distance-hits[1].distance)<2e-6);queries++;
++ }
++ states.push({fraction,baseline:counts[0],candidate:counts[1],rayQueries:queries});
++}
++// Disallow accidental opaque/transparent mixing or skinned batches.
++const transparent=new T.Mesh(new T.BoxGeometry(),new T.MeshBasicMaterial({transparent:true}));assert.throws(()=>batchStaticScenery({THREE:T,meshes:[transparent],parent:new T.Scene(),name:'invalid'}));transparent.geometry.dispose();transparent.material.dispose();
++arts.forEach(a=>a.dispose());rocks.forEach(a=>a.dispose());assert.equal(scenes[0].children.length,0);assert.equal(scenes[1].children.length,0);worlds.forEach(w=>w.free());
++const report={pass:true,batches,comparedVertices,physics:'Byte-identical serialized Rapier worlds',states,scope:'CPU geometry, colors, normals, bounds, visibility/draw-range, surface rays and disposal. Draw counts are scene candidates here, not actual renderer counters.'};fs.mkdirSync(new URL('./generated/',import.meta.url),{recursive:true});fs.writeFileSync(new URL('./generated/batching.json',import.meta.url),JSON.stringify(report,null,2));console.log(JSON.stringify(report));
+diff --git a/qa/performance/browser-drawcalls.cjs b/qa/performance/browser-drawcalls.cjs
+new file mode 100644
+index 0000000..8b1c256
+--- /dev/null
++++ b/qa/performance/browser-drawcalls.cjs
+@@ -0,0 +1,41 @@
++// Read-only public-build comparison using existing headless Chromium with
++// SwiftShader. No native input, visible window, hardware GPU or audio is used.
++const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
++const {pathToFileURL}=require('node:url');
++const assert=require('node:assert/strict');
++const root=path.resolve(__dirname,'../..'),out=path.join(__dirname,'generated');
++const playwright=process.env.PLAYWRIGHT_PATH;if(!playwright)throw Error('Set PLAYWRIGHT_PATH to an existing installation; this script installs nothing');
++const {chromium}=require(playwright),hash=b=>crypto.createHash('sha256').update(b).digest('hex');
++const base=process.env.BASELINE_HTML;if(!base)throw Error('Set BASELINE_HTML to the published reviewed hand/UI build');
++const candidate=path.join(root,'dist/HOLLOW_HANDS_SETTLEMENT_FOOD_MISSION.html');
++(async()=>{
++ const report={pass:false,scope:'Actual WebGL renderer.info from existing headless Chromium SwiftShader, single desktop camera. No hardware GPU, native input, audio, real XR compositor or Quest timing.',identities:{baseline:hash(fs.readFileSync(base)),candidate:hash(fs.readFileSync(candidate))},rows:[]};
++ assert.equal(report.identities.baseline,'0fc797800189e78e628cf81adf1f261b92ccae6656890e13a785de8803927e90','Reviewed published baseline bytes');
++ let browser;
++ try{
++  browser=await chromium.launch({headless:true,args:['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader','--mute-audio','--disable-audio-output','--no-first-run']});
++  // Refuse to load the game if the selected backend is not the software renderer.
++  const probe=await browser.newPage();report.backend=await probe.evaluate(()=>{const gl=document.createElement('canvas').getContext('webgl2');if(!gl)return null;const ext=gl.getExtension('WEBGL_debug_renderer_info');return ext?gl.getParameter(ext.UNMASKED_RENDERER_WEBGL):gl.getParameter(gl.RENDERER);});await probe.close();assert.match(report.backend,/SwiftShader/i);
++  for(const [mode,file]of [['baseline',base],['candidate',candidate]]){
++   const page=await browser.newPage({viewport:{width:1280,height:720},deviceScaleFactor:1});const errors=[];page.on('pageerror',e=>errors.push(String(e)));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
++   await page.goto(pathToFileURL(file).href+'?capture',{waitUntil:'load'});await page.waitForFunction(()=>window.SETTLEMENTQA||window.SETTLEMENTERROR);assert.equal(await page.evaluate(()=>window.SETTLEMENTERROR??null),null);
++   await page.waitForFunction(()=>!document.getElementById('village-xr-enter').textContent.startsWith('Checking XR'));
++   for(const fraction of [1,.5,0])for(const view of ['desktop','wide-shadowless']){
++    const value=await page.evaluate(({fraction,view})=>{
++     const c=SETTLEMENTQA.context,T=c.THREE,r=c.renderer;
++     c.foodArt.sync({pantry:{food:3,spareStone:0},forageSources:['mainland-forage','island-garden'].map(id=>({id,remaining:100*fraction,reserve:100}))});
++     const camera=c.camera.clone();if(view==='wide-shadowless'){camera.position.set(38,40,42);camera.lookAt(6,0,-5);camera.updateMatrixWorld(true);}
++     r.shadowMap.enabled=view==='desktop';r.info.autoReset=false;r.info.reset();r.clear();r.render(c.scene,camera);
++     const world={...r.info.render};r.info.reset();r.clearDepth();if(view==='desktop')r.render(c.hud.scene,c.hud.camera);const hud={...r.info.render};r.info.autoReset=true;
++     return{world,hud,geometries:r.info.memory.geometries,textures:r.info.memory.textures};
++    },{fraction,view});
++    report.rows.push({mode,fraction,view,...value});
++    if(fraction===1&&view==='desktop')await page.screenshot({path:path.join(out,mode+'-drawcalls.png')});
++   }
++   assert.deepEqual(errors,[]);await page.close();
++  }
++  for(const b of report.rows.filter(r=>r.mode==='baseline')){const c=report.rows.find(r=>r.mode==='candidate'&&r.fraction===b.fraction&&r.view===b.view);assert(c.world.calls<b.world.calls);assert.equal(c.world.triangles,b.world.triangles,'Matched visible triangles');assert.equal(c.hud.calls,b.hud.calls);}
++  report.pass=true;
++ }finally{if(browser)await browser.close();report.browserClosed=true;fs.writeFileSync(path.join(out,'browser-drawcalls.json'),JSON.stringify(report,null,2));}
++ console.log(JSON.stringify(report));
++})().catch(e=>{console.error(e);process.exitCode=1;});
+diff --git a/qa/performance/build.cjs b/qa/performance/build.cjs
+new file mode 100644
+index 0000000..836cb62
+--- /dev/null
++++ b/qa/performance/build.cjs
+@@ -0,0 +1,44 @@
++// CPU-only adapters reuse the existing GLB/DOM/Rapier fixture. Instrumented
++// bundles are scratch outputs; no counters or inspector code enter the game.
++const fs=require('node:fs'),path=require('node:path'),cp=require('node:child_process'),crypto=require('node:crypto');
++const root=path.resolve(__dirname,'../..'),out=path.join(__dirname,'generated');
++const esbuild=require(path.join(root,'node_modules/esbuild'));
++const baseline='7bf720e6b3b805c80fe082cfd65c1e1ac8e0d366';
++const hash=s=>crypto.createHash('sha256').update(s).digest('hex');
++const sourceFiles=fs.readdirSync(path.join(root,'src')).filter(f=>f.endsWith('.js')).sort();
++const baselineFiles=cp.execFileSync('git',['ls-tree','-r','--name-only',baseline,'--','src'],{cwd:root,encoding:'utf8'}).trim().split(/\r?\n/).filter(f=>f.endsWith('.js')).map(f=>path.basename(f)).sort();
++function read(mode,name){const s=mode==='baseline'?cp.execFileSync('git',['show',`${baseline}:src/${name}`],{cwd:root,encoding:'utf8',maxBuffer:16*1024*1024}):fs.readFileSync(path.join(root,'src',name),'utf8');return s.replace(/\r\n/g,'\n');}
++function replace(s,from,to){if(s.split(from).length!==2)throw Error('Nonunique adapter: '+from);return s.replace(from,to);}
++function instrument(name,s){
++ const mark=(from,counter)=>{s=replace(s,from,from+`globalThis.__perf.${counter}++;`);};
++ if(name==='settlement-economy.js'){
++  mark('function snapshot(events = []) {','snapshots');mark('function update(dt, observations = {}) {','economyUpdates');mark('function command(input) {','commands');
++ }
++ if(name==='settlement-main.js'){mark('function beforeStep(dt){','beforeSteps');mark('function observe(){','observations');mark('function render(dt=0){','renders');}
++ return s;
++}
++(async()=>{
++ fs.mkdirSync(out,{recursive:true});
++ for(const mode of ['baseline','candidate']){
++  const sources=Object.fromEntries((mode==='baseline'?baselineFiles:sourceFiles).map(name=>[name,read(mode,name)]));
++  let main=instrument('settlement-main.js',sources['settlement-main.js']),first=true;
++  for(const [name,module,relative]of [['loadCivilianArt','civilian-art','civilian-art/civilian-original-normalized.glb'],['loadHeroArt','hero-art','blender-art/revision2/fighter-rust-refined-normalized.glb']]){
++   main=replace(main,`import {${name}} from './${module}.js';`,`${first?"import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js'; import fs from 'node:fs';":''}
++    async function ${name}(rig){
++     const glb=fs.readFileSync(${JSON.stringify(path.join(root,relative))});
++     const loader=new GLTFLoader();loader.register(()=>({name:'NativeTextureAdapter',loadTexture:()=>Promise.resolve(new THREE.Texture())}));
++     const gltf=await loader.parseAsync(glb.buffer.slice(glb.byteOffset,glb.byteOffset+glb.byteLength),'');gltf.scene.updateMatrixWorld(true);
++     let mesh;gltf.scene.traverse(o=>{if(o.isSkinnedMesh)mesh=o;});let error=0;
++     mesh.skeleton.bones.forEach((bone,i)=>{if(bone.name!==rig.restBones[i].name)throw Error('Bind name mismatch');bone.matrixWorld.elements.forEach((x,k)=>error=Math.max(error,Math.abs(x-rig.restBones[i].bindMatrix.elements[k])));});
++     if(error>.0001)throw Error('Bind matrix mismatch');return{geometry:mesh.geometry,materials:[mesh.material,mesh.material.clone()],maxBindError:error};
++    }`);first=false;
++  }
++  main=replace(main,"new THREE.WebGLRenderer({antialias:true,alpha:true,powerPreference:'high-performance'})",'new globalThis.RendererFixture(THREE)');
++  main=replace(main,'start().catch(e=>{console.error(e);window.SETTLEMENTERROR=String(e.stack||e);});','export const ready=start(); export {render,advanceSimulation};');
++  const file=path.join(out,mode+'.mjs');
++  await esbuild.build({stdin:{contents:main,resolveDir:path.join(root,'src'),sourcefile:'performance-main.js'},bundle:true,platform:'node',format:'esm',outfile:file,plugins:[{name:'exact-source-and-counters',setup(build){build.onLoad({filter:/\.js$/},args=>{if(path.dirname(args.path)!==path.join(root,'src'))return;const name=path.basename(args.path);return{contents:instrument(name,sources[name]),loader:'js'};});}}]});
++  const bundle=fs.readFileSync(file,'utf8'),snapshotLine=bundle.slice(0,bundle.search(/function snapshot\(events\d* = \[\]\)/)).split('\n').length-1;
++  fs.writeFileSync(path.join(out,mode+'-identity.json'),JSON.stringify({mode,baselineSource:baseline,baselineDeployment:'02e7fdeff0d856b9c7868bfe75051258d3469c2a',sourceHashes:Object.fromEntries(Object.entries(sources).map(([name,s])=>[name,hash(s)])),bundleSHA256:hash(bundle),snapshotLine,adapters:['Original GLBs with empty texture decode; no GPU','Mock DOM and WebXR; native Rapier','Read-only counters inserted in memory','Export render/advanceSimulation for deterministic tests']},null,2));
++  console.log(mode+' performance fixture built');
++ }
++})().catch(e=>{console.error(e);process.exitCode=1;});
+diff --git a/qa/performance/economy-status.test.mjs b/qa/performance/economy-status.test.mjs
+new file mode 100644
+index 0000000..75c87d3
+--- /dev/null
++++ b/qa/performance/economy-status.test.mjs
+@@ -0,0 +1,17 @@
++import assert from 'node:assert/strict';
++import {createSettlementEconomy} from '../../src/settlement-economy.js';
++const p={x:0,y:0,z:0};
++const economy=createSettlementEconomy({villagers:[{id:'original',position:p,role:'food'},{id:'recruit',position:p,role:'stone',available:false}],recruitId:'recruit',quarry:{position:p,workPoints:[p],reserve:1,workSeconds:.01},pantry:{position:p},foodPerWorker:0,initialFood:0,spareStoneGoal:1,workSeconds:.01,deliverySeconds:.01});
++const assertStatus=expected=>{assert.equal(economy.outcomeStatus(),expected);assert.equal(economy.snapshot().outcome.status,expected);};
++assertStatus('playing');
++const detached=economy.snapshot();detached.outcome.status='forged';detached.villagers[0].alive=false;assertStatus('playing');
++economy.update(0,{villagers:[{id:'original',position:p,available:false,alive:false}]});assertStatus('failed');
++const terminal=economy.snapshot();economy.reset();assertStatus('playing');assert.equal(terminal.outcome.status,'failed','Reset does not mutate previously returned snapshots');
++// Deterministic economy-only host observations: original stays at home; recruit
++// mines and carries a real model-created stone, with observed ownership each tick.
++for(let i=0;i<100&&economy.outcomeStatus()==='playing';i++){
++ const s=economy.snapshot();economy.update(.02,{recruit:{joined:true},villagers:s.villagers.map(w=>({id:w.id,position:w.target??w.position,available:true,alive:true})),stones:s.stones.map(l=>({id:l.id,position:p,available:true,held:false,owner:l.owner}))});
++}
++assertStatus('won');assert(economy.snapshot().recruit.worked);assert.equal(economy.snapshot().pantry.spareStone,1);
++economy.command({type:'invalid'});assertStatus('won');economy.reset();assertStatus('playing');
++console.log(JSON.stringify({pass:true,suite:'economy-status',checks:['live-playing-failed-won','reset-refresh','detached-snapshots','real-model-production-delivery','rejected-command-preserves-outcome']}));
+diff --git a/qa/performance/evidence/browser-drawcalls.json b/qa/performance/evidence/browser-drawcalls.json
+new file mode 100644
+index 0000000..09f346b
+--- /dev/null
++++ b/qa/performance/evidence/browser-drawcalls.json
+@@ -0,0 +1,264 @@
++{
++  "pass": true,
++  "scope": "Actual WebGL renderer.info from existing headless Chromium SwiftShader, single desktop camera. No hardware GPU, native input, audio, real XR compositor or Quest timing.",
++  "identities": {
++    "baseline": "0fc797800189e78e628cf81adf1f261b92ccae6656890e13a785de8803927e90",
++    "candidate": "02362b3e8a92a4225ca05ec01377928b00de266a4354bdbf63cd41869e5dbf1d"
++  },
++  "rows": [
++    {
++      "mode": "baseline",
++      "fraction": 1,
++      "view": "desktop",
++      "world": {
++        "frame": 3,
++        "calls": 322,
++        "triangles": 172818,
++        "points": 0,
++        "lines": 0
++      },
++      "hud": {
++        "frame": 4,
++        "calls": 1,
++        "triangles": 3216,
++        "points": 0,
++        "lines": 0
++      },
++      "geometries": 160,
++      "textures": 6
++    },
++    {
++      "mode": "baseline",
++      "fraction": 1,
++      "view": "wide-shadowless",
++      "world": {
++        "frame": 5,
++        "calls": 192,
++        "triangles": 90211,
++        "points": 0,
++        "lines": 0
++      },
++      "hud": {
++        "frame": 5,
++        "calls": 0,
++        "triangles": 0,
++        "points": 0,
++        "lines": 0
++      },
++      "geometries": 160,
++      "textures": 6
++    },
++    {
++      "mode": "baseline",
++      "fraction": 0.5,
++      "view": "desktop",
++      "world": {
++        "frame": 6,
++        "calls": 310,
++        "triangles": 172098,
++        "points": 0,
++        "lines": 0
++      },
++      "hud": {
++        "frame": 7,
++        "calls": 1,
++        "triangles": 3216,
++        "points": 0,
++        "lines": 0
++      },
++      "geometries": 160,
++      "textures": 6
++    },
++    {
++      "mode": "baseline",
++      "fraction": 0.5,
++      "view": "wide-shadowless",
++      "world": {
++        "frame": 8,
++        "calls": 186,
++        "triangles": 89851,
++        "points": 0,
++        "lines": 0
++      },
++      "hud": {
++        "frame": 8,
++        "calls": 0,
++        "triangles": 0,
++        "points": 0,
++        "lines": 0
++      },
++      "geometries": 160,
++      "textures": 6
++    },
++    {
++      "mode": "baseline",
++      "fraction": 0,
++      "view": "desktop",
++      "world": {
++        "frame": 9,
++        "calls": 296,
++        "triangles": 171258,
++        "points": 0,
++        "lines": 0
++      },
++      "hud": {
++        "frame": 10,
++        "calls": 1,
++        "triangles": 3216,
++        "points": 0,
++        "lines": 0
++      },
++      "geometries": 160,
++      "textures": 6
++    },
++    {
++      "mode": "baseline",
++      "fraction": 0,
++      "view": "wide-shadowless",
++      "world": {
++        "frame": 11,
++        "calls": 179,
++        "triangles": 89431,
++        "points": 0,
++        "lines": 0
++      },
++      "hud": {
++        "frame": 11,
++        "calls": 0,
++        "triangles": 0,
++        "points": 0,
++        "lines": 0
++      },
++      "geometries": 160,
++      "textures": 6
++    },
++    {
++      "mode": "candidate",
++      "fraction": 1,
++      "view": "desktop",
++      "world": {
++        "frame": 3,
++        "calls": 268,
++        "triangles": 172818,
++        "points": 0,
++        "lines": 0
++      },
++      "hud": {
++        "frame": 4,
++        "calls": 1,
++        "triangles": 3216,
++        "points": 0,
++        "lines": 0
++      },
++      "geometries": 157,
++      "textures": 6
++    },
++    {
++      "mode": "candidate",
++      "fraction": 1,
++      "view": "wide-shadowless",
++      "world": {
++        "frame": 5,
++        "calls": 165,
++        "triangles": 90211,
++        "points": 0,
++        "lines": 0
++      },
++      "hud": {
++        "frame": 5,
++        "calls": 0,
++        "triangles": 0,
++        "points": 0,
++        "lines": 0
++      },
++      "geometries": 157,
++      "textures": 6
++    },
++    {
++      "mode": "candidate",
++      "fraction": 0.5,
++      "view": "desktop",
++      "world": {
++        "frame": 6,
++        "calls": 268,
++        "triangles": 172098,
++        "points": 0,
++        "lines": 0
++      },
++      "hud": {
++        "frame": 7,
++        "calls": 1,
++        "triangles": 3216,
++        "points": 0,
++        "lines": 0
++      },
++      "geometries": 157,
++      "textures": 6
++    },
++    {
++      "mode": "candidate",
++      "fraction": 0.5,
++      "view": "wide-shadowless",
++      "world": {
++        "frame": 8,
++        "calls": 165,
++        "triangles": 89851,
++        "points": 0,
++        "lines": 0
++      },
++      "hud": {
++        "frame": 8,
++        "calls": 0,
++        "triangles": 0,
++        "points": 0,
++        "lines": 0
++      },
++      "geometries": 157,
++      "textures": 6
++    },
++    {
++      "mode": "candidate",
++      "fraction": 0,
++      "view": "desktop",
++      "world": {
++        "frame": 9,
++        "calls": 264,
++        "triangles": 171258,
++        "points": 0,
++        "lines": 0
++      },
++      "hud": {
++        "frame": 10,
++        "calls": 1,
++        "triangles": 3216,
++        "points": 0,
++        "lines": 0
++      },
++      "geometries": 157,
++      "textures": 6
++    },
++    {
++      "mode": "candidate",
++      "fraction": 0,
++      "view": "wide-shadowless",
++      "world": {
++        "frame": 11,
++        "calls": 163,
++        "triangles": 89431,
++        "points": 0,
++        "lines": 0
++      },
++      "hud": {
++        "frame": 11,
++        "calls": 0,
++        "triangles": 0,
++        "points": 0,
++        "lines": 0
++      },
++      "geometries": 157,
++      "textures": 6
++    }
++  ],
++  "backend": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
++  "browserClosed": true
++}
+\ No newline at end of file
+diff --git a/qa/performance/evidence/cpu-comparison.json b/qa/performance/evidence/cpu-comparison.json
+new file mode 100644
+index 0000000..80197cb
+--- /dev/null
++++ b/qa/performance/evidence/cpu-comparison.json
+@@ -0,0 +1,790 @@
++{
++  "pass": true,
++  "scope": "CPU-only deterministic production callbacks, native Rapier, mock DOM/WebXR. No browser rendering, physical input, audio, GPU or Quest timing. Inspector sampling is in-process with no listening port.",
++  "comparison": "Exact complete public-state JSON and Rapier snapshot SHA256 at every phase; CPU timings and sampled allocation estimates are host-only, noisy and not acceptance thresholds.",
++  "changedModules": [
++    "settlement-economy.js",
++    "settlement-food-art.js",
++    "settlement-main.js",
++    "settlement-quarry-geology.js",
++    "static-scenery-batch.js"
++  ],
++  "identities": {
++    "baseline": {
++      "mode": "baseline",
++      "baselineSource": "7bf720e6b3b805c80fe082cfd65c1e1ac8e0d366",
++      "baselineDeployment": "02e7fdeff0d856b9c7868bfe75051258d3469c2a",
++      "sourceHashes": {
++        "anatomical-joints.js": "95c89d6eea7f2898ce87bcd4bcbe5a95e91311897b48ce2b4affb5a75164bf4d",
++        "arena-art.js": "8e6c8a852bf18c674afdfb3cca5a68b25f1af73226154aefccc324d1d61d6a39",
++        "army-formation.js": "dbe7a1ef3eddb87256291bca8138c74fbb8e758b2b8263fac6fc9ace02217c7e",
++        "battle-encounters.js": "3ccd193c6b7894cef2c7cbcfd54d6761e75e4aaa1014faf2ef53c4c9a237dfff",
++        "battle-outcome.js": "1fd4a5aa6f5adb0197da25b7125f271d4e2f81a8b3db51514fb8a7692b1bc018",
++        "battle-round.js": "003de5b790d90b08c7adffaee32f71d0748625bc624bf0ef08522ba23e4147c8",
++        "battle-start-gate.js": "b9e56b0c214ede2b0e2c13de280b91e8cc9e287b3a089c86afdf7ef6da77af54",
++        "bless-feedback.js": "dd924af72edf954ed596b05f94a11227d1f6d96f53ddfdcaf4110d1daa17ac61",
++        "carried-load-handoff.js": "61764035edb6100be4cf3752ee4818c36530f7bffd592e2019bfe70fa471f795",
++        "causal-strike-contact.js": "0578b259df9223f2cbdce91c37fc3169972eaa808283a5ff2c84b9b1bd649fa0",
++        "character-mesh.js": "bc00a0b4f008ec68d239c2679fe9901f02f233c4ca39dba6b7ce4d1ddeca7007",
++        "civilian-art.js": "dad24abc7e537310fde13fc7b2fb73a156a3b473c1959e3acfd6511da25c1453",
++        "civilian-ground-point.js": "355cda13097c0e79079c951c054f095be5604205a70b81e1faf22b15a2415b29",
++        "civilian-motion.js": "dc26a155d94dd4c1daa9d9ef054c83ac48bb580818768303f73353603ec98786",
++        "civilian-navigation.js": "38764c6662ed1b448ef5168a4e5e8914b008f2b6a4e7e4efc595b742a3a45555",
++        "civilian-placement-blend.js": "6b2cc3c905d9ebc4b9828d645eb5964458559612709df068e595a10a2ec50cb7",
++        "civilian-quarry-contact.js": "81b101a3211f936d7a097bb04f3c7965055cfd20d45dd496cee88c7b830eb070",
++        "civilian-traffic.js": "41ea3ca5c8ba57af6d9da416f2fc04864ea65cecc78063d1f5b2eab67f9a78be",
++        "combat-feedback.js": "2288c0637c1a3637f614af6bb2df0e8ab80cd438e19d2e62fcdca9b1a5731ea9",
++        "contact-audio.js": "848f28676c51d49cf877a4027c638af366e7f8cac2f05865c22ad10726153457",
++        "critical-feedback-profile.js": "2f66d821d5562a1efb5947ba8d7a90f7644629ac5d6212aef592d38a0c6ae84b",
++        "crowd-approach.js": "e09d6b2c9e87d637b120626d196a717c5bda4f1446c77f07206502b058d77858",
++        "deformed-query-positions.js": "6969f9b16086ad594a78112ec4e03ac72b11511a82f2cb463b01678570a4b8ea",
++        "desktop-bless-intent.js": "08bc6d831fe423a8af7cf42725740bfc9b5733030ccc4ff8226a68e93d0b1ee3",
++        "desktop-camera-framing.js": "d789a6f5d8d7a74d327a7f8e0eae748a4fb14ec9323914bc9f5a91b0d2a6eaad",
++        "desktop-drag-space.js": "a548f27dea4aacdd854f0e22cfa563d7a98f146cad1b54a259261500ad3c2c3b",
++        "desktop-grab-intent.js": "fb7bd55e1e3a65e0f4994bc48b36e995e3e170f76111f3cffd9948cc16cc9634",
++        "desktop-hand-motion.js": "8c3474763782ea7457b8e93a57d31317324309fe6aec895df8223ef2623d13dd",
++        "desktop-hud-layout.js": "a0221ea2b638696de5b0ac68fc58f0b8305c3c73d3d6ec819ea3e29e6b6e3262",
++        "desktop-palm-presentation.js": "64af1abc2468de3b84c7e91b93620794911019db3f77c1cee7edae3e9c875eb6",
++        "desktop-power-hand.js": "6b6f6590f0cc1fad75a8832199e36af16b58b8dad713a3b9b45d648eb92bd718",
++        "desktop-settlement-navigation.js": "0d5286f338fae628a5f12d35d5fe7ca5bb520a29024456c91926f47d25b4ee32",
++        "fixed-step.js": "dd940d52e6efbea62d0cbf16b470f5af22a86f1ef673ca2fd91fbebfc165e17c",
++        "floating-world.js": "cdb7ace59a4c6fd3f4fdae9d16e5a8636dc4e5dfebeb5871c36a1604e3f006c0",
++        "garden-improvement-art.js": "d29064a3b10c07d8ddf751cf11f7dccc606d3ed7b68fae286223885c1ee04bdd",
++        "god-powers.js": "f599e7849d7b84e6049c1b9edd8b16c3be0d184b78dc455c07cd45dfe48b01eb",
++        "gpu-hud.js": "9dc413882e5b50d98043c337273795cb9a4fc5caf8ba3137e720127eec77d1c7",
++        "hand-contact-adapter.js": "6040bd58ee3adb597aea54f147b4015c2cb9d746e5706f195037e63dfa243847",
++        "hand-motion.js": "d2057bb5593c2fa41d9d0a3cb751406d9637170d9b2f452ab80f71d4204badfe",
++        "held-food-destination.js": "22c248bd6693992885e95c297c6daf043260135ef7f9425d16bcfa80d374efc4",
++        "hero-art.js": "b0beb133883a7202fb53230373f7820d58636c0ebc45082ff54eb3abf7cd3e0f",
++        "hit-knockback.js": "70f62968016a0ddef8abdf78f239730bb3f241ac82bcaf88574f08711e77243f",
++        "lightning-feedback.js": "4f58aa1dbc1ebb43d611847d421beac2846595d0489cbb25e48b016c6a9ecbff",
++        "main.js": "a96f2fd48dcd318bf490bffadac09cb3247e620838d755049f66dc34b5dd06a8",
++        "melee-profile.js": "7365320a158bfa12d685d5bf74ba821f9a9f899fee446b14b7d09cf18f122d71",
++        "paired-rival-hands.js": "b57078a3ed9d8e81861c9525adaadd661b90752b1c5d2007c95fd5af35a9946a",
++        "palm-outcome-copy.js": "6a0322bc5a7394ace3218cbcd64e75d5382d1bd8587c3bfa5d105aaa15cf0122",
++        "pending-physical-delivery.js": "9a0e70f2b3f1eadc35cb90f363b12aacb14f554e259d2bddc53fcbcefbf3d69b",
++        "physics.js": "e475e6f97ba17b4ffbf5fa2a010fcc8cd713a28b1237f75a3bc6ba3fb530766b",
++        "player-palm-strike.js": "f3214f228b7816acd08a4303a838ab1c87ffa2c4e051b438958e3bd84a67339b",
++        "player-throw-impact.js": "5aa9d44e92ece88c89df118d0830b78f0b272134c2d100e16a91026f0ed214c1",
++        "power-combat-policy.js": "a58781ffc8fa2798ebb74432612cb9fb43647b22d50344a7d4804fd8659adcc5",
++        "power-feedback-layout.js": "26e996c04b66fdef6d7f3febf7d54bd36938267fa0044f84c06940b92332bbad",
++        "predictive-landing.js": "60fe87c151c453a9f1f19bea6d42fe2f001730584f43e1629dcda08658f633ac",
++        "quarry-safety.js": "54385a7c46498a2dec6e2b72dd5d54f3e1b46589c7c38f132f68f852b471fd90",
++        "reachable-club.js": "bc24d523b9d54629cc629fd604e4a40ef1059a2bf92078d0e0a1693397f686d5",
++        "resource-stone-picker.js": "bec4a352e9b9e4ff10bcedcde6c04e5696682dea557a327d0d310373235a8fae",
++        "rival-hand-appearance.js": "2e8777d7cda68e3594a2bfcbe2966bef5592e6b8fad914bf6be9856403360bf2",
++        "rival-hand-rigged.js": "a06c9286791cced19579458e8df18f7f5b9d62e69eb715eb334cd66adda1f076",
++        "rival-hand.js": "bf112ee2204e5d822d1e57254d360e988a985845312e86bbb8198058b457ffef",
++        "selection-cue.js": "4e048f00269c1650b34c9980178b54dfddde201a9a42ea36fd9208db105cf8c9",
++        "settlement-blessing.js": "c70470916005a2c26e8c63882ed9a89375a7d1b6fe5f4c770d3bf824ae39b236",
++        "settlement-cliff-art.js": "4221f9d2dfb878e65e85f9c25fc169301a6f66cfe9e957a727a7bc98bec243b3",
++        "settlement-defense.js": "204e6c3f94a426203d92332cee9ba637efed7de6adf111ed482ab398c141b0b3",
++        "settlement-economy.js": "7b94b7f2c62071f4949da04f9ec66941e62a8d25c60cdc5e711c11f455c83391",
++        "settlement-environment-art.js": "0ca40b0f04824291c2a71241315cae7ea858409ad3434ab2246b0f2f59d72d9d",
++        "settlement-food-art.js": "35e5756276c38f5786e2f639eb58168ce4316eb989335b9b9d6674eab9d9ddd1",
++        "settlement-food-hud.js": "818eabf7526c7e28f85f8c90816c9bf76af4edbc0486c8c04543bd0ed93adffe",
++        "settlement-hud.js": "cd0a97dcf7ab51835c291d4464c5d2b21af61bafd9152f40bbf6423bbd6df9d2",
++        "settlement-jobs.js": "9445c7aadf93d8590b5a1134013c22f4bce905a364e59b09807858823825ea4e",
++        "settlement-land-regions.js": "f888731a62186510344fd1a6775d140c4db0ecb8b7eeb212ef6f651d498d8ff3",
++        "settlement-main.js": "12be46b037fad111f35ea7687121bf787cea35c118c64d06ac209e51b68f9414",
++        "settlement-minimal-hud.js": "3ffb74eb11658aecc2e6458eb81be6dda5499dae3c34ce03cd9b662b1cbd70ae",
++        "settlement-next-need.js": "eb94fef48fda4c753fe57bb8ab4fe988fe409bd59c5e70f51385e74ae112449d",
++        "settlement-quarry-geology.js": "d77d3a2604fca2b4b96e8a91b78cab67b8bee445e03e15ab3eb07dd5b8d9a77e",
++        "settlement-raid.js": "4f9cb7b400c6c906981cb4697e11a94bede502ce36797fc581b3e4fd062498f2",
++        "settlement-recruit.js": "6781796f0a4285ad01b9289e5a49344816eb0659e49cc16ede2039d0582d737c",
++        "settlement-resource-art.js": "4412eef948447731e2203674c93f96fa794fa82a68319684ecbeba3a3bce953c",
++        "settlement-village-buildings.js": "e3e704497c828692bf4e1d3d5f92e45a77236729875bc0576746f610e7f19c4a",
++        "settlement-worker-feedback.js": "ba8e1d29a719dd397944960dcca4d6db12a762beb43ee45decaeec1e52a255c1",
++        "settlement-worker-orders.js": "194cce5455b17579bdefcef4613b7d871a1099e385a6bb08254dd1a6ddcdcc92",
++        "settlement-world-actions.js": "05461514c2b9a3a63c07dd59771d2ca31bda2eae9cbee20c846c484cf9df8144",
++        "settlement-world-cues.js": "225fc5ec68f53b6fae8187b7df0baaed111360b8e30fbf973ec667de53ecb2a8",
++        "settlement-world.js": "075e7fda02180bc83a462ce49d38cdc1f63d95d1035695dff17b8d6118604079",
++        "settlement-xr.js": "c1ada0a5f26cfae878fbcad23dd8536038b187c0961a587fe5427cc003a0db1a",
++        "shared-hero-visuals.js": "74037f4cd03e12812d64aecb8301d7baedcf2ad07c136833b74c12f442acb4b1",
++        "shield-hit-knockback.js": "2a64f9122fcc951cd93a58ffaab45cf4484c3f05987e64c5b4ed134649e8753f",
++        "shrine-campaign.js": "90ca7e8bb73ae4378f7cd3664d495c44011a5d3a22f8a666f81db97a7989031c",
++        "shrine-challenge.js": "d61806248666a154b259438e714230f750849133942762b0b282cdb2234c954c",
++        "shrine-objective-copy.js": "358989aad2bc48fc1c41024ad0e7a34e062465e7bd3e549b523e96564591e4e7",
++        "shrine-power-target.js": "f5c4b2710c319c0019fbb9cd69b4040277666de071bc9d4b7db03e7983a2aeec",
++        "shrine-pressure-cues.js": "b17764143569d75851478b796f46515c9d20d3916848dfdccf040de179858871",
++        "shrine-pressure-feedback.js": "ea04b7176c7f61b61649a1d7a4e9faa766d847ee323b23a34471732a0b998933",
++        "shrine-pressure-streams.js": "fba2dbe662c22574314409722d6d03d94e53755b0fd077157304dce96367f2d7",
++        "shrine-rival-intervention.js": "bd502291d29adadfe8baa94e79994ec63a693371327a69994b5027efb8040508",
++        "shrine-visual.js": "57c8feb62edb8e12cdd52fcc47e1a46a087af1f07c1683e1d1166b6d2c4df976",
++        "skinned-query-chunks.js": "7caa40672494611cb563f6d835974674d793f6b28caff4f620c3bb93910cd75e",
++        "startup-settle.js": "c5bd1558dcd1c7cfb68df22f05e3dee7231d7c29e92fb4778245c1911ed1f33a",
++        "stone-columns.js": "63ab808245cea7ddd397b85271d1042fb38a6605016237902a5b4f79e440f04a",
++        "stone-hand-rig.js": "717f68f50e9cd882189d57e43cfb82398172eacad70d85a47c21e6c570548f4c",
++        "stone-impact-feedback.js": "2a2c39fa8d956c7f5c0ce56f2956978246ed0c4201fb7ff6e23812f19de45283",
++        "stranded-food-courier.js": "fa6a25b94325af04ce8b505b62dadf94d8534ff40ea7929d0d53c926db5bfa93",
++        "surface-support.js": "444e622441919e9507ae8b13ea9c5231fb293b1638d0a4fa42af2d5bed67546e",
++        "swept-melee.js": "f94fb65db32c9e7147c053000200d58b38c4504888d9e9c83a69ae75e0265592",
++        "terrain.js": "a025b5c86eaa5c304e6208ff7b482eb57036b98ed738bc3924fe4938ed1f6979",
++        "visible-surface-picker.js": "cd387657d9b42578bbe62ad1ac6e6910326a12fadae414476a9959eb47cb09c4",
++        "windup-clearance.js": "87ea9537b4b7d941fd1deae4080cad74002edf004617e1bae480df74fda593a4",
++        "windup-cue.js": "dabaa2f88013c6b1cd2f44f2c7432917f6fc4ead64768682df8abf5564708b15",
++        "xr-arena-placement.js": "5e0fea245a3aadfe4d60ab61452b2ddb764b3f154b7ec0e6561f39dfa905bbac",
++        "xr-grab-feedback.js": "c93c569cfb07c68cf7417d8175f27d509e58548d7ce47646e33056e7888245e7",
++        "xr-hand-math.js": "d018944f1c34e360ad5840381eb5d117a4a9bb88e4649fb7ad51f5516ae8b3ab",
++        "xr-hands.js": "c39045dfe9036b71608aa2b893f476792b7d53ed92d4788b8a861975ac365d27",
++        "xr-palm-intent.js": "52c66284dfd7be9753064ca22f27bd08b90784124f40c93a397e5c787292bd67",
++        "xr-ui-poke.js": "d514d19dce00cdc70c1c85b9c46adec5e71283424b0916e72c1d3fb1cac40462"
++      },
++      "bundleSHA256": "5748c4d70e019f113c914e1f4ed8d64f0e9d34ac0feb78ab66c380aa5ac2df9e",
++      "snapshotLine": 46299,
++      "adapters": [
++        "Original GLBs with empty texture decode; no GPU",
++        "Mock DOM and WebXR; native Rapier",
++        "Read-only counters inserted in memory",
++        "Export render/advanceSimulation for deterministic tests"
++      ]
++    },
++    "candidate": {
++      "mode": "candidate",
++      "baselineSource": "7bf720e6b3b805c80fe082cfd65c1e1ac8e0d366",
++      "baselineDeployment": "02e7fdeff0d856b9c7868bfe75051258d3469c2a",
++      "sourceHashes": {
++        "anatomical-joints.js": "95c89d6eea7f2898ce87bcd4bcbe5a95e91311897b48ce2b4affb5a75164bf4d",
++        "arena-art.js": "8e6c8a852bf18c674afdfb3cca5a68b25f1af73226154aefccc324d1d61d6a39",
++        "army-formation.js": "dbe7a1ef3eddb87256291bca8138c74fbb8e758b2b8263fac6fc9ace02217c7e",
++        "battle-encounters.js": "3ccd193c6b7894cef2c7cbcfd54d6761e75e4aaa1014faf2ef53c4c9a237dfff",
++        "battle-outcome.js": "1fd4a5aa6f5adb0197da25b7125f271d4e2f81a8b3db51514fb8a7692b1bc018",
++        "battle-round.js": "003de5b790d90b08c7adffaee32f71d0748625bc624bf0ef08522ba23e4147c8",
++        "battle-start-gate.js": "b9e56b0c214ede2b0e2c13de280b91e8cc9e287b3a089c86afdf7ef6da77af54",
++        "bless-feedback.js": "dd924af72edf954ed596b05f94a11227d1f6d96f53ddfdcaf4110d1daa17ac61",
++        "carried-load-handoff.js": "61764035edb6100be4cf3752ee4818c36530f7bffd592e2019bfe70fa471f795",
++        "causal-strike-contact.js": "0578b259df9223f2cbdce91c37fc3169972eaa808283a5ff2c84b9b1bd649fa0",
++        "character-mesh.js": "bc00a0b4f008ec68d239c2679fe9901f02f233c4ca39dba6b7ce4d1ddeca7007",
++        "civilian-art.js": "dad24abc7e537310fde13fc7b2fb73a156a3b473c1959e3acfd6511da25c1453",
++        "civilian-ground-point.js": "355cda13097c0e79079c951c054f095be5604205a70b81e1faf22b15a2415b29",
++        "civilian-motion.js": "dc26a155d94dd4c1daa9d9ef054c83ac48bb580818768303f73353603ec98786",
++        "civilian-navigation.js": "38764c6662ed1b448ef5168a4e5e8914b008f2b6a4e7e4efc595b742a3a45555",
++        "civilian-placement-blend.js": "6b2cc3c905d9ebc4b9828d645eb5964458559612709df068e595a10a2ec50cb7",
++        "civilian-quarry-contact.js": "81b101a3211f936d7a097bb04f3c7965055cfd20d45dd496cee88c7b830eb070",
++        "civilian-traffic.js": "41ea3ca5c8ba57af6d9da416f2fc04864ea65cecc78063d1f5b2eab67f9a78be",
++        "combat-feedback.js": "2288c0637c1a3637f614af6bb2df0e8ab80cd438e19d2e62fcdca9b1a5731ea9",
++        "contact-audio.js": "848f28676c51d49cf877a4027c638af366e7f8cac2f05865c22ad10726153457",
++        "critical-feedback-profile.js": "2f66d821d5562a1efb5947ba8d7a90f7644629ac5d6212aef592d38a0c6ae84b",
++        "crowd-approach.js": "e09d6b2c9e87d637b120626d196a717c5bda4f1446c77f07206502b058d77858",
++        "deformed-query-positions.js": "6969f9b16086ad594a78112ec4e03ac72b11511a82f2cb463b01678570a4b8ea",
++        "desktop-bless-intent.js": "08bc6d831fe423a8af7cf42725740bfc9b5733030ccc4ff8226a68e93d0b1ee3",
++        "desktop-camera-framing.js": "d789a6f5d8d7a74d327a7f8e0eae748a4fb14ec9323914bc9f5a91b0d2a6eaad",
++        "desktop-drag-space.js": "a548f27dea4aacdd854f0e22cfa563d7a98f146cad1b54a259261500ad3c2c3b",
++        "desktop-grab-intent.js": "fb7bd55e1e3a65e0f4994bc48b36e995e3e170f76111f3cffd9948cc16cc9634",
++        "desktop-hand-motion.js": "8c3474763782ea7457b8e93a57d31317324309fe6aec895df8223ef2623d13dd",
++        "desktop-hud-layout.js": "a0221ea2b638696de5b0ac68fc58f0b8305c3c73d3d6ec819ea3e29e6b6e3262",
++        "desktop-palm-presentation.js": "64af1abc2468de3b84c7e91b93620794911019db3f77c1cee7edae3e9c875eb6",
++        "desktop-power-hand.js": "6b6f6590f0cc1fad75a8832199e36af16b58b8dad713a3b9b45d648eb92bd718",
++        "desktop-settlement-navigation.js": "0d5286f338fae628a5f12d35d5fe7ca5bb520a29024456c91926f47d25b4ee32",
++        "fixed-step.js": "dd940d52e6efbea62d0cbf16b470f5af22a86f1ef673ca2fd91fbebfc165e17c",
++        "floating-world.js": "cdb7ace59a4c6fd3f4fdae9d16e5a8636dc4e5dfebeb5871c36a1604e3f006c0",
++        "garden-improvement-art.js": "d29064a3b10c07d8ddf751cf11f7dccc606d3ed7b68fae286223885c1ee04bdd",
++        "god-powers.js": "f599e7849d7b84e6049c1b9edd8b16c3be0d184b78dc455c07cd45dfe48b01eb",
++        "gpu-hud.js": "9dc413882e5b50d98043c337273795cb9a4fc5caf8ba3137e720127eec77d1c7",
++        "hand-contact-adapter.js": "6040bd58ee3adb597aea54f147b4015c2cb9d746e5706f195037e63dfa243847",
++        "hand-motion.js": "d2057bb5593c2fa41d9d0a3cb751406d9637170d9b2f452ab80f71d4204badfe",
++        "held-food-destination.js": "22c248bd6693992885e95c297c6daf043260135ef7f9425d16bcfa80d374efc4",
++        "hero-art.js": "b0beb133883a7202fb53230373f7820d58636c0ebc45082ff54eb3abf7cd3e0f",
++        "hit-knockback.js": "70f62968016a0ddef8abdf78f239730bb3f241ac82bcaf88574f08711e77243f",
++        "lightning-feedback.js": "4f58aa1dbc1ebb43d611847d421beac2846595d0489cbb25e48b016c6a9ecbff",
++        "main.js": "a96f2fd48dcd318bf490bffadac09cb3247e620838d755049f66dc34b5dd06a8",
++        "melee-profile.js": "7365320a158bfa12d685d5bf74ba821f9a9f899fee446b14b7d09cf18f122d71",
++        "paired-rival-hands.js": "b57078a3ed9d8e81861c9525adaadd661b90752b1c5d2007c95fd5af35a9946a",
++        "palm-outcome-copy.js": "6a0322bc5a7394ace3218cbcd64e75d5382d1bd8587c3bfa5d105aaa15cf0122",
++        "pending-physical-delivery.js": "9a0e70f2b3f1eadc35cb90f363b12aacb14f554e259d2bddc53fcbcefbf3d69b",
++        "physics.js": "e475e6f97ba17b4ffbf5fa2a010fcc8cd713a28b1237f75a3bc6ba3fb530766b",
++        "player-palm-strike.js": "f3214f228b7816acd08a4303a838ab1c87ffa2c4e051b438958e3bd84a67339b",
++        "player-throw-impact.js": "5aa9d44e92ece88c89df118d0830b78f0b272134c2d100e16a91026f0ed214c1",
++        "power-combat-policy.js": "a58781ffc8fa2798ebb74432612cb9fb43647b22d50344a7d4804fd8659adcc5",
++        "power-feedback-layout.js": "26e996c04b66fdef6d7f3febf7d54bd36938267fa0044f84c06940b92332bbad",
++        "predictive-landing.js": "60fe87c151c453a9f1f19bea6d42fe2f001730584f43e1629dcda08658f633ac",
++        "quarry-safety.js": "54385a7c46498a2dec6e2b72dd5d54f3e1b46589c7c38f132f68f852b471fd90",
++        "reachable-club.js": "bc24d523b9d54629cc629fd604e4a40ef1059a2bf92078d0e0a1693397f686d5",
++        "resource-stone-picker.js": "bec4a352e9b9e4ff10bcedcde6c04e5696682dea557a327d0d310373235a8fae",
++        "rival-hand-appearance.js": "2e8777d7cda68e3594a2bfcbe2966bef5592e6b8fad914bf6be9856403360bf2",
++        "rival-hand-rigged.js": "a06c9286791cced19579458e8df18f7f5b9d62e69eb715eb334cd66adda1f076",
++        "rival-hand.js": "bf112ee2204e5d822d1e57254d360e988a985845312e86bbb8198058b457ffef",
++        "selection-cue.js": "4e048f00269c1650b34c9980178b54dfddde201a9a42ea36fd9208db105cf8c9",
++        "settlement-blessing.js": "c70470916005a2c26e8c63882ed9a89375a7d1b6fe5f4c770d3bf824ae39b236",
++        "settlement-cliff-art.js": "4221f9d2dfb878e65e85f9c25fc169301a6f66cfe9e957a727a7bc98bec243b3",
++        "settlement-defense.js": "204e6c3f94a426203d92332cee9ba637efed7de6adf111ed482ab398c141b0b3",
++        "settlement-economy.js": "1633fcacb30ec20da46cce96e663623cf307b8082c8d5e3e29a427f5d0100f7b",
++        "settlement-environment-art.js": "0ca40b0f04824291c2a71241315cae7ea858409ad3434ab2246b0f2f59d72d9d",
++        "settlement-food-art.js": "288f7f09bc2e7cd930177c226a52067a52b5159727aac600890c49b95db51fc6",
++        "settlement-food-hud.js": "818eabf7526c7e28f85f8c90816c9bf76af4edbc0486c8c04543bd0ed93adffe",
++        "settlement-hud.js": "cd0a97dcf7ab51835c291d4464c5d2b21af61bafd9152f40bbf6423bbd6df9d2",
++        "settlement-jobs.js": "9445c7aadf93d8590b5a1134013c22f4bce905a364e59b09807858823825ea4e",
++        "settlement-land-regions.js": "f888731a62186510344fd1a6775d140c4db0ecb8b7eeb212ef6f651d498d8ff3",
++        "settlement-main.js": "b585d121bc87b1eab6cc6985474abd04228f4a35a37b74f301569622d897c72d",
++        "settlement-minimal-hud.js": "3ffb74eb11658aecc2e6458eb81be6dda5499dae3c34ce03cd9b662b1cbd70ae",
++        "settlement-next-need.js": "eb94fef48fda4c753fe57bb8ab4fe988fe409bd59c5e70f51385e74ae112449d",
++        "settlement-quarry-geology.js": "e9c8f809a181d7e512355af84bb960f77a7f4d5eff088c1b9ff3eed4092196ce",
++        "settlement-raid.js": "4f9cb7b400c6c906981cb4697e11a94bede502ce36797fc581b3e4fd062498f2",
++        "settlement-recruit.js": "6781796f0a4285ad01b9289e5a49344816eb0659e49cc16ede2039d0582d737c",
++        "settlement-resource-art.js": "4412eef948447731e2203674c93f96fa794fa82a68319684ecbeba3a3bce953c",
++        "settlement-village-buildings.js": "e3e704497c828692bf4e1d3d5f92e45a77236729875bc0576746f610e7f19c4a",
++        "settlement-worker-feedback.js": "ba8e1d29a719dd397944960dcca4d6db12a762beb43ee45decaeec1e52a255c1",
++        "settlement-worker-orders.js": "194cce5455b17579bdefcef4613b7d871a1099e385a6bb08254dd1a6ddcdcc92",
++        "settlement-world-actions.js": "05461514c2b9a3a63c07dd59771d2ca31bda2eae9cbee20c846c484cf9df8144",
++        "settlement-world-cues.js": "225fc5ec68f53b6fae8187b7df0baaed111360b8e30fbf973ec667de53ecb2a8",
++        "settlement-world.js": "075e7fda02180bc83a462ce49d38cdc1f63d95d1035695dff17b8d6118604079",
++        "settlement-xr.js": "c1ada0a5f26cfae878fbcad23dd8536038b187c0961a587fe5427cc003a0db1a",
++        "shared-hero-visuals.js": "74037f4cd03e12812d64aecb8301d7baedcf2ad07c136833b74c12f442acb4b1",
++        "shield-hit-knockback.js": "2a64f9122fcc951cd93a58ffaab45cf4484c3f05987e64c5b4ed134649e8753f",
++        "shrine-campaign.js": "90ca7e8bb73ae4378f7cd3664d495c44011a5d3a22f8a666f81db97a7989031c",
++        "shrine-challenge.js": "d61806248666a154b259438e714230f750849133942762b0b282cdb2234c954c",
++        "shrine-objective-copy.js": "358989aad2bc48fc1c41024ad0e7a34e062465e7bd3e549b523e96564591e4e7",
++        "shrine-power-target.js": "f5c4b2710c319c0019fbb9cd69b4040277666de071bc9d4b7db03e7983a2aeec",
++        "shrine-pressure-cues.js": "b17764143569d75851478b796f46515c9d20d3916848dfdccf040de179858871",
++        "shrine-pressure-feedback.js": "ea04b7176c7f61b61649a1d7a4e9faa766d847ee323b23a34471732a0b998933",
++        "shrine-pressure-streams.js": "fba2dbe662c22574314409722d6d03d94e53755b0fd077157304dce96367f2d7",
++        "shrine-rival-intervention.js": "bd502291d29adadfe8baa94e79994ec63a693371327a69994b5027efb8040508",
++        "shrine-visual.js": "57c8feb62edb8e12cdd52fcc47e1a46a087af1f07c1683e1d1166b6d2c4df976",
++        "skinned-query-chunks.js": "7caa40672494611cb563f6d835974674d793f6b28caff4f620c3bb93910cd75e",
++        "startup-settle.js": "c5bd1558dcd1c7cfb68df22f05e3dee7231d7c29e92fb4778245c1911ed1f33a",
++        "static-scenery-batch.js": "366128d3bf3b69ff6a398777ff12ed3d33a3ce03925951a5c64ba86d73977e53",
++        "stone-columns.js": "63ab808245cea7ddd397b85271d1042fb38a6605016237902a5b4f79e440f04a",
++        "stone-hand-rig.js": "717f68f50e9cd882189d57e43cfb82398172eacad70d85a47c21e6c570548f4c",
++        "stone-impact-feedback.js": "2a2c39fa8d956c7f5c0ce56f2956978246ed0c4201fb7ff6e23812f19de45283",
++        "stranded-food-courier.js": "fa6a25b94325af04ce8b505b62dadf94d8534ff40ea7929d0d53c926db5bfa93",
++        "surface-support.js": "444e622441919e9507ae8b13ea9c5231fb293b1638d0a4fa42af2d5bed67546e",
++        "swept-melee.js": "f94fb65db32c9e7147c053000200d58b38c4504888d9e9c83a69ae75e0265592",
++        "terrain.js": "a025b5c86eaa5c304e6208ff7b482eb57036b98ed738bc3924fe4938ed1f6979",
++        "visible-surface-picker.js": "cd387657d9b42578bbe62ad1ac6e6910326a12fadae414476a9959eb47cb09c4",
++        "windup-clearance.js": "87ea9537b4b7d941fd1deae4080cad74002edf004617e1bae480df74fda593a4",
++        "windup-cue.js": "dabaa2f88013c6b1cd2f44f2c7432917f6fc4ead64768682df8abf5564708b15",
++        "xr-arena-placement.js": "5e0fea245a3aadfe4d60ab61452b2ddb764b3f154b7ec0e6561f39dfa905bbac",
++        "xr-grab-feedback.js": "c93c569cfb07c68cf7417d8175f27d509e58548d7ce47646e33056e7888245e7",
++        "xr-hand-math.js": "d018944f1c34e360ad5840381eb5d117a4a9bb88e4649fb7ad51f5516ae8b3ab",
++        "xr-hands.js": "c39045dfe9036b71608aa2b893f476792b7d53ed92d4788b8a861975ac365d27",
++        "xr-palm-intent.js": "52c66284dfd7be9753064ca22f27bd08b90784124f40c93a397e5c787292bd67",
++        "xr-ui-poke.js": "d514d19dce00cdc70c1c85b9c46adec5e71283424b0916e72c1d3fb1cac40462"
++      },
++      "bundleSHA256": "2c999e925acad1fd5e5c45f1593af36734f488bbe458d5c5bf2cd7cf2262f88a",
++      "snapshotLine": 46440,
++      "adapters": [
++        "Original GLBs with empty texture decode; no GPU",
++        "Mock DOM and WebXR; native Rapier",
++        "Read-only counters inserted in memory",
++        "Export render/advanceSimulation for deterministic tests"
++      ]
++    }
++  },
++  "rows": [
++    {
++      "name": "cold-desktop-render-72",
++      "physicsSteps": 0,
++      "simulatedSeconds": 0,
++      "baseline": {
++        "snapshots": 144,
++        "economyUpdates": 0,
++        "commands": 0,
++        "beforeSteps": 0,
++        "observations": 0,
++        "renders": 72,
++        "hudUpdates": 72,
++        "worldCueUpdates": 144
++      },
++      "candidate": {
++        "snapshots": 72,
++        "economyUpdates": 0,
++        "commands": 0,
++        "beforeSteps": 0,
++        "observations": 0,
++        "renders": 72,
++        "hudUpdates": 72,
++        "worldCueUpdates": 144
++      },
++      "unprofiledDesktopCPUms": {
++        "baseline": 30.9912,
++        "candidate": 26.2445
++      },
++      "sampledAllocations": {
++        "baseline": {
++          "estimatedTotalBytes": 32769848,
++          "estimatedEconomySnapshotBytes": 18147304,
++          "samples": 1997,
++          "samplingInterval": 16384,
++          "includesCollectedObjects": true
++        },
++        "candidate": {
++          "estimatedTotalBytes": 25373936,
++          "estimatedEconomySnapshotBytes": 10737304,
++          "samples": 1546,
++          "samplingInterval": 16384,
++          "includesCollectedObjects": true
++        }
++      },
++      "stateSHA256": "154a5cb96fd37fa40db774588d976a953bc600e6292aee92c6bcab29344f0944",
++      "physicsSHA256": "6c9462df3a3caf9ad2dbf8176d595307903be8c1528edce85d1ea24dac0cc22f"
++    },
++    {
++      "name": "desktop-running-120",
++      "physicsSteps": 238,
++      "simulatedSeconds": 1.9833333333333287,
++      "baseline": {
++        "snapshots": 1552,
++        "economyUpdates": 476,
++        "commands": 0,
++        "beforeSteps": 238,
++        "observations": 476,
++        "renders": 120,
++        "hudUpdates": 120,
++        "worldCueUpdates": 240
++      },
++      "candidate": {
++        "snapshots": 596,
++        "economyUpdates": 476,
++        "commands": 0,
++        "beforeSteps": 238,
++        "observations": 476,
++        "renders": 120,
++        "hudUpdates": 120,
++        "worldCueUpdates": 240
++      },
++      "unprofiledDesktopCPUms": {
++        "baseline": 422.0356,
++        "candidate": 392.1551
++      },
++      "sampledAllocations": {
++        "baseline": {
++          "estimatedTotalBytes": 386593472,
++          "estimatedEconomySnapshotBytes": 171604608,
++          "samples": 23525,
++          "samplingInterval": 16384,
++          "includesCollectedObjects": true
++        },
++        "candidate": {
++          "estimatedTotalBytes": 283915600,
++          "estimatedEconomySnapshotBytes": 68573976,
++          "samples": 17277,
++          "samplingInterval": 16384,
++          "includesCollectedObjects": true
++        }
++      },
++      "stateSHA256": "8f4e248dfec4344da0b5054e7817473a0171405bcd9ef6904c147006ebf2686d",
++      "physicsSHA256": "921f8a59c5542ed397abf098e4f8ef0f15cdb954a0750f9e8211c17c3423065c"
++    },
++    {
++      "name": "desktop-paused-72",
++      "physicsSteps": 0,
++      "simulatedSeconds": 0,
++      "baseline": {
++        "snapshots": 144,
++        "economyUpdates": 0,
++        "commands": 0,
++        "beforeSteps": 0,
++        "observations": 0,
++        "renders": 72,
++        "hudUpdates": 72,
++        "worldCueUpdates": 144
++      },
++      "candidate": {
++        "snapshots": 72,
++        "economyUpdates": 0,
++        "commands": 0,
++        "beforeSteps": 0,
++        "observations": 0,
++        "renders": 72,
++        "hudUpdates": 72,
++        "worldCueUpdates": 144
++      },
++      "unprofiledDesktopCPUms": {
++        "baseline": 18.7023,
++        "candidate": 15.4783
++      },
++      "sampledAllocations": {
++        "baseline": null,
++        "candidate": null
++      },
++      "stateSHA256": "cb960ede6c14c525ea40c21a7ffd10c8d8621b7f4d15be43dea23f87b30a9caf",
++      "physicsSHA256": "921f8a59c5542ed397abf098e4f8ef0f15cdb954a0750f9e8211c17c3423065c"
++    },
++    {
++      "name": "commands-next-frame",
++      "physicsSteps": 2,
++      "simulatedSeconds": 0.016666666666666607,
++      "baseline": {
++        "snapshots": 13,
++        "economyUpdates": 4,
++        "commands": 0,
++        "beforeSteps": 2,
++        "observations": 4,
++        "renders": 1,
++        "hudUpdates": 1,
++        "worldCueUpdates": 2
++      },
++      "candidate": {
++        "snapshots": 5,
++        "economyUpdates": 4,
++        "commands": 0,
++        "beforeSteps": 2,
++        "observations": 4,
++        "renders": 1,
++        "hudUpdates": 1,
++        "worldCueUpdates": 2
++      },
++      "unprofiledDesktopCPUms": {
++        "baseline": 6.8787,
++        "candidate": 7.4383
++      },
++      "sampledAllocations": {
++        "baseline": null,
++        "candidate": null
++      },
++      "stateSHA256": "8a8afafc9b531265bb3cdf85322f299fa4e564683a5160cd032999b48acd4c8e",
++      "physicsSHA256": "1f42571aa7fdbc9b80bda56e085e07a37d957db67e08655258f611536c021625"
++    },
++    {
++      "name": "xr-placement-72",
++      "physicsSteps": 0,
++      "simulatedSeconds": 0,
++      "baseline": {
++        "snapshots": 288,
++        "economyUpdates": 0,
++        "commands": 0,
++        "beforeSteps": 0,
++        "observations": 0,
++        "renders": 72,
++        "hudUpdates": 72,
++        "worldCueUpdates": 144
++      },
++      "candidate": {
++        "snapshots": 72,
++        "economyUpdates": 0,
++        "commands": 0,
++        "beforeSteps": 0,
++        "observations": 0,
++        "renders": 72,
++        "hudUpdates": 0,
++        "worldCueUpdates": 144
++      },
++      "unprofiledDesktopCPUms": {
++        "baseline": 31.1381,
++        "candidate": 19.9925
++      },
++      "sampledAllocations": {
++        "baseline": {
++          "estimatedTotalBytes": 43778584,
++          "estimatedEconomySnapshotBytes": 30022504,
++          "samples": 2649,
++          "samplingInterval": 16384,
++          "includesCollectedObjects": true
++        },
++        "candidate": {
++          "estimatedTotalBytes": 18615888,
++          "estimatedEconomySnapshotBytes": 8575792,
++          "samples": 1133,
++          "samplingInterval": 16384,
++          "includesCollectedObjects": true
++        }
++      },
++      "stateSHA256": "5d2864aee453c38d1bbef97bc39097094db666b11c90730b098cb72fa842e5bb",
++      "physicsSHA256": "1f42571aa7fdbc9b80bda56e085e07a37d957db67e08655258f611536c021625"
++    },
++    {
++      "name": "xr-running-360",
++      "physicsSteps": 600,
++      "simulatedSeconds": 5.000000000000146,
++      "baseline": {
++        "snapshots": 4200,
++        "economyUpdates": 1200,
++        "commands": 0,
++        "beforeSteps": 600,
++        "observations": 1200,
++        "renders": 360,
++        "hudUpdates": 360,
++        "worldCueUpdates": 720
++      },
++      "candidate": {
++        "snapshots": 1560,
++        "economyUpdates": 1200,
++        "commands": 0,
++        "beforeSteps": 600,
++        "observations": 1200,
++        "renders": 360,
++        "hudUpdates": 0,
++        "worldCueUpdates": 720
++      },
++      "unprofiledDesktopCPUms": {
++        "baseline": 676.2457,
++        "candidate": 601.9518
++      },
++      "sampledAllocations": {
++        "baseline": {
++          "estimatedTotalBytes": 872738592,
++          "estimatedEconomySnapshotBytes": 432365976,
++          "samples": 53126,
++          "samplingInterval": 16384,
++          "includesCollectedObjects": true
++        },
++        "candidate": {
++          "estimatedTotalBytes": 614322632,
++          "estimatedEconomySnapshotBytes": 164976128,
++          "samples": 37404,
++          "samplingInterval": 16384,
++          "includesCollectedObjects": true
++        }
++      },
++      "stateSHA256": "b20a879580dbc4c3751d57fcf40f593a9e014c4b720d8bd7124324a7c9e9da70",
++      "physicsSHA256": "537778b97af460fd190bdcdd874a3f7d11e62a35d88e9c0df54fba5a95a107f3"
++    },
++    {
++      "name": "xr-paused-72",
++      "physicsSteps": 0,
++      "simulatedSeconds": 0,
++      "baseline": {
++        "snapshots": 144,
++        "economyUpdates": 0,
++        "commands": 0,
++        "beforeSteps": 0,
++        "observations": 0,
++        "renders": 72,
++        "hudUpdates": 72,
++        "worldCueUpdates": 144
++      },
++      "candidate": {
++        "snapshots": 72,
++        "economyUpdates": 0,
++        "commands": 0,
++        "beforeSteps": 0,
++        "observations": 0,
++        "renders": 72,
++        "hudUpdates": 0,
++        "worldCueUpdates": 144
++      },
++      "unprofiledDesktopCPUms": {
++        "baseline": 20.8907,
++        "candidate": 17.1201
++      },
++      "sampledAllocations": {
++        "baseline": {
++          "estimatedTotalBytes": 34130552,
++          "estimatedEconomySnapshotBytes": 16580528,
++          "samples": 2015,
++          "samplingInterval": 16384,
++          "includesCollectedObjects": true
++        },
++        "candidate": {
++          "estimatedTotalBytes": 20636992,
++          "estimatedEconomySnapshotBytes": 7609472,
++          "samples": 1237,
++          "samplingInterval": 16384,
++          "includesCollectedObjects": true
++        }
++      },
++      "stateSHA256": "35c5327eb891cae686dc1ca6a3856586652d04d6625ec5057f3830c43788d582",
++      "physicsSHA256": "537778b97af460fd190bdcdd874a3f7d11e62a35d88e9c0df54fba5a95a107f3"
++    },
++    {
++      "name": "xr-gap-80ms",
++      "physicsSteps": 8,
++      "simulatedSeconds": 0.06666666666666998,
++      "baseline": {
++        "snapshots": 37,
++        "economyUpdates": 16,
++        "commands": 0,
++        "beforeSteps": 8,
++        "observations": 16,
++        "renders": 1,
++        "hudUpdates": 1,
++        "worldCueUpdates": 2
++      },
++      "candidate": {
++        "snapshots": 17,
++        "economyUpdates": 16,
++        "commands": 0,
++        "beforeSteps": 8,
++        "observations": 16,
++        "renders": 1,
++        "hudUpdates": 0,
++        "worldCueUpdates": 2
++      },
++      "unprofiledDesktopCPUms": {
++        "baseline": 6.8516,
++        "candidate": 6.3576
++      },
++      "sampledAllocations": {
++        "baseline": null,
++        "candidate": null
++      },
++      "stateSHA256": "723ff60f8021b5f1d802ee0e3af0c8fc5c6f435d449524e059aeee4ed54e3990",
++      "physicsSHA256": "a75bf4e0800ba14e02405242c6dc3cd4700f527da981f122b90789673433cb82"
++    },
++    {
++      "name": "desktop-after-xr-exit",
++      "physicsSteps": 2,
++      "simulatedSeconds": 0.016666666666667496,
++      "baseline": {
++        "snapshots": 13,
++        "economyUpdates": 4,
++        "commands": 0,
++        "beforeSteps": 2,
++        "observations": 4,
++        "renders": 1,
++        "hudUpdates": 1,
++        "worldCueUpdates": 2
++      },
++      "candidate": {
++        "snapshots": 5,
++        "economyUpdates": 4,
++        "commands": 0,
++        "beforeSteps": 2,
++        "observations": 4,
++        "renders": 1,
++        "hudUpdates": 1,
++        "worldCueUpdates": 2
++      },
++      "unprofiledDesktopCPUms": {
++        "baseline": 2.554,
++        "candidate": 2.164
++      },
++      "sampledAllocations": {
++        "baseline": null,
++        "candidate": null
++      },
++      "stateSHA256": "efdef64033425a208ca35801f7cb48f1be29ab42dfeddff7e2d364f8eca6f5f4",
++      "physicsSHA256": "521851fe25a75d204fb31d556431c00eb51644f196a77d7f04d5c74a9c039035"
++    },
++    {
++      "name": "desktop-economy-1800",
++      "physicsSteps": 3600,
++      "simulatedSeconds": 29.99999999999839,
++      "baseline": {
++        "snapshots": 23400,
++        "economyUpdates": 7200,
++        "commands": 0,
++        "beforeSteps": 3600,
++        "observations": 7200,
++        "renders": 1800,
++        "hudUpdates": 1800,
++        "worldCueUpdates": 3600
++      },
++      "candidate": {
++        "snapshots": 9000,
++        "economyUpdates": 7200,
++        "commands": 0,
++        "beforeSteps": 3600,
++        "observations": 7200,
++        "renders": 1800,
++        "hudUpdates": 1800,
++        "worldCueUpdates": 3600
++      },
++      "unprofiledDesktopCPUms": {
++        "baseline": 12086.5877,
++        "candidate": 11333.2331
++      },
++      "sampledAllocations": {
++        "baseline": null,
++        "candidate": null
++      },
++      "stateSHA256": "29853cf9593b6ef5522e2a6eafc0124e08c7abf97529575abad3226959633b2b",
++      "physicsSHA256": "dd1c0d6edffef89585f95cb8cc1b46f0e72d79ed606f11271a8bc86be6f4f9f5"
++    },
++    {
++      "name": "lost-load-command",
++      "physicsSteps": 2,
++      "simulatedSeconds": 0.01666666666666572,
++      "baseline": {
++        "snapshots": 15,
++        "economyUpdates": 4,
++        "commands": 1,
++        "beforeSteps": 2,
++        "observations": 4,
++        "renders": 1,
++        "hudUpdates": 1,
++        "worldCueUpdates": 2
++      },
++      "candidate": {
++        "snapshots": 7,
++        "economyUpdates": 4,
++        "commands": 1,
++        "beforeSteps": 2,
++        "observations": 4,
++        "renders": 1,
++        "hudUpdates": 1,
++        "worldCueUpdates": 2
++      },
++      "unprofiledDesktopCPUms": {
++        "baseline": 37.3545,
++        "candidate": 36.9034
++      },
++      "sampledAllocations": {
++        "baseline": null,
++        "candidate": null
++      },
++      "stateSHA256": "eb8d35f4dcdadeb686d0832871490193eccf07f76499f63755271513a7ab1623",
++      "physicsSHA256": "b9df30ff7228cc037fa2e9901d86a9900beb25f2d9a4898b176c5e1965940677"
++    },
++    {
++      "name": "terminal-transition",
++      "physicsSteps": 2,
++      "simulatedSeconds": 0.01666666666666572,
++      "baseline": {
++        "snapshots": 17,
++        "economyUpdates": 4,
++        "commands": 3,
++        "beforeSteps": 2,
++        "observations": 4,
++        "renders": 1,
++        "hudUpdates": 1,
++        "worldCueUpdates": 2
++      },
++      "candidate": {
++        "snapshots": 11,
++        "economyUpdates": 4,
++        "commands": 3,
++        "beforeSteps": 2,
++        "observations": 4,
++        "renders": 1,
++        "hudUpdates": 1,
++        "worldCueUpdates": 2
++      },
++      "unprofiledDesktopCPUms": {
++        "baseline": 9.2053,
++        "candidate": 6.9607
++      },
++      "sampledAllocations": {
++        "baseline": null,
++        "candidate": null
++      },
++      "stateSHA256": "e5cc9d8cf972102956ba2f2dd71fa9c2c4227fd276258c9a1fc7df757c562d0c",
++      "physicsSHA256": "74e3ff688414030365dd419475c15d3095b7ad283dd0a020d2703e660ec4d6bc"
++    },
++    {
++      "name": "terminal-held-72",
++      "physicsSteps": 0,
++      "simulatedSeconds": 0,
++      "baseline": {
++        "snapshots": 216,
++        "economyUpdates": 0,
++        "commands": 0,
++        "beforeSteps": 0,
++        "observations": 0,
++        "renders": 72,
++        "hudUpdates": 72,
++        "worldCueUpdates": 144
++      },
++      "candidate": {
++        "snapshots": 72,
++        "economyUpdates": 0,
++        "commands": 0,
++        "beforeSteps": 0,
++        "observations": 0,
++        "renders": 72,
++        "hudUpdates": 72,
++        "worldCueUpdates": 144
++      },
++      "unprofiledDesktopCPUms": {
++        "baseline": 23.6884,
++        "candidate": 18.78
++      },
++      "sampledAllocations": {
++        "baseline": null,
++        "candidate": null
++      },
++      "stateSHA256": "3068c5b59b3af43d172621735f85cce9d8839a8bf59a9e79d5ce7a0ad36692ed",
++      "physicsSHA256": "74e3ff688414030365dd419475c15d3095b7ad283dd0a020d2703e660ec4d6bc"
++    }
++  ]
++}
+\ No newline at end of file
+diff --git a/qa/performance/evidence/geometry-batching.json b/qa/performance/evidence/geometry-batching.json
+new file mode 100644
+index 0000000..17535a7
+--- /dev/null
++++ b/qa/performance/evidence/geometry-batching.json
+@@ -0,0 +1,69 @@
++{
++  "pass": true,
++  "batches": 6,
++  "comparedVertices": 5736,
++  "physics": "Byte-identical serialized Rapier worlds",
++  "states": [
++    {
++      "fraction": 1,
++      "baseline": {
++        "draws": 46,
++        "triangles": 3124
++      },
++      "candidate": {
++        "draws": 19,
++        "triangles": 3124
++      },
++      "rayQueries": 28
++    },
++    {
++      "fraction": 0.8,
++      "baseline": {
++        "draws": 44,
++        "triangles": 3004
++      },
++      "candidate": {
++        "draws": 19,
++        "triangles": 3004
++      },
++      "rayQueries": 28
++    },
++    {
++      "fraction": 0.5,
++      "baseline": {
++        "draws": 40,
++        "triangles": 2764
++      },
++      "candidate": {
++        "draws": 19,
++        "triangles": 2764
++      },
++      "rayQueries": 28
++    },
++    {
++      "fraction": 0.2,
++      "baseline": {
++        "draws": 36,
++        "triangles": 2524
++      },
++      "candidate": {
++        "draws": 19,
++        "triangles": 2524
++      },
++      "rayQueries": 28
++    },
++    {
++      "fraction": 0,
++      "baseline": {
++        "draws": 33,
++        "triangles": 2344
++      },
++      "candidate": {
++        "draws": 17,
++        "triangles": 2344
++      },
++      "rayQueries": 28
++    }
++  ],
++  "scope": "CPU geometry, colors, normals, bounds, visibility/draw-range, surface rays and disposal. Draw counts are scene candidates here, not actual renderer counters."
++}
+\ No newline at end of file
+diff --git a/qa/performance/evidence/native-summary.json b/qa/performance/evidence/native-summary.json
+new file mode 100644
+index 0000000..deb873d
+--- /dev/null
++++ b/qa/performance/evidence/native-summary.json
+@@ -0,0 +1,39 @@
++{
++  "pass": true,
++  "scope": "Production Village bridge callbacks and native Rapier in non-rendering mocked DOM/WebXR. No browser, GPU, real permissions, HMD tracking, performance or comfort claims.",
++  "identity": {
++    "sourceFiles": 115,
++    "testFiles": 10,
++    "runtimeAssets": 3,
++    "settlementMainSHA256": "72dc1a57d4c318fa0c687476e04369216ef98f07a1d91f15b3d70394c0d81ee7",
++    "deliveredHTMLSHA256": "02362b3e8a92a4225ca05ec01377928b00de266a4354bdbf63cd41869e5dbf1d",
++    "unchangedDuringRun": true,
++    "changed": []
++  },
++  "runs": [
++    {
++      "command": "node qa/xr-village/build-native.cjs",
++      "status": 0
++    },
++    {
++      "command": "node qa/xr-village/transformed-picker.test.mjs",
++      "status": 0
++    },
++    {
++      "command": "node qa/xr-village/bridge-lifecycle.test.mjs",
++      "status": 0
++    },
++    {
++      "command": "node qa/xr-village/native-interactions.test.mjs",
++      "status": 0
++    },
++    {
++      "command": "node qa/xr-village/native-placement.test.mjs",
++      "status": 0
++    },
++    {
++      "command": "node qa/xr-village/hand-ui.test.mjs",
++      "status": 0
++    }
++  ]
++}
+\ No newline at end of file
+diff --git a/qa/performance/evidence/pixel-comparison.json b/qa/performance/evidence/pixel-comparison.json
+new file mode 100644
+index 0000000..e68e402
+--- /dev/null
++++ b/qa/performance/evidence/pixel-comparison.json
+@@ -0,0 +1,7 @@
++{
++  "scope": "Full matched 1280x720 screenshots after asynchronous XR support probe settles",
++  "comparedPixels": 921600,
++  "changedPixels": 8,
++  "maxChannelDifference": 23,
++  "meanAbsoluteChannelDifference": 0.00010054976851851852
++}
+\ No newline at end of file
+diff --git a/qa/performance/run-checks.mjs b/qa/performance/run-checks.mjs
+new file mode 100644
+index 0000000..9837ce1
+--- /dev/null
++++ b/qa/performance/run-checks.mjs
+@@ -0,0 +1,28 @@
++import assert from 'node:assert/strict';
++import fs from 'node:fs';
++import path from 'node:path';
++import {fileURLToPath} from 'node:url';
++import {spawnSync} from 'node:child_process';
++const dir=path.dirname(fileURLToPath(import.meta.url)),root=path.resolve(dir,'../..');
++function run(...args){const r=spawnSync(process.execPath,args,{cwd:root,encoding:'utf8',maxBuffer:16*1024*1024});process.stdout.write(r.stdout);process.stderr.write(r.stderr);assert.equal(r.status,0,args.join(' '));}
++run(path.join(dir,'economy-status.test.mjs'));
++run(path.join(dir,'build.cjs'));
++for(const suffix of [[],['sample']])for(const mode of ['baseline','candidate'])run('--expose-gc',path.join(dir,'scenario.mjs'),mode,...suffix);
++const read=name=>JSON.parse(fs.readFileSync(path.join(dir,'generated',name+'.json')));
++const b=read('baseline'),c=read('candidate'),bs=read('baseline-sample'),cs=read('candidate-sample');
++const rows=c.rows.map((row,i)=>{
++ const baseline=b.rows[i];assert.equal(row.name,baseline.name);
++ assert.deepEqual(row.state,baseline.state,row.name+' complete public state');
++ assert.equal(row.physicsSHA256,baseline.physicsSHA256,row.name+' serialized Rapier world');
++ if(row.hud)assert.deepEqual(row.hud,baseline.hud,'Desktop HUD refreshed after XR exit');
++ for(const key of ['economyUpdates','commands','beforeSteps','observations','renders','worldCueUpdates'])assert.equal(row.counts[key],baseline.counts[key],row.name+' '+key);
++ assert(row.counts.snapshots<baseline.counts.snapshots,row.name+' fewer clones');
++ for(const report of [bs,cs]){assert.deepEqual(report.rows[i].state,row.state,'Sampling preserves deterministic state');assert.equal(report.rows[i].physicsSHA256,row.physicsSHA256);}
++ return{name:row.name,physicsSteps:row.physicsSteps,simulatedSeconds:row.simulatedSeconds,baseline:baseline.counts,candidate:row.counts,unprofiledDesktopCPUms:{baseline:baseline.elapsedMs,candidate:row.elapsedMs},sampledAllocations:{baseline:bs.rows[i].allocation,candidate:cs.rows[i].allocation},stateSHA256:row.stateSHA256,physicsSHA256:row.physicsSHA256};
++});
++const identities={baseline:read('baseline-identity'),candidate:read('candidate-identity')};
++const changedModules=Object.keys(identities.candidate.sourceHashes).filter(name=>identities.baseline.sourceHashes[name]!==identities.candidate.sourceHashes[name]);
++assert.deepEqual(changedModules,['settlement-economy.js','settlement-food-art.js','settlement-main.js','settlement-quarry-geology.js','static-scenery-batch.js']);
++const report={pass:true,scope:c.scope,comparison:'Exact complete public-state JSON and Rapier snapshot SHA256 at every phase; CPU timings and sampled allocation estimates are host-only, noisy and not acceptance thresholds.',changedModules,identities,rows};
++fs.writeFileSync(path.join(dir,'generated/summary.json'),JSON.stringify(report,null,2));
++console.log(JSON.stringify({pass:true,comparedPhases:rows.length,changedModules}));
+diff --git a/qa/performance/scenario.mjs b/qa/performance/scenario.mjs
+new file mode 100644
+index 0000000..d4b165e
+--- /dev/null
++++ b/qa/performance/scenario.mjs
+@@ -0,0 +1,87 @@
++import assert from 'node:assert/strict';
++import fs from 'node:fs';
++import crypto from 'node:crypto';
++import {Session as InspectorSession} from 'node:inspector/promises';
++import {controls,Frame,pose,handSource,handPoints,flush} from '../xr-village/dom-xr-fixture.mjs';
++const mode=process.argv[2],sample=process.argv[3]==='sample';
++assert(['baseline','candidate'].includes(mode));
++let now=1000;Object.defineProperty(globalThis,'performance',{value:{now:()=>now},configurable:true});
++location.search=''; // Exercise the production animation callback and accumulator.
++globalThis.__perf={snapshots:0,economyUpdates:0,commands:0,beforeSteps:0,observations:0,renders:0,hudUpdates:0,worldCueUpdates:0};
++const app=await import(`./generated/${mode}.mjs`);await app.ready;await flush();
++const qa=SETTLEMENTQA,c=qa.context,T=c.THREE,xr=c.villageXR,rows=[];
++const hash=value=>crypto.createHash('sha256').update(value).digest('hex');
++for(const [object,method,count]of [[c.hud,'update','hudUpdates'],[c.worldCues,'update','worldCueUpdates']]){
++ const original=object[method];object[method]=function(...args){__perf[count]++;return original.apply(this,args);};
++}
++const inspector=new InspectorSession();if(sample)inspector.connect();
++const identity=JSON.parse(fs.readFileSync(new URL(`./generated/${mode}-identity.json`,import.meta.url)));
++const viewer=pose({x:.2,y:1.65,z:.1}),emptyFrame=new Frame({viewer});
++function frames(n,hz=60,frame=null){for(let i=0;i<n;i++){now+=1000/hz;c.renderer.frame(now,frame);}}
++function digest(){
++ const s=qa.state();
++ // HUD is intentionally stale while hidden. All gameplay and world-space UI
++ // state remains comparable; desktop HUD is compared separately after exit.
++ return{stateSHA256:hash(JSON.stringify(s)),physicsSHA256:hash(Buffer.from(c.world.takeSnapshot())),state:s};
++}
++function allocations(profile){
++ let total=0,economySnapshot=0;
++ function visit(node,within=false){
++  const f=node.callFrame;within ||= f.functionName==='snapshot'&&f.url.endsWith('/'+mode+'.mjs');
++  total+=node.selfSize;if(within)economySnapshot+=node.selfSize;
++  for(const child of node.children)visit(child,within);
++ }visit(profile.head);
++ return{estimatedTotalBytes:total,estimatedEconomySnapshotBytes:economySnapshot,samples:profile.samples.length,samplingInterval:16384,includesCollectedObjects:true};
++}
++async function phase(name,run){
++ const before={...__perf},tick=c.sim.tick,time=c.sim.time;
++ const profile=sample&&['cold-desktop-render-72','desktop-running-120','xr-placement-72','xr-running-360','xr-paused-72'].includes(name);
++ if(profile){globalThis.gc?.();await inspector.post('HeapProfiler.startSampling',{samplingInterval:16384,includeObjectsCollectedByMajorGC:true,includeObjectsCollectedByMinorGC:true});}
++ const start=process.hrtime.bigint();run();const elapsedMs=Number(process.hrtime.bigint()-start)/1e6;
++ const allocation=profile?allocations((await inspector.post('HeapProfiler.stopSampling')).profile):null;
++ const counts=Object.fromEntries(Object.entries(__perf).map(([k,v])=>[k,v-before[k]]));
++ rows.push({name,counts,physicsSteps:c.sim.tick-tick,simulatedSeconds:c.sim.time-time,elapsedMs,allocation,...digest()});
++}
++await phase('cold-desktop-render-72',()=>frames(72,72));assert.equal(c.sim.time,0);
++qa.start();await phase('desktop-running-120',()=>frames(120));
++qa.pause(true);const pausedAt=c.sim.time;await phase('desktop-paused-72',()=>frames(72,72));assert.equal(c.sim.time,pausedAt);qa.pause(false);
++// Commands between renders must immediately appear in both presentation consumers.
++assert(qa.setRole('villager-0','stone').ok);assert(qa.setPriority('brace').ok);
++await phase('commands-next-frame',()=>frames(1));assert.equal(c.jobs.snapshot().prioritySiteId,'brace');
++const hand=handSource('left'),request=navigator.xr.requestSession;
++navigator.xr.requestSession=async(...args)=>{const s=await request(...args);s.inputSources=[hand];s.enabledFeatures=['local-floor','hand-tracking'];return s;};
++assert(await xr.startSession());xr.update(now,emptyFrame);
++const heldAt=c.sim.time;await phase('xr-placement-72',()=>frames(72,72,emptyFrame));assert.equal(c.sim.time,heldAt);
++function poke(id){
++ c.scene.updateMatrixWorld(true);const b=c.scene.getObjectByName('Village XR '+id);assert(b);
++ for(const z of [.075,.075,.075,.075,.045,.018]){const tip=b.localToWorld(new T.Vector3(0,0,z));const points=handPoints({x:tip.x-.055/2,y:tip.y,z:tip.z},.055);now+=1000/72;xr.update(now,new Frame({viewer,hands:new Map([[hand,points]])}));}
++}
++poke('done');assert(!xr.shouldHoldSimulation());
++// Flush setup's callback time before measurement, preserving the real catch-up cap.
++frames(1,72,emptyFrame);
++await phase('xr-running-360',()=>frames(360,72,emptyFrame));
++qa.pause(true);const xrPauseAt=c.sim.time;await phase('xr-paused-72',()=>frames(72,72,emptyFrame));assert.equal(c.sim.time,xrPauseAt);
++poke('pause');assert.equal(qa.state().paused,false,'World-space hand UI still resumes while desktop HUD is skipped');
++await phase('xr-gap-80ms',()=>{now+=80;c.renderer.frame(now,emptyFrame);});
++// Desktop resize during XR is deferred, but exit must refresh on its first render.
++globalThis.innerWidth=1440;globalThis.innerHeight=900;
++await xr.end();await phase('desktop-after-xr-exit',()=>frames(1));
++assert.equal(c.hud.layout.width,1440);assert.equal(c.hud.layout.height,900);
++rows.at(-1).hud=JSON.parse(JSON.stringify(c.hud.layout));
++// Native running simulation through resource creation, deliveries, a meal and raid.
++await phase('desktop-economy-1800',()=>frames(1800));
++assert(c.jobs.snapshot().meal.count>0,'Cross a real meal boundary');
++assert(c.jobs.snapshot().production.food>0,'Cross real resource production');
++const lost=c.loads.find(r=>r.owner===null);if(lost)lost.body.setTranslation({x:0,y:-20,z:0},true);
++await phase('lost-load-command',()=>frames(1));
++// A real zero-time loss observation ends this fixture; the next frame must hold.
++for(const v of c.villagers)if(v!==c.recruit.character)v.hp=0;
++await phase('terminal-transition',()=>frames(1));assert.equal(c.jobs.snapshot().outcome.status,'failed');
++const terminalAt=c.sim.time;await phase('terminal-held-72',()=>frames(72,72));assert.equal(c.sim.time,terminalAt);
++if(mode==='candidate'){
++ for(const r of rows)assert.equal(r.counts.hudUpdates,r.name.startsWith('xr-')?0:r.counts.renders,r.name+' HUD gate');
++}
++if(sample)inspector.disconnect();
++const report={pass:true,mode,sampled:sample,node:process.version,scope:'CPU-only deterministic production callbacks, native Rapier, mock DOM/WebXR. No browser rendering, physical input, audio, GPU or Quest timing. Inspector sampling is in-process with no listening port.',rows};
++fs.writeFileSync(new URL(`./generated/${mode}${sample?'-sample':''}.json`,import.meta.url),JSON.stringify(report,null,2));
++console.log(JSON.stringify({mode,sample,pass:true,phases:rows.length}));
+diff --git a/src/settlement-economy.js b/src/settlement-economy.js
+index fb185b1..46e4a3a 100644
+--- a/src/settlement-economy.js
++++ b/src/settlement-economy.js
+@@ -609,5 +609,7 @@ export function createSettlementEconomy(config) {
+     }
+     return { ok: true, ...snapshot(events) };
+   }
+-  reset(); return { update, command, snapshot, reset };
++  // Frame-loop gates only need this scalar; keep snapshots detached for callers
++  // that need the full public economy state.
++  reset(); return { update, command, snapshot, reset, outcomeStatus: () => outcome.status };
+ }
+diff --git a/src/settlement-food-art.js b/src/settlement-food-art.js
+index a34cdb5..fe24dbb 100644
+--- a/src/settlement-food-art.js
++++ b/src/settlement-food-art.js
+@@ -1,3 +1,4 @@
++import {batchStaticScenery} from './static-scenery-batch.js';
+ /** Original, source-built food mission scenery. All decoration is non-colliding. */
+ export function createSettlementFoodArt({THREE,scene,support}) {
+   const scenery=[],ownedGeometry=new Set(),ownedMaterial=new Set(),roots=[];
+@@ -19,6 +20,11 @@ export function createSettlementFoodArt({THREE,scene,support}) {
+   const box=(size,position,color,rotation)=>({geometry:new THREE.BoxGeometry(...size),position,color,rotation});
+   const ball=(radius,position,color,scale=[1,1,1])=>({geometry:new THREE.IcosahedronGeometry(radius,0),position,color,scale});
+   const mesh=(geometry,position,name,query=true)=>{const m=new THREE.Mesh(geometry,colorMaterial);m.name=name;m.position.set(...position);m.castShadow=true;m.receiveShadow=true;scene.add(m);roots.push(m);if(query)scenery.push(m);return m;};
++  const batch=(parts,name)=>{
++    const merged=batchStaticScenery({THREE,meshes:parts,parent:scene,name});
++    for(const part of parts){const i=scenery.indexOf(part);if(i>=0)scenery.splice(i,1);}
++    scenery.push(merged);roots.push(merged);ownedGeometry.add(merged.geometry);return merged;
++  };
+   const bundleParts=[];
+   bundleParts.push({geometry:new THREE.CylinderGeometry(.205,.16,.22,8),position:[0,-.055,0],color:colors.basket});
+   bundleParts.push({geometry:new THREE.TorusGeometry(.204,.035,4,8),position:[0,.047,0],rotation:[Math.PI/2,0,0],color:colors.rim});
+@@ -102,15 +108,19 @@ export function createSettlementFoodArt({THREE,scene,support}) {
+     for(const z of [-depth/2,depth/2])bedParts.push(box([width+.12,.11,.11],[0,.055,z],colors.stone));
+     for(const x of [-width/2,width/2])bedParts.push(box([.1,.11,depth],[x,.055,0],colors.lightStone));
+     mesh(buildGeometry(bedParts),[patchX,patchY+.015,patchZ],`${source.id}_low_bed`);
+-    const fruit=[];
++    const fruit=[],leaves=[];
+     for(let i=0;i<(garden?8:5);i++){
+       const x=patchX+(garden?((i%4)-1.5)*.39:((i%3)-1)*.72),z=patchZ+(garden?(Math.floor(i/4)-.5)*.34:(Math.floor(i/3)-.5)*.53),y=ground(x,z)+.04;
+-      const crop=mesh(cropGeometry,[x,y,z],`${source.id}_crop_${i}`);crop.rotation.y=i*1.7;crop.scale.setScalar(garden?1:.8);
++      const crop=mesh(cropGeometry,[x,y,z],`${source.id}_crop_${i}`);crop.rotation.y=i*1.7;crop.scale.setScalar(garden?1:.8);leaves.push(crop);
+       const berries=mesh(berryGeometry,[x,y,z],`${source.id}_produce_${i}`);berries.rotation.y=crop.rotation.y;berries.scale.copy(crop.scale);fruit.push(berries);
+     }
+     const sourceRing=buildGeometry([{geometry:new THREE.RingGeometry(.43,.47,24),rotation:[-Math.PI/2,0,0],color:garden?colors.leafLight:colors.path}]);
+     mesh(sourceRing,[source.x,source.y+.025,source.z],`${source.id}_gather_marker`,false);
+-    crops.push({source,fruit});
++    // Each bed is its own culling chunk. Produce already disappears in prefix
++    // order, so one draw range preserves that exact depletion without remeshing.
++    batch(leaves,`${source.id}_crop_batch`);
++    const produce=batch(fruit,`${source.id}_produce_batch`),verticesPerFruit=berryGeometry.attributes.position.count;
++    crops.push({source,fruit,produce,verticesPerFruit});
+   }
+   let stateKey='';
+   const nonnegative=value=>Number.isFinite(Number(value))?Math.max(0,Number(value)):0;
+@@ -122,13 +132,13 @@ export function createSettlementFoodArt({THREE,scene,support}) {
+     const key=JSON.stringify([food,stone,sources]);if(key===stateKey)return;stateKey=key;
+     storedMeals.forEach((m,i)=>{m.visible=i<Math.min(12,Math.floor(food));});
+     storedStone.forEach((m,i)=>{m.visible=i<Math.min(6,Math.floor(stone));});
+-    for(const {source,fruit} of crops){
++    for(const {source,fruit,produce,verticesPerFruit} of crops){
+       const sourceState=Array.isArray(sources)?sources.find(s=>s.id===source.id||(source.kind==='forage'&&['mainland','forage'].includes(s.id))||(source.kind==='garden'&&['island','garden'].includes(s.id))):sources[source.id];
+-      if(!sourceState){fruit.forEach(m=>{m.visible=true;});continue;}
++      if(!sourceState){produce.visible=true;produce.geometry.setDrawRange(0,fruit.length*verticesPerFruit);continue;}
+       const amount=sourceState.remaining??sourceState.stock??sourceState.quantity??sourceState.available;
+       const capacity=sourceState.capacity??sourceState.max??sourceState.initial??sourceState.reserve??amount;
+       const fraction=sourceState.depleted?0:amount==null?1:Math.min(1,nonnegative(amount)/Math.max(1,nonnegative(capacity)));
+-      fruit.forEach((m,i)=>{m.visible=i<Math.ceil(fruit.length*fraction);});
++      const count=Math.ceil(fruit.length*fraction);produce.visible=count>0;produce.geometry.setDrawRange(0,count*verticesPerFruit);
+     }
+   }
+   function createFoodLoadVisual(kindOrYield='food',yieldValue=1){
+diff --git a/src/settlement-main.js b/src/settlement-main.js
+index c4184f7..7407526 100644
+--- a/src/settlement-main.js
++++ b/src/settlement-main.js
+@@ -103,8 +103,10 @@ function beforeStep(dt){
+  quarrySafety.step(dt);
+  recruit.update(motion);
+  for(const r of loads){const p=r.body.translation();if(r.owner!=='delivered'&&r.owner!=='lost'&&!isBodyHeld(r.body)&&p.y < -10){const stone=jobs.snapshot().stones.find(s=>s.id===r.id);process(jobs.command({type:'mark-stone-lost',stoneId:r.id,expectedRevision:stone.revision}));}}
+- process(jobs.update(0,observe()));
+- if(worldActions){const action=worldActions.update(worldActionFrame());worldActionFeedback(action);if(action.command)worldActionFeedback(worldActions.acknowledge(process(jobs.command(action.command)),action.command));const state=worldActions.state(),pendingIds=new Set([...state.pendingOrders,...(state.awaiting?[state.awaiting]:[])].map(order=>order.villagerId));for(const c of villagers)if(!pendingIds.has(id(c)))motion.cancelPlacement?.(c,'placement-intent-ended');}
++ // Reuse the observation result until the next command/update. Never retain
++ // this snapshot across a mutation or a native step.
++ const observed=process(jobs.update(0,observe()));
++ if(worldActions){const action=worldActions.update(worldActionFrame(observed));worldActionFeedback(action);if(action.command)worldActionFeedback(worldActions.acknowledge(process(jobs.command(action.command)),action.command));const state=worldActions.state(),pendingIds=new Set([...state.pendingOrders,...(state.awaiting?[state.awaiting]:[])].map(order=>order.villagerId));for(const c of villagers)if(!pendingIds.has(id(c)))motion.cancelPlacement?.(c,'placement-intent-ended');}
+  for(const r of pendingStoneDelivery.resources()){const command=pendingStoneDelivery.takeRetry({snapshot:jobs.snapshot(),physical:deliveryPhysical(r)});if(command)process(jobs.command(command));}
+  for(const r of [...pendingRelease]){const s=jobs.snapshot().stones.find(s=>s.id===r.id);if(s.status!=='available'||!s.releasedByPlayer){pendingRelease.delete(r);continue;}if(s.available){const p=r.body.translation(),snapshot=jobs.snapshot(),site=[...snapshot.sites.filter(a=>!a.complete),{id:snapshot.pantry.id,position:snapshot.pantry.position}].filter(a=>r.kind!=='food'||a.id===snapshot.pantry.id).sort((a,b)=>Math.hypot(p.x-a.position.x,p.z-a.position.z)-Math.hypot(p.x-b.position.x,p.z-b.position.z))[0];if(site){const result=process(jobs.command({type:'deliver-stone',siteId:site.id,stoneId:r.id,expectedRevision:s.revision}));if(pendingStoneDelivery.remember({snapshot:result,physical:deliveryPhysical(r),siteId:site.id,result})){worldNotice='WAITING FOR FOOD TO BUILD HERE';worldNoticeUntil=sim.time+4;}}pendingRelease.delete(r);}}
+  const snapshot=process(jobs.update(dt,observe())),intents=new Map();
+@@ -131,7 +133,7 @@ function beforeStep(dt){
+  for(const r of loads)if(r.owner&&r.owner!=='player'&&r.owner!=='delivered'&&r.owner!=='lost'){const c=villagers.find(c=>id(c)===r.owner),goal=V().copy(motion.status(c).carryPoint).add(V(0,.12,0)),p=V().copy(r.body.translation()),d=goal.sub(p);const delta=d.multiplyScalar(Math.min(1,2.4*dt/(d.length()||1)));if(quarryBlocksMove(r,delta)){const job=jobs.snapshot().villagers.find(v=>v.id===id(c));process(jobs.command({type:'interrupt-villager',villagerId:job.id,expectedRevision:job.revision}));notice='THE BOULDER IS BLOCKING A STONE';noticeUntil=sim.time+4;continue;}p.add(delta);r.body.setNextKinematicTranslation(p);r.body.setNextKinematicRotation(new THREE.Quaternion().setFromAxisAngle(V(0,1,0),motion.status(c).yaw));}
+  quarryContact?.beforeStep(dt);
+ }
+-function syncVisuals(dt){const presentationCamera=villageXR?.getViewCamera()??camera;raid?.presentation(presentationCamera);windupCue?.update();combatFeedback?.update();const snapshot=jobs.snapshot();foodArt.sync(snapshot);if(gardenArt){const source=snapshot.forageSources.find(row=>row.id==='mainland-forage');gardenArt.update({...snapshot.gardenUpgrade,abundance:source?source.remaining/Math.max(1,source.reserve):0});}recruit.sync();quarrySafety.sync({blocked:loads.some(r=>r.quarryBlocked)});for(const v of visuals){v.c.parts.forEach((p,i)=>{v.bones[i].position.copy(p.body.translation());v.bones[i].quaternion.copy(p.body.rotation());});v.skeleton.update();}
++function syncVisuals(dt,snapshot=jobs.snapshot()){const presentationCamera=villageXR?.getViewCamera()??camera;raid?.presentation(presentationCamera);windupCue?.update();combatFeedback?.update();foodArt.sync(snapshot);if(gardenArt){const source=snapshot.forageSources.find(row=>row.id==='mainland-forage');gardenArt.update({...snapshot.gardenUpgrade,abundance:source?source.remaining/Math.max(1,source.reserve):0});}recruit.sync();quarrySafety.sync({blocked:loads.some(r=>r.quarryBlocked)});for(const v of visuals){v.c.parts.forEach((p,i)=>{v.bones[i].position.copy(p.body.translation());v.bones[i].quaternion.copy(p.body.rotation());});v.skeleton.update();}
+  loads.forEach((r,i)=>{const m=rockVisuals[i];m.visible=r.body.isEnabled();m.position.copy(r.body.translation());m.quaternion.copy(r.body.rotation());});
+  if(!villageXR?.isActive()){
+  const pose=sim.grab?'pinch':'open';hand.poseTo(pose,.22);hand.update(dt);const anchor=sim.grab?V().copy(sim.grab.body.translation()).add(sim.grab.local.clone().applyQuaternion(new THREE.Quaternion().copy(sim.grab.body.rotation()))):null;
+@@ -177,19 +179,23 @@ function courierHover(){
+ function render(dt=0){
+  villageXR?.syncDesktopUI({detailsOpen,width:innerWidth});
+  blessIntent.observe({x:pointer.lastX,y:pointer.lastY,now:performance.now()});
+- grabIntent.advance({x:pointer.lastX,y:pointer.lastY,now:performance.now()});syncVisuals(dt);
+- const frame=worldActionFrame(),presentationCamera=villageXR?.getViewCamera()??camera;workerOrders.sync(workerOrderFrame(frame));const selectedWorker=frame.workers.find(w=>w.id===workerOrders.state().selectedWorkerId);const heldWorker=frame.workers.find(w=>w.held),placementPreview=worldActions?.preview(frame),placementAssessment=heldPlacementAssessment(heldWorker);
++ grabIntent.advance({x:pointer.lastX,y:pointer.lastY,now:performance.now()});
++ // Input callbacks above may issue commands. Sample after them, then share only
++ // through these read-only presentation consumers.
++ const snapshot=jobs.snapshot(),desktop=!villageXR?.isActive();syncVisuals(dt,snapshot);
++ const frame=worldActionFrame(snapshot),presentationCamera=villageXR?.getViewCamera()??camera;workerOrders.sync(workerOrderFrame(frame));const selectedWorker=frame.workers.find(w=>w.id===workerOrders.state().selectedWorkerId);const heldWorker=frame.workers.find(w=>w.held),placementPreview=worldActions?.preview(frame),placementAssessment=heldPlacementAssessment(heldWorker);
+  const placementHint=placementAssessment?.ready?`Release here for ${placementPreview?.role==='stone'?'Stone':'Food'} after recovery`:placementAssessment?.reason==='obstructed'?'Move to clear ground before releasing':placementAssessment?.reason==='unsupported'?'Lower the feet to the ground':placementAssessment?.reason==='too-low'?'Raise the villager slightly':placementAssessment?.reason==='too-high'?'Lower the villager slightly':placementAssessment?.reason==='not-upright'?'Hold the villager upright':placementAssessment&&!placementAssessment.ready?'Hold still before releasing':null;
+  const displayPreview=placementPreview?.eligible&&placementHint?{...placementPreview,hint:placementHint}:placementPreview;
+  // Consume the existing bounded hover without another surface query. A new
+  // hover may reveal its hint on the next rendered frame.
+- const blessHover=started&&!paused&&!missionStopped&&!controlsOpen&&!detailsOpen&&!hud.contains(pointer.lastX,pointer.lastY)?selectionCue.hover({sim,pointer}):null;
++ const blessHover=desktop&&started&&!paused&&!missionStopped&&!controlsOpen&&!detailsOpen&&!hud.contains(pointer.lastX,pointer.lastY)?selectionCue.hover({sim,pointer}):null;
+  const hoveredPower=blessing?.targetPower(blessHover);
+  const blessHint=hoveredPower?(blessing.state().cooldown>0?(hoveredPower==='bless'?'BLESS RECOVERING':'LIGHTNING RECOVERING'):hoveredPower==='bless'?'SHIFT+CLICK TO BLESS':'SHIFT+CLICK FOR LIGHTNING'):null;
+  const heldFood=heldFoodDestinationCue.update({active:frame.active,snapshot:frame.snapshot,sim,world,loads,pantry:foodArt.pantry,control:worldCues?.getControl('stockpile')});
+  const foodDestination=heldFood&&!heldWorker&&!controlsOpen&&!detailsOpen&&!(worldNotice&&sim.time<worldNoticeUntil)&&quarrySafety.state().phase!=='warning'&&!blessHint?heldFood:null;
+  worldCues?.update({selectedWorker,defenseConstruction:defense?.state(),jobs:frame.snapshot,camera:presentationCamera,heldWorker,placementPreview,placementAssessment,hoveredSite:hoveredWorldSite,workers:frame.workers,needCue:needPresentation,courierCue:courierPresentation,courierHover:courierHover(),foodDestination});
+- hud.update({selectedWorker,width:innerWidth,height:innerHeight,started,paused,raid:raid?.state(),heldRaider:!!sim.grab&&raid?.raiders.some(c=>c.parts.some(p=>p.body===sim.grab.body)),fallenWorkers:frame.workers.filter(w=>w.hp>0&&w.mode==='ragdoll').length,jobs:frame.snapshot,recruit:recruit.state(motion),hazard:{...quarrySafety.state(),blockedLoads:loads.filter(r=>r.quarryBlocked).map(r=>r.id)},notice:currentWorldNotice(),held:!!sim.grab,heldWorker,heldFood,placementPreview:displayPreview,blessHint,controlsOpen,detailsOpen,alive:villagers.filter(c=>c.hp>0).length});
++ // Rebuild immediately on the first desktop frame after XR, including resize.
++ if(desktop)hud.update({selectedWorker,width:innerWidth,height:innerHeight,started,paused,raid:raid?.state(),heldRaider:!!sim.grab&&raid?.raiders.some(c=>c.parts.some(p=>p.body===sim.grab.body)),fallenWorkers:frame.workers.filter(w=>w.hp>0&&w.mode==='ragdoll').length,jobs:frame.snapshot,recruit:recruit.state(motion),hazard:{...quarrySafety.state(),blockedLoads:loads.filter(r=>r.quarryBlocked).map(r=>r.id)},notice:currentWorldNotice(),held:!!sim.grab,heldWorker,heldFood,placementPreview:displayPreview,blessHint,controlsOpen,detailsOpen,alive:villagers.filter(c=>c.hp>0).length});
+  updateSelectionCue();const cue=selectionCue.state(),meshName=!cue.dirty?cue.query?.mesh:null;
+  const canHoverWorld=!sim.grab&&!pointer.down&&!pointer.orbit&&pointer.inside&&document.visibilityState==='visible'&&!paused&&!missionStopped&&!hud.contains(pointer.lastX,pointer.lastY);
+  if(!started&&canHoverWorld){
+@@ -210,7 +216,7 @@ function render(dt=0){
+  blessing?.update();
+  renderer.clear();renderer.render(scene,camera);if(!villageXR?.isActive()){renderer.clearDepth();renderer.render(hud.scene,hud.camera);}drawCount++;
+ }
+-function advanceSimulation(dt){if(!villageXR?.shouldHoldSimulation()&&started&&!paused&&document.visibilityState==='visible'&&jobs.snapshot().outcome.status==='playing')sim.step(dt);if(!missionStopped&&jobs.snapshot().outcome.status!=='playing'){missionStopped=true;cancelInput();pruneRetiredLoads();if(pickingDirty)refreshPicking();}}
++function advanceSimulation(dt){if(!villageXR?.shouldHoldSimulation()&&started&&!paused&&document.visibilityState==='visible'&&jobs.outcomeStatus()==='playing')sim.step(dt);if(!missionStopped&&jobs.outcomeStatus()!=='playing'){missionStopped=true;cancelInput();pruneRetiredLoads();if(pickingDirty)refreshPicking();}}
+ function step(dt=1/60){advanceSimulation(dt);render(dt);return state();}
+ function updatePointer(e){const rect=renderer.domElement.getBoundingClientRect();pointer.x=(e.clientX-rect.left)/rect.width*2-1;pointer.y=-(e.clientY-rect.top)/rect.height*2+1;pointer.inside=e.clientX>=rect.left&&e.clientX<rect.right&&e.clientY>=rect.top&&e.clientY<rect.bottom;selectionCue?.invalidate('pointer');if(!pointer.inside||hud.contains(e.clientX,e.clientY))selectionCue?.suspend(pointer.inside?'ui':'outside');raycaster.setFromCamera(pointer,camera);plane.constant=-3;raycaster.ray.intersectPlane(plane,pointer.hover);}
+ function resetThrowSample(){if(sim.grab){sim.grab.velocity.set(0,0,0);sim.grab.lastMoveTime=-99;}desktopPointerTime=performance.now();}
+@@ -221,7 +227,7 @@ function recordPressTarget(hit){
+  return{...hit,characterAlive:hit.character?hit.character.hp>0:null,local:hit.point.clone().sub(origin).applyQuaternion(rotation),surfaceLocal:V().fromArray(picker.state().surface).sub(origin).applyQuaternion(rotation),pressRay:raycaster.ray.clone(),nativeOwner:sim.colliderOwners.get(hit.collider.handle),resource,resourceOwner:resource?.owner,jobOwner:resource?jobState.stones.find(s=>s.id===resource.id)?.owner:null,jobGeneration:jobState.generation,world,simTime:sim.time,simTick:sim.tick};
+ }
+ function validPressTarget(target){
+- if(!started||paused||jobs.snapshot().outcome.status!=='playing'||document.visibilityState!=='visible'||!pointer.down||!pointer.inside||pointer.orbit||hud.contains(pointer.lastX,pointer.lastY)||sim.disposed||sim.grab||world!==target.world||sim.time<target.simTime||sim.tick<target.simTick)return false;
++ if(!started||paused||jobs.outcomeStatus()!=='playing'||document.visibilityState!=='visible'||!pointer.down||!pointer.inside||pointer.orbit||hud.contains(pointer.lastX,pointer.lastY)||sim.disposed||sim.grab||world!==target.world||sim.time<target.simTime||sim.tick<target.simTick)return false;
+  const jobState=jobs.snapshot();if(jobState.generation!==target.jobGeneration)return false;
+  const {body,collider,character,part,nativeOwner,resource}=target;
+  if(!body.isValid()||!body.isEnabled()||world.getRigidBody(body.handle)!==body||!collider?.isValid()||!collider.isEnabled()||collider.isSensor()||collider.parent()!==body||world.getCollider(collider.handle)!==collider||sim.colliderOwners.get(collider.handle)!==nativeOwner)return false;
+@@ -268,8 +274,8 @@ function releaseXRTarget(side,flick=false){
+  if(placementIntent){const c=villagers.find(c=>id(c)===placementIntent.villagerId);if(c)motion.requestPlacement?.(c,placementIntent);}
+  if(resource){resource.owner=null;const row=jobs.snapshot().stones.find(s=>s.id===resource.id);if(row){process(jobs.command({type:'release-stone',stoneId:resource.id,expectedRevision:row.revision,position:resource.body.translation(),held:false,available:false}));pendingRelease.add(resource);}}
+ }
+-function worldActionFrame(){
+- const snapshot=jobs.snapshot(),recruitState=recruit.state(motion);
++function worldActionFrame(snapshot=jobs.snapshot()){
++ const recruitState=recruit.state(motion);
+  return{now:sim.time,active:started&&!paused&&!missionStopped&&document.visibilityState==='visible',snapshot,releaseSpeed:effectiveReleaseSpeed(),workers:villagers.map(c=>{
+   const row=snapshot.villagers.find(v=>v.id===id(c)),status=motion.status(c),pelvis=c.parts[1].body.translation(),ground=environment.support(pelvis.x,pelvis.z);
+   return{...row,id:id(c),hp:c.hp,alive:c.hp>0,joined:c!==recruit.character||recruitState.joined,held:sim.isCharacterHeld(c),available:status.available,mode:status.mode,position:physicalRootFromPelvis(pelvis,ground),pelvisHeight:pelvis.y-ground,speed:V().copy(c.parts[1].body.linvel()).length(),safeGround:environment.inBounds(pelvis.x,pelvis.z)&&Number.isFinite(ground)&&ground>-20};
+@@ -455,7 +461,7 @@ async function start(){
+  navigation=createCivilianNavigation({THREE,RAPIER,sim,motion,environment});
+  traffic=createCivilianTraffic({villagers,motion,support:environment.support,inBounds:environment.inBounds,navigation});
+  hand=createGodHandRig({THREE,handedness:'right'});hand.group.scale.setScalar(.62);scene.add(hand.group);handMotion=createDesktopHandMotion({THREE,rig:hand});hud=createSettlementMinimalHUD();worldActions=createSettlementWorldActions();worldCues=createSettlementWorldCues({THREE,scene,support:environment.support});worldCues.update({jobs:jobs.snapshot(),camera});
+- blessing=createSettlementBlessing({sim,scene,getVillagers:()=>villagers,getRaiders:()=>raid?.state().phase==='active'?raid.raiders:[],getVisual:c=>visuals.find(v=>v.c===c)?.body,getBlocked:()=>!started||paused||missionStopped||jobs.snapshot().outcome.status!=='playing'||document.visibilityState!=='visible',isLost:c=>raid?.owns(c)?c.parts[1].body.translation().y < -4:c.parts[1].body.translation().y < -10||['dead','lost'].includes(jobs.snapshot().villagers.find(v=>v.id===id(c))?.phase),isPathBlocked:(from,to,target)=>picker.powerPathBlocked(from,to,target)});
++ blessing=createSettlementBlessing({sim,scene,getVillagers:()=>villagers,getRaiders:()=>raid?.state().phase==='active'?raid.raiders:[],getVisual:c=>visuals.find(v=>v.c===c)?.body,getBlocked:()=>!started||paused||missionStopped||jobs.outcomeStatus()!=='playing'||document.visibilityState!=='visible',isLost:c=>raid?.owns(c)?c.parts[1].body.translation().y < -4:c.parts[1].body.translation().y < -10||['dead','lost'].includes(jobs.snapshot().villagers.find(v=>v.id===id(c))?.phase),isPathBlocked:(from,to,target)=>picker.powerPathBlocked(from,to,target)});
+  syncVisuals(0);refreshPicking();
+  xrHands=Object.fromEntries(['left','right'].map(side=>{const rig=createGodHandRig({THREE,handedness:side});rig.group.visible=false;scene.add(rig.group);return[side,rig];}));
+  villageXR=createVillageXR({renderer,scene,camera,sim,playerHands:xrHands,bounds:environment.bounds,
+@@ -471,6 +477,6 @@ async function start(){
+  bindInput();render();
+  window.SETTLEMENTQA={step,state,setPriority,setRole,start:()=>{started=true;},pause:value=>{cancelInput();paused=value;},project:a=>{const p=V(...a).project(camera);return{x:(p.x+1)*innerWidth/2,y:(1-p.y)*innerHeight/2};},get context(){return{villageXR,xrHands,defense,raid,raiderPool,windupCue,combatFeedback,blessing,THREE,scene,camera,renderer,sim,world,rig,hero,environment,motion,navigation,jobs,visuals,rockVisuals,loads,villagers,hud,picker,selectionCue,raycaster,pointer,hand,desktopDrag,quarrySafety,quarryContact,recruit,foodArt,gardenArt,gardenSite,worldCues,worldActions,workerOrders};}};
+  window.addEventListener('resize',()=>{if(villageXR?.isActive())return;blessIntent.cancel('resize');grabIntent.cancel('resize');renderer.setSize(innerWidth,innerHeight);camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();selectionCue.invalidate('resize');rebaseDrag();render();});
+- if(!manual){let last=performance.now(),acc=0;renderer.setAnimationLoop((now,frame)=>{villageXR.update(now,frame);const elapsed=Math.min(.08,(now-last)/1000);last=now;if(!villageXR.shouldHoldSimulation()&&started&&!paused&&jobs.snapshot().outcome.status==='playing'){acc+=elapsed;let n=0;while(acc>=1/60&&n++<5){advanceSimulation(1/60);acc-=1/60;if(missionStopped){acc=0;break;}}}else acc=0;render(elapsed);});}
++ if(!manual){let last=performance.now(),acc=0;renderer.setAnimationLoop((now,frame)=>{villageXR.update(now,frame);const elapsed=Math.min(.08,(now-last)/1000);last=now;if(!villageXR.shouldHoldSimulation()&&started&&!paused&&jobs.outcomeStatus()==='playing'){acc+=elapsed;let n=0;while(acc>=1/60&&n++<5){advanceSimulation(1/60);acc-=1/60;if(missionStopped){acc=0;break;}}}else acc=0;render(elapsed);});}
+ }
+ start().catch(e=>{console.error(e);window.SETTLEMENTERROR=String(e.stack||e);});
+diff --git a/src/settlement-quarry-geology.js b/src/settlement-quarry-geology.js
+index bb83222..fd622f6 100644
+--- a/src/settlement-quarry-geology.js
++++ b/src/settlement-quarry-geology.js
+@@ -1,3 +1,4 @@
++import {batchStaticScenery} from './static-scenery-batch.js';
+ /** Broad, stepped slate around the retained physical rolling channel. Each
+  * authored convex volume is rendered directly from its Rapier collider, so
+  * visible terraces and thrown-body side contacts agree without mesh colliders.
+@@ -31,5 +32,13 @@ export function createQuarryGeology({THREE:T,RAPIER:R,world,scene,offset}){
+  terrace('right-foot',4.83,-9.40,2.75,2.50,.02,.80,5);
+  terrace('right-shelf',4.79,-9.70,2.48,1.86,.68,1.73,6);
+  terrace('right-crown',4.64,-10.04,2.02,1.23,1.62,2.67,7);
++ // Separate left, back and right chunks keep the rolling channel and local
++ // culling intact. Colliders retain their original individual convex volumes.
++ const original=scenery.splice(0);
++ for(const [name,parts]of [['left',original.slice(0,4)],['back',original.slice(4,5)],['right',original.slice(5)]]){
++  if(parts.length===1){scenery.push(parts[0]);continue;}
++  scenery.push(batchStaticScenery({THREE:T,meshes:parts,parent:scene,name:'quarry_geology_'+name+'_batch'}));
++  for(const mesh of parts)mesh.geometry.dispose();
++ }
+  return{scenery,colliders,dispose(){for(const c of colliders)if(c.isValid())world.removeCollider(c,true);for(const m of scenery){m.removeFromParent();m.geometry.dispose();}material.dispose();}};
+ }
+diff --git a/src/static-scenery-batch.js b/src/static-scenery-batch.js
+new file mode 100644
+index 0000000..d6180c0
+--- /dev/null
++++ b/src/static-scenery-batch.js
+@@ -0,0 +1,27 @@
++import {mergeGeometries} from 'three/examples/jsm/utils/BufferGeometryUtils.js';
++
++// Explicit small authored groups only. The caller owns the source geometries;
++// shared geometry and all physics/collider objects remain untouched.
++export function batchStaticScenery({THREE:T,meshes,parent,name}){
++ if(!meshes.length)throw new TypeError('A static batch needs meshes');
++ const first=meshes[0],material=first.material;
++ if(Array.isArray(material)||material.transparent||material.opacity!==1)throw new TypeError('Only one opaque material per batch');
++ parent.updateWorldMatrix(true,false);
++ const inverse=new T.Matrix4().copy(parent.matrixWorld).invert(),copies=[],ranges=[];
++ let count=0;
++ try{
++  for(const mesh of meshes){
++   if(!mesh.isMesh||mesh.isSkinnedMesh||mesh.isInstancedMesh||mesh.material!==material||mesh.castShadow!==first.castShadow||mesh.receiveShadow!==first.receiveShadow||mesh.layers.mask!==first.layers.mask||mesh.renderOrder!==first.renderOrder||Object.keys(mesh.geometry.morphAttributes).length)throw new TypeError('Incompatible static scenery');
++   mesh.updateWorldMatrix(true,false);
++   const geometry=mesh.geometry.index?mesh.geometry.toNonIndexed():mesh.geometry.clone();
++   geometry.applyMatrix4(new T.Matrix4().multiplyMatrices(inverse,mesh.matrixWorld));
++   copies.push(geometry);ranges.push({name:mesh.name,start:count,count:geometry.attributes.position.count});count+=geometry.attributes.position.count;
++  }
++  const geometry=mergeGeometries(copies,false);if(!geometry)throw new Error('Static geometry attributes do not match');
++  geometry.computeBoundingBox();geometry.computeBoundingSphere();
++  const mesh=new T.Mesh(geometry,material);mesh.name=name;mesh.castShadow=first.castShadow;mesh.receiveShadow=first.receiveShadow;mesh.layers.mask=first.layers.mask;mesh.renderOrder=first.renderOrder;
++  mesh.userData={staticSceneryBatch:true,sources:ranges};parent.add(mesh);
++  for(const source of meshes)source.removeFromParent();
++  return mesh;
++ }finally{for(const geometry of copies)geometry.dispose();}
++}

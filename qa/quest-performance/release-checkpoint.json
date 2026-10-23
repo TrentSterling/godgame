@@ -1,0 +1,38 @@
+{
+  "reviewedSourceCommit": "c845caddaa7a7c1d9da9124503b110fe2383af75",
+  "cpuSourceCommit": "01d9ec2dd129dc7ae3857cc3d7b54d668af2111e",
+  "preservedHandUISource": "7bf720e6b3b805c80fe082cfd65c1e1ac8e0d366",
+  "baselineReleaseCommit": "02e7fdeff0d856b9c7868bfe75051258d3469c2a",
+  "baselineHTMLSHA256": "0fc797800189e78e628cf81adf1f261b92ccae6656890e13a785de8803927e90",
+  "rootHTML": {
+    "sha256": "02362b3e8a92a4225ca05ec01377928b00de266a4354bdbf63cd41869e5dbf1d",
+    "bytes": 8503547,
+    "gitBlob": "186cdbb5d1831d5a9fa4535b0f115145a4ce1821"
+  },
+  "sourceBundle": {
+    "file": "reviewed-source.bundle",
+    "sha256": "0fb9f35dfb7eda5abd1e015f843bb4331de9e0e579ec2bd1c174ac3be0d54e2b",
+    "branch": "perf/xr-frame-work"
+  },
+  "runtimeModules": [
+    "settlement-economy.js",
+    "settlement-main.js",
+    "settlement-food-art.js",
+    "settlement-quarry-geology.js",
+    "static-scenery-batch.js"
+  ],
+  "sourceHashes": {
+    "settlement-economy.js": "e6addc8938f669f13907c33478e6d3d94b1781547fdf2e44225f3aa0642ee006",
+    "settlement-main.js": "72dc1a57d4c318fa0c687476e04369216ef98f07a1d91f15b3d70394c0d81ee7",
+    "settlement-food-art.js": "39e50d7e6daddaf1c47dc7883a3476d7b1f1e464f011f0dec46d7c47d2c6c73e",
+    "settlement-quarry-geology.js": "7990a11db4cba461a890eeb9227eb1bf82c570376b042fa173975b1e068cd728",
+    "static-scenery-batch.js": "366128d3bf3b69ff6a398777ff12ed3d33a3ce03925951a5c64ba86d73977e53"
+  },
+  "review": "Parent confirmed independent source approval; build, native XR, CPU equivalence, geometry and recorded render evidence verified. Reviewer optional scratch-test creation was denied and was not retried.",
+  "scope": "Local garden/quarry scenery batches and immediate-phase economy snapshot reuse; desktop HUD skipped in XR. No physics cadence, hand/UI, controls, resolution or foveation changes.",
+  "rollback": {
+    "branch": "rollback/pre-performance-20261023",
+    "commit": "02e7fdeff0d856b9c7868bfe75051258d3469c2a"
+  },
+  "quest": "Actual headset acceptance and FPS remain unmeasured"
+}
