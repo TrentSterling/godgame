@@ -38,8 +38,8 @@ jobs:
         env:
           EXPECTED_HEAD: ${{ github.event.pull_request.head.sha }}
           CANDIDATE_PATH: ../../index.html
-          EXPECTED_ROOT_SHA256: fff7bad7f5dce9114a522c140f5adb1613b0e04734305bc62f3547371bdf6f79
-          CANDIDATE_SHA256: fff7bad7f5dce9114a522c140f5adb1613b0e04734305bc62f3547371bdf6f79
+          EXPECTED_ROOT_SHA256: 0fc797800189e78e628cf81adf1f261b92ccae6656890e13a785de8803927e90
+          CANDIDATE_SHA256: 0fc797800189e78e628cf81adf1f261b92ccae6656890e13a785de8803927e90
           CASE: ${{ matrix.case }}
         run: node candidate-input.mjs
       - name: Preserve screenshots and real-time video

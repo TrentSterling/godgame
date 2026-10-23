@@ -1,0 +1,38 @@
+{
+  "checkpoint": "quest-hand-ui-20261023",
+  "status": "User-approved reviewed build integration; deployment is established separately after merge",
+  "reviewedSourceCommit": "7bf720e6b3b805c80fe082cfd65c1e1ac8e0d366",
+  "baselineReleaseCommit": "6c3957c2555dc8f4956ac534174eeea63d399a68",
+  "baselineHTMLSHA256": "fff7bad7f5dce9114a522c140f5adb1613b0e04734305bc62f3547371bdf6f79",
+  "rootHTML": {
+    "sha256": "0fc797800189e78e628cf81adf1f261b92ccae6656890e13a785de8803927e90",
+    "bytes": 8497864,
+    "gitBlob": "47af14eb3024daff3cec64b9a50cfe2c6d5fe022"
+  },
+  "preservedShrineSHA256": "ba699ca9ad9b393c0be3cfec528c4ff8bc391cd117d6edac7e56e47578a7cebc",
+  "baselineSourceArchive": {
+    "filename": "Godgame-worker-order-feedback-20261015-source.zip",
+    "sha256": "a78095fede28201eaa6f958cb0e82fa1fd38ea3919ed6bc0b9ff968606286159",
+    "applyFirst": "qa/priority-feedback/source-overlay/src/settlement-main.js"
+  },
+  "sourceOverlay": "source-overlay/src",
+  "qaOverlay": "qa-overlay/xr-village",
+  "changedRuntimeModules": [
+    "settlement-xr.js",
+    "xr-hand-math.js",
+    "xr-ui-poke.js"
+  ],
+  "unchangedOriginalRuntimeModules": 111,
+  "sourceHashes": {
+    "settlement-xr.js": "c1ada0a5f26cfae878fbcad23dd8536038b187c0961a587fe5427cc003a0db1a",
+    "xr-hand-math.js": "d018944f1c34e360ad5840381eb5d117a4a9bb88e4649fb7ad51f5516ae8b3ab",
+    "xr-ui-poke.js": "d514d19dce00cdc70c1c85b9c46adec5e71283424b0916e72c1d3fb1cac40462"
+  },
+  "scope": "Hand UI fingertip contact, Meta pointing-ray compatibility, depth testing, bounded visual tracking grace and input counters. No performance/settings/engine changes.",
+  "hardwareXR": "Pending user verification. Mocked XR checks do not establish physical Quest behavior.",
+  "rollback": {
+    "commit": "6c3957c2555dc8f4956ac534174eeea63d399a68",
+    "branch": "rollback/pre-quest-hand-ui-20261023",
+    "approach": "Revert this release integration through the normal PR route; retain all prior source and candidate kits."
+  }
+}
