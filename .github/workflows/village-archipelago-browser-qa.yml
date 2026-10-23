@@ -21,7 +21,7 @@ jobs:
       fail-fast: false
       matrix:
         scope: [preview, camera, xr-layout, synthetic-xr]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
       - name: Check out exact test commit without saved credentials
@@ -51,8 +51,8 @@ jobs:
           XR_CANDIDATE_PATH: ../../index.html
           QA_SCOPE: ${{ matrix.scope }}
           EXPECTED_HEAD: ${{ github.event.pull_request.head.sha }}
-          EXPECTED_CANDIDATE_SHA256: fff7bad7f5dce9114a522c140f5adb1613b0e04734305bc62f3547371bdf6f79
-          EXPECTED_XR_CANDIDATE_SHA256: fff7bad7f5dce9114a522c140f5adb1613b0e04734305bc62f3547371bdf6f79
+          EXPECTED_CANDIDATE_SHA256: 0fc797800189e78e628cf81adf1f261b92ccae6656890e13a785de8803927e90
+          EXPECTED_XR_CANDIDATE_SHA256: 0fc797800189e78e628cf81adf1f261b92ccae6656890e13a785de8803927e90
         run: |
           if [ "$QA_SCOPE" = "synthetic-xr" ]; then node xr-test.mjs; else node test.mjs; fi
       - name: Save browser evidence even on failure

@@ -1,0 +1,512 @@
+{
+  "pass": true,
+  "scope": "CPU-only production XR callbacks with synthetic hand/controller poses; no headset or GPU evidence",
+  "checks": [
+    {
+      "name": "hands-present-before-session-and-visible",
+      "frame": 1,
+      "input": {
+        "handTrackingFeature": "enabled",
+        "sessionVisibility": "visible",
+        "sources": [
+          {
+            "handedness": "left",
+            "profiles": [],
+            "targetRayMode": "tracked-pointer",
+            "hand": true,
+            "grip": false,
+            "gamepad": false
+          }
+        ],
+        "hands": {
+          "left": {
+            "source": "hand",
+            "tracked": true,
+            "visible": true,
+            "uiTarget": null,
+            "sourceFrames": 1,
+            "wristValidFrames": 1,
+            "wristMissingFrames": 0,
+            "pose": {
+              "joints": 25,
+              "wristPoseValid": true,
+              "reason": "valid"
+            },
+            "jointFrames": 1,
+            "missingJointFrames": 0,
+            "visualRejectFrames": 0,
+            "visualFrames": 1,
+            "heldVisualFrames": 0,
+            "reason": "UI only"
+          },
+          "right": {
+            "source": null,
+            "tracked": false,
+            "visible": false,
+            "uiTarget": null,
+            "sourceFrames": 0,
+            "wristValidFrames": 0,
+            "wristMissingFrames": 0,
+            "pose": {},
+            "jointFrames": 0,
+            "missingJointFrames": 0,
+            "visualRejectFrames": 0,
+            "visualFrames": 0,
+            "heldVisualFrames": 0,
+            "reason": "not tracked"
+          }
+        }
+      }
+    },
+    {
+      "name": "fingertip-poke-completes-placement-and-starts-game",
+      "frame": 7,
+      "input": {
+        "handTrackingFeature": "enabled",
+        "sessionVisibility": "visible",
+        "sources": [
+          {
+            "handedness": "left",
+            "profiles": [],
+            "targetRayMode": "tracked-pointer",
+            "hand": true,
+            "grip": false,
+            "gamepad": false
+          }
+        ],
+        "hands": {
+          "left": {
+            "source": "hand",
+            "tracked": false,
+            "visible": false,
+            "uiTarget": null,
+            "sourceFrames": 7,
+            "wristValidFrames": 7,
+            "wristMissingFrames": 0,
+            "pose": {
+              "joints": 25,
+              "wristPoseValid": true,
+              "reason": "valid"
+            },
+            "jointFrames": 7,
+            "missingJointFrames": 0,
+            "visualRejectFrames": 0,
+            "visualFrames": 6,
+            "heldVisualFrames": 0,
+            "reason": "UI action"
+          },
+          "right": {
+            "source": null,
+            "tracked": false,
+            "visible": false,
+            "uiTarget": null,
+            "sourceFrames": 0,
+            "wristValidFrames": 0,
+            "wristMissingFrames": 0,
+            "pose": {},
+            "jointFrames": 0,
+            "missingJointFrames": 0,
+            "visualRejectFrames": 0,
+            "visualFrames": 0,
+            "heldVisualFrames": 0,
+            "reason": "UI action"
+          }
+        }
+      }
+    },
+    {
+      "name": "paused-ui-poke-resumes-withdrawal-rearms-and-held-contact-does-not-repeat",
+      "frame": 24,
+      "input": {
+        "handTrackingFeature": "enabled",
+        "sessionVisibility": "visible",
+        "sources": [
+          {
+            "handedness": "left",
+            "profiles": [],
+            "targetRayMode": "tracked-pointer",
+            "hand": true,
+            "grip": false,
+            "gamepad": false
+          }
+        ],
+        "hands": {
+          "left": {
+            "source": "hand",
+            "tracked": false,
+            "visible": false,
+            "uiTarget": null,
+            "sourceFrames": 24,
+            "wristValidFrames": 24,
+            "wristMissingFrames": 0,
+            "pose": {
+              "joints": 25,
+              "wristPoseValid": true,
+              "reason": "valid"
+            },
+            "jointFrames": 24,
+            "missingJointFrames": 0,
+            "visualRejectFrames": 0,
+            "visualFrames": 23,
+            "heldVisualFrames": 0,
+            "reason": "input cancelled"
+          },
+          "right": {
+            "source": null,
+            "tracked": false,
+            "visible": false,
+            "uiTarget": null,
+            "sourceFrames": 0,
+            "wristValidFrames": 0,
+            "wristMissingFrames": 0,
+            "pose": {},
+            "jointFrames": 0,
+            "missingJointFrames": 0,
+            "visualRejectFrames": 0,
+            "visualFrames": 0,
+            "heldVisualFrames": 0,
+            "reason": "input cancelled"
+          }
+        }
+      }
+    },
+    {
+      "name": "meta-emulated-ray-pinch-routes-to-ui-while-paused",
+      "frame": 29,
+      "input": {
+        "handTrackingFeature": "enabled",
+        "sessionVisibility": "visible",
+        "sources": [
+          {
+            "handedness": "left",
+            "profiles": [],
+            "targetRayMode": "tracked-pointer",
+            "hand": true,
+            "grip": false,
+            "gamepad": false
+          }
+        ],
+        "hands": {
+          "left": {
+            "source": "hand",
+            "tracked": false,
+            "visible": false,
+            "uiTarget": null,
+            "sourceFrames": 29,
+            "wristValidFrames": 29,
+            "wristMissingFrames": 0,
+            "pose": {
+              "joints": 25,
+              "wristPoseValid": true,
+              "reason": "valid"
+            },
+            "jointFrames": 29,
+            "missingJointFrames": 0,
+            "visualRejectFrames": 0,
+            "visualFrames": 28,
+            "heldVisualFrames": 0,
+            "reason": "UI action"
+          },
+          "right": {
+            "source": null,
+            "tracked": false,
+            "visible": false,
+            "uiTarget": null,
+            "sourceFrames": 0,
+            "wristValidFrames": 0,
+            "wristMissingFrames": 0,
+            "pose": {},
+            "jointFrames": 0,
+            "missingJointFrames": 0,
+            "visualRejectFrames": 0,
+            "visualFrames": 0,
+            "heldVisualFrames": 0,
+            "reason": "UI action"
+          }
+        }
+      }
+    },
+    {
+      "name": "missing-joints-cancel-input-immediately-and-visual-expires-after-two-frames",
+      "frame": 35,
+      "input": {
+        "handTrackingFeature": "enabled",
+        "sessionVisibility": "visible",
+        "sources": [
+          {
+            "handedness": "left",
+            "profiles": [],
+            "targetRayMode": "tracked-pointer",
+            "hand": true,
+            "grip": false,
+            "gamepad": false
+          }
+        ],
+        "hands": {
+          "left": {
+            "source": "hand",
+            "tracked": false,
+            "visible": false,
+            "uiTarget": null,
+            "sourceFrames": 35,
+            "wristValidFrames": 32,
+            "wristMissingFrames": 3,
+            "pose": {
+              "joints": 0,
+              "wristPoseValid": false,
+              "reason": "missing-grip-joints"
+            },
+            "jointFrames": 32,
+            "missingJointFrames": 3,
+            "visualRejectFrames": 0,
+            "visualFrames": 31,
+            "heldVisualFrames": 3,
+            "reason": "joint sample unavailable"
+          },
+          "right": {
+            "source": null,
+            "tracked": false,
+            "visible": false,
+            "uiTarget": null,
+            "sourceFrames": 0,
+            "wristValidFrames": 0,
+            "wristMissingFrames": 0,
+            "pose": {},
+            "jointFrames": 0,
+            "missingJointFrames": 0,
+            "visualRejectFrames": 0,
+            "visualFrames": 0,
+            "heldVisualFrames": 0,
+            "reason": "not tracked"
+          }
+        }
+      }
+    },
+    {
+      "name": "visual-only-joint-loss-is-distinct-from-grip-loss-and-time-grace-is-bounded",
+      "frame": 39,
+      "input": {
+        "handTrackingFeature": "enabled",
+        "sessionVisibility": "visible",
+        "sources": [
+          {
+            "handedness": "left",
+            "profiles": [],
+            "targetRayMode": "tracked-pointer",
+            "hand": true,
+            "grip": false,
+            "gamepad": false
+          }
+        ],
+        "hands": {
+          "left": {
+            "source": "hand",
+            "tracked": true,
+            "visible": true,
+            "uiTarget": null,
+            "sourceFrames": 39,
+            "wristValidFrames": 36,
+            "wristMissingFrames": 3,
+            "pose": {
+              "joints": 25,
+              "wristPoseValid": true,
+              "reason": "valid"
+            },
+            "jointFrames": 36,
+            "missingJointFrames": 3,
+            "visualRejectFrames": 2,
+            "visualFrames": 33,
+            "heldVisualFrames": 0,
+            "reason": "UI only"
+          },
+          "right": {
+            "source": null,
+            "tracked": false,
+            "visible": false,
+            "uiTarget": null,
+            "sourceFrames": 0,
+            "wristValidFrames": 0,
+            "wristMissingFrames": 0,
+            "pose": {},
+            "jointFrames": 0,
+            "missingJointFrames": 0,
+            "visualRejectFrames": 0,
+            "visualFrames": 0,
+            "heldVisualFrames": 0,
+            "reason": "not tracked"
+          }
+        }
+      }
+    },
+    {
+      "name": "repeated-controller-hand-switches-preserve-controller-and-hand-visibility",
+      "frame": 67,
+      "input": {
+        "handTrackingFeature": "enabled",
+        "sessionVisibility": "visible",
+        "sources": [
+          {
+            "handedness": "right",
+            "profiles": [
+              "generic-trigger"
+            ],
+            "targetRayMode": "tracked-pointer",
+            "hand": false,
+            "grip": true,
+            "gamepad": true
+          }
+        ],
+        "hands": {
+          "left": {
+            "source": null,
+            "tracked": false,
+            "visible": false,
+            "uiTarget": null,
+            "sourceFrames": 51,
+            "wristValidFrames": 48,
+            "wristMissingFrames": 3,
+            "pose": {
+              "joints": 25,
+              "wristPoseValid": true,
+              "reason": "valid"
+            },
+            "jointFrames": 48,
+            "missingJointFrames": 3,
+            "visualRejectFrames": 2,
+            "visualFrames": 45,
+            "heldVisualFrames": 0,
+            "reason": "not tracked"
+          },
+          "right": {
+            "source": "controller",
+            "tracked": true,
+            "visible": false,
+            "uiTarget": "grab",
+            "sourceFrames": 16,
+            "wristValidFrames": 0,
+            "wristMissingFrames": 0,
+            "pose": {},
+            "jointFrames": 0,
+            "missingJointFrames": 0,
+            "visualRejectFrames": 0,
+            "visualFrames": 0,
+            "heldVisualFrames": 0,
+            "reason": "UI only"
+          }
+        }
+      }
+    },
+    {
+      "name": "hidden-session-exit-and-hands-first-reentry",
+      "frame": 1,
+      "input": {
+        "handTrackingFeature": "enabled",
+        "sessionVisibility": "visible",
+        "sources": [
+          {
+            "handedness": "left",
+            "profiles": [],
+            "targetRayMode": "tracked-pointer",
+            "hand": true,
+            "grip": false,
+            "gamepad": false
+          }
+        ],
+        "hands": {
+          "left": {
+            "source": "hand",
+            "tracked": true,
+            "visible": true,
+            "uiTarget": null,
+            "sourceFrames": 53,
+            "wristValidFrames": 50,
+            "wristMissingFrames": 3,
+            "pose": {
+              "joints": 25,
+              "wristPoseValid": true,
+              "reason": "valid"
+            },
+            "jointFrames": 50,
+            "missingJointFrames": 3,
+            "visualRejectFrames": 2,
+            "visualFrames": 47,
+            "heldVisualFrames": 0,
+            "reason": "UI only"
+          },
+          "right": {
+            "source": null,
+            "tracked": false,
+            "visible": false,
+            "uiTarget": null,
+            "sourceFrames": 16,
+            "wristValidFrames": 0,
+            "wristMissingFrames": 0,
+            "pose": {},
+            "jointFrames": 0,
+            "missingJointFrames": 0,
+            "visualRejectFrames": 0,
+            "visualFrames": 0,
+            "heldVisualFrames": 0,
+            "reason": "not tracked"
+          }
+        }
+      }
+    },
+    {
+      "name": "world-ui-uses-depth-test-for-hand-occlusion",
+      "frame": 1,
+      "input": {
+        "handTrackingFeature": "enabled",
+        "sessionVisibility": "visible",
+        "sources": [
+          {
+            "handedness": "left",
+            "profiles": [],
+            "targetRayMode": "tracked-pointer",
+            "hand": true,
+            "grip": false,
+            "gamepad": false
+          }
+        ],
+        "hands": {
+          "left": {
+            "source": "hand",
+            "tracked": true,
+            "visible": true,
+            "uiTarget": null,
+            "sourceFrames": 53,
+            "wristValidFrames": 50,
+            "wristMissingFrames": 3,
+            "pose": {
+              "joints": 25,
+              "wristPoseValid": true,
+              "reason": "valid"
+            },
+            "jointFrames": 50,
+            "missingJointFrames": 3,
+            "visualRejectFrames": 2,
+            "visualFrames": 47,
+            "heldVisualFrames": 0,
+            "reason": "UI only"
+          },
+          "right": {
+            "source": null,
+            "tracked": false,
+            "visible": false,
+            "uiTarget": null,
+            "sourceFrames": 16,
+            "wristValidFrames": 0,
+            "wristMissingFrames": 0,
+            "pose": {},
+            "jointFrames": 0,
+            "missingJointFrames": 0,
+            "visualRejectFrames": 0,
+            "visualFrames": 0,
+            "heldVisualFrames": 0,
+            "reason": "not tracked"
+          }
+        }
+      }
+    }
+  ]
+}

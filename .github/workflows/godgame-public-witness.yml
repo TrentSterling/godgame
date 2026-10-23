@@ -14,7 +14,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   witness:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 25
     steps:
       - name: Check out exact merged main without saved credentials
@@ -35,7 +35,7 @@ jobs:
         working-directory: qa/village-archipelago
         env:
           EXPECTED_HEAD: ${{ github.sha }}
-          EXPECTED_CANDIDATE_SHA256: fff7bad7f5dce9114a522c140f5adb1613b0e04734305bc62f3547371bdf6f79
+          EXPECTED_CANDIDATE_SHA256: 0fc797800189e78e628cf81adf1f261b92ccae6656890e13a785de8803927e90
           CANDIDATE_PATH: ../../index.html
           EXPECTED_SHRINE_SHA256: ba699ca9ad9b393c0be3cfec528c4ff8bc391cd117d6edac7e56e47578a7cebc
           PRESERVED_SHRINE_PATH: ../../shrine-v24.html
