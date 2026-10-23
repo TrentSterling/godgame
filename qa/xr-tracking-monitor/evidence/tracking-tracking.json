@@ -1,0 +1,1604 @@
+{
+  "pass": true,
+  "scope": "Production callbacks with synthetic poses and native Rapier, no Quest/compositor claim",
+  "checks": [
+    {
+      "name": "one-and-two-joint-sample-gaps-retain-exact-native-joint-without-throw-samples",
+      "now": 1263.8888888888894,
+      "diagnostics": {
+        "viewer": {
+          "viewerValidFrames": 19,
+          "viewerMissingFrames": 0,
+          "viewerEmulatedFrames": 0,
+          "viewerHeldFrames": 0,
+          "visibilityChanges": 0,
+          "referenceResets": 0,
+          "frameInterruptions": 0,
+          "lastReason": "tracked",
+          "valid": true,
+          "visual": "tracked",
+          "graceMs": 160
+        },
+        "handTrackingFeature": "unknown",
+        "sessionVisibility": "visible",
+        "sources": [
+          {
+            "handedness": "left",
+            "profiles": [],
+            "targetRayMode": "tracked-pointer",
+            "hand": true,
+            "grip": false,
+            "gamepad": false
+          }
+        ],
+        "hands": {
+          "left": {
+            "source": "hand",
+            "tracked": true,
+            "visible": true,
+            "uiTarget": null,
+            "sourceFrames": 8,
+            "wristValidFrames": 6,
+            "wristMissingFrames": 2,
+            "pose": {
+              "joints": 25,
+              "wristPoseValid": true,
+              "reason": "valid"
+            },
+            "jointFrames": 6,
+            "missingJointFrames": 2,
+            "visualRejectFrames": 0,
+            "visualFrames": 6,
+            "heldVisualFrames": 0,
+            "dropoutFrames": 2,
+            "retainedGrabFrames": 2,
+            "gap": false,
+            "reason": "holding"
+          },
+          "right": {
+            "source": null,
+            "tracked": false,
+            "visible": false,
+            "uiTarget": null,
+            "sourceFrames": 10,
+            "wristValidFrames": 0,
+            "wristMissingFrames": 0,
+            "pose": {},
+            "jointFrames": 0,
+            "missingJointFrames": 0,
+            "visualRejectFrames": 0,
+            "visualFrames": 0,
+            "heldVisualFrames": 0,
+            "dropoutFrames": 0,
+            "retainedGrabFrames": 0,
+            "gap": false,
+            "reason": "not tracked"
+          }
+        }
+      }
+    },
+    {
+      "name": "irregular-cadence-grace-is-time-based",
+      "now": 1639.2222222222229,
+      "diagnostics": {
+        "viewer": {
+          "viewerValidFrames": 34,
+          "viewerMissingFrames": 0,
+          "viewerEmulatedFrames": 0,
+          "viewerHeldFrames": 0,
+          "visibilityChanges": 0,
+          "referenceResets": 0,
+          "frameInterruptions": 0,
+          "lastReason": "tracked",
+          "valid": true,
+          "visual": "tracked",
+          "graceMs": 160
+        },
+        "handTrackingFeature": "unknown",
+        "sessionVisibility": "visible",
+        "sources": [
+          {
+            "handedness": "left",
+            "profiles": [],
+            "targetRayMode": "tracked-pointer",
+            "hand": true,
+            "grip": false,
+            "gamepad": false
+          }
+        ],
+        "hands": {
+          "left": {
+            "source": "hand",
+            "tracked": true,
+            "visible": true,
+            "uiTarget": null,
+            "sourceFrames": 23,
+            "wristValidFrames": 12,
+            "wristMissingFrames": 11,
+            "pose": {
+              "joints": 25,
+              "wristPoseValid": true,
+              "reason": "valid"
+            },
+            "jointFrames": 12,
+            "missingJointFrames": 11,
+            "visualRejectFrames": 0,
+            "visualFrames": 12,
+            "heldVisualFrames": 0,
+            "dropoutFrames": 11,
+            "retainedGrabFrames": 11,
+            "gap": false,
+            "reason": "holding"
+          },
+          "right": {
+            "source": null,
+            "tracked": false,
+            "visible": false,
+            "uiTarget": null,
+            "sourceFrames": 10,
+            "wristValidFrames": 0,
+            "wristMissingFrames": 0,
+            "pose": {},
+            "jointFrames": 0,
+            "missingJointFrames": 0,
+            "visualRejectFrames": 0,
+            "visualFrames": 0,
+            "heldVisualFrames": 0,
+            "dropoutFrames": 0,
+            "retainedGrabFrames": 0,
+            "gap": false,
+            "reason": "not tracked"
+          }
+        }
+      }
+    },
+    {
+      "name": "short-viewer-loss-retains-render-pose-and-world-but-pauses-simulation-and-input",
+      "now": 1680.8888888888896,
+      "diagnostics": {
+        "viewer": {
+          "viewerValidFrames": 35,
+          "viewerMissingFrames": 2,
+          "viewerEmulatedFrames": 0,
+          "viewerHeldFrames": 2,
+          "visibilityChanges": 0,
+          "referenceResets": 0,
+          "frameInterruptions": 0,
+          "lastReason": "tracked",
+          "valid": true,
+          "visual": "tracked",
+          "graceMs": 160
+        },
+        "handTrackingFeature": "unknown",
+        "sessionVisibility": "visible",
+        "sources": [
+          {
+            "handedness": "left",
+            "profiles": [],
+            "targetRayMode": "tracked-pointer",
+            "hand": true,
+            "grip": false,
+            "gamepad": false
+          }
+        ],
+        "hands": {
+          "left": {
+            "source": "hand",
+            "tracked": true,
+            "visible": true,
+            "uiTarget": null,
+            "sourceFrames": 24,
+            "wristValidFrames": 13,
+            "wristMissingFrames": 11,
+            "pose": {
+              "joints": 25,
+              "wristPoseValid": true,
+              "reason": "valid"
+            },
+            "jointFrames": 13,
+            "missingJointFrames": 11,
+            "visualRejectFrames": 0,
+            "visualFrames": 13,
+            "heldVisualFrames": 0,
+            "dropoutFrames": 13,
+            "retainedGrabFrames": 13,
+            "gap": false,
+            "reason": "holding"
+          },
+          "right": {
+            "source": null,
+            "tracked": false,
+            "visible": false,
+            "uiTarget": null,
+            "sourceFrames": 10,
+            "wristValidFrames": 0,
+            "wristMissingFrames": 0,
+            "pose": {},
+            "jointFrames": 0,
+            "missingJointFrames": 0,
+            "visualRejectFrames": 0,
+            "visualFrames": 0,
+            "heldVisualFrames": 0,
+            "dropoutFrames": 2,
+            "retainedGrabFrames": 0,
+            "gap": false,
+            "reason": "not tracked"
+          }
+        }
+      }
+    },
+    {
+      "name": "intentional-open-after-gap-releases-without-stale-flick",
+      "now": 1708.6666666666674,
+      "diagnostics": {
+        "viewer": {
+          "viewerValidFrames": 37,
+          "viewerMissingFrames": 2,
+          "viewerEmulatedFrames": 0,
+          "viewerHeldFrames": 2,
+          "visibilityChanges": 0,
+          "referenceResets": 0,
+          "frameInterruptions": 0,
+          "lastReason": "tracked",
+          "valid": true,
+          "visual": "tracked",
+          "graceMs": 160
+        },
+        "handTrackingFeature": "unknown",
+        "sessionVisibility": "visible",
+        "sources": [
+          {
+            "handedness": "left",
+            "profiles": [],
+            "targetRayMode": "tracked-pointer",
+            "hand": true,
+            "grip": false,
+            "gamepad": false
+          }
+        ],
+        "hands": {
+          "left": {
+            "source": "hand",
+            "tracked": true,
+            "visible": true,
+            "uiTarget": null,
+            "sourceFrames": 26,
+            "wristValidFrames": 14,
+            "wristMissingFrames": 12,
+            "pose": {
+              "joints": 25,
+              "wristPoseValid": true,
+              "reason": "valid"
+            },
+            "jointFrames": 14,
+            "missingJointFrames": 12,
+            "visualRejectFrames": 0,
+            "visualFrames": 14,
+            "heldVisualFrames": 0,
+            "dropoutFrames": 14,
+            "retainedGrabFrames": 14,
+            "gap": false,
+            "reason": "ready"
+          },
+          "right": {
+            "source": null,
+            "tracked": false,
+            "visible": false,
+            "uiTarget": null,
+            "sourceFrames": 10,
+            "wristValidFrames": 0,
+            "wristMissingFrames": 0,
+            "pose": {},
+            "jointFrames": 0,
+            "missingJointFrames": 0,
+            "visualRejectFrames": 0,
+            "visualFrames": 0,
+            "heldVisualFrames": 0,
+            "dropoutFrames": 2,
+            "retainedGrabFrames": 0,
+            "gap": false,
+            "reason": "not tracked"
+          }
+        }
+      }
+    },
+    {
+      "name": "sustained-hand-loss-expires-and-requires-open-before-new-grab",
+      "now": 2028.1111111111125,
+      "diagnostics": {
+        "viewer": {
+          "viewerValidFrames": 60,
+          "viewerMissingFrames": 2,
+          "viewerEmulatedFrames": 0,
+          "viewerHeldFrames": 2,
+          "visibilityChanges": 0,
+          "referenceResets": 0,
+          "frameInterruptions": 0,
+          "lastReason": "tracked",
+          "valid": true,
+          "visual": "tracked",
+          "graceMs": 160
+        },
+        "handTrackingFeature": "unknown",
+        "sessionVisibility": "visible",
+        "sources": [
+          {
+            "handedness": "left",
+            "profiles": [],
+            "targetRayMode": "tracked-pointer",
+            "hand": true,
+            "grip": false,
+            "gamepad": false
+          }
+        ],
+        "hands": {
+          "left": {
+            "source": "hand",
+            "tracked": true,
+            "visible": true,
+            "uiTarget": null,
+            "sourceFrames": 49,
+            "wristValidFrames": 24,
+            "wristMissingFrames": 25,
+            "pose": {
+              "joints": 25,
+              "wristPoseValid": true,
+              "reason": "valid"
+            },
+            "jointFrames": 24,
+            "missingJointFrames": 25,
+            "visualRejectFrames": 0,
+            "visualFrames": 24,
+            "heldVisualFrames": 0,
+            "dropoutFrames": 27,
+            "retainedGrabFrames": 25,
+            "gap": false,
+            "reason": "release to arm"
+          },
+          "right": {
+            "source": null,
+            "tracked": false,
+            "visible": false,
+            "uiTarget": null,
+            "sourceFrames": 10,
+            "wristValidFrames": 0,
+            "wristMissingFrames": 0,
+            "pose": {},
+            "jointFrames": 0,
+            "missingJointFrames": 0,
+            "visualRejectFrames": 0,
+            "visualFrames": 0,
+            "heldVisualFrames": 0,
+            "dropoutFrames": 2,
+            "retainedGrabFrames": 0,
+            "gap": false,
+            "reason": "not tracked"
+          }
+        }
+      }
+    },
+    {
+      "name": "sustained-viewer-loss-hides-stale-world-and-recovery-keeps-placement",
+      "now": 2291.9999999999977,
+      "diagnostics": {
+        "viewer": {
+          "viewerValidFrames": 66,
+          "viewerMissingFrames": 15,
+          "viewerEmulatedFrames": 0,
+          "viewerHeldFrames": 13,
+          "visibilityChanges": 0,
+          "referenceResets": 0,
+          "frameInterruptions": 0,
+          "lastReason": "tracked",
+          "valid": true,
+          "visual": "tracked",
+          "graceMs": 160
+        },
+        "handTrackingFeature": "unknown",
+        "sessionVisibility": "visible",
+        "sources": [
+          {
+            "handedness": "left",
+            "profiles": [],
+            "targetRayMode": "tracked-pointer",
+            "hand": true,
+            "grip": false,
+            "gamepad": false
+          }
+        ],
+        "hands": {
+          "left": {
+            "source": "hand",
+            "tracked": true,
+            "visible": true,
+            "uiTarget": null,
+            "sourceFrames": 55,
+            "wristValidFrames": 30,
+            "wristMissingFrames": 25,
+            "pose": {
+              "joints": 25,
+              "wristPoseValid": true,
+              "reason": "valid"
+            },
+            "jointFrames": 30,
+            "missingJointFrames": 25,
+            "visualRejectFrames": 0,
+            "visualFrames": 30,
+            "heldVisualFrames": 0,
+            "dropoutFrames": 40,
+            "retainedGrabFrames": 36,
+            "gap": false,
+            "reason": "release to arm"
+          },
+          "right": {
+            "source": null,
+            "tracked": false,
+            "visible": false,
+            "uiTarget": null,
+            "sourceFrames": 10,
+            "wristValidFrames": 0,
+            "wristMissingFrames": 0,
+            "pose": {},
+            "jointFrames": 0,
+            "missingJointFrames": 0,
+            "visualRejectFrames": 0,
+            "visualFrames": 0,
+            "heldVisualFrames": 0,
+            "dropoutFrames": 15,
+            "retainedGrabFrames": 0,
+            "gap": false,
+            "reason": "not tracked"
+          }
+        }
+      }
+    },
+    {
+      "name": "visibility-change-immediately-invalidates-retention",
+      "now": 2389.2222222222185,
+      "diagnostics": {
+        "viewer": {
+          "viewerValidFrames": 73,
+          "viewerMissingFrames": 15,
+          "viewerEmulatedFrames": 0,
+          "viewerHeldFrames": 13,
+          "visibilityChanges": 2,
+          "referenceResets": 0,
+          "frameInterruptions": 0,
+          "lastReason": "tracked",
+          "valid": true,
+          "visual": "tracked",
+          "graceMs": 160
+        },
+        "handTrackingFeature": "unknown",
+        "sessionVisibility": "visible",
+        "sources": [
+          {
+            "handedness": "left",
+            "profiles": [],
+            "targetRayMode": "tracked-pointer",
+            "hand": true,
+            "grip": false,
+            "gamepad": false
+          }
+        ],
+        "hands": {
+          "left": {
+            "source": "hand",
+            "tracked": true,
+            "visible": true,
+            "uiTarget": null,
+            "sourceFrames": 62,
+            "wristValidFrames": 36,
+            "wristMissingFrames": 26,
+            "pose": {
+              "joints": 25,
+              "wristPoseValid": true,
+              "reason": "valid"
+            },
+            "jointFrames": 36,
+            "missingJointFrames": 26,
+            "visualRejectFrames": 0,
+            "visualFrames": 36,
+            "heldVisualFrames": 0,
+            "dropoutFrames": 41,
+            "retainedGrabFrames": 37,
+            "gap": false,
+            "reason": "release to arm"
+          },
+          "right": {
+            "source": null,
+            "tracked": false,
+            "visible": false,
+            "uiTarget": null,
+            "sourceFrames": 10,
+            "wristValidFrames": 0,
+            "wristMissingFrames": 0,
+            "pose": {},
+            "jointFrames": 0,
+            "missingJointFrames": 0,
+            "visualRejectFrames": 0,
+            "visualFrames": 0,
+            "heldVisualFrames": 0,
+            "dropoutFrames": 15,
+            "retainedGrabFrames": 0,
+            "gap": false,
+            "reason": "not tracked"
+          }
+        }
+      }
+    },
+    {
+      "name": "reference-reset-never-reuses-an-old-space-pose",
+      "now": 2625.333333333326,
+      "diagnostics": {
+        "viewer": {
+          "viewerValidFrames": 90,
+          "viewerMissingFrames": 15,
+          "viewerEmulatedFrames": 0,
+          "viewerHeldFrames": 13,
+          "visibilityChanges": 2,
+          "referenceResets": 1,
+          "frameInterruptions": 0,
+          "lastReason": "tracked",
+          "valid": true,
+          "visual": "tracked",
+          "graceMs": 160
+        },
+        "handTrackingFeature": "unknown",
+        "sessionVisibility": "visible",
+        "sources": [
+          {
+            "handedness": "right",
+            "profiles": [
+              "generic-trigger"
+            ],
+            "targetRayMode": "tracked-pointer",
+            "hand": false,
+            "grip": true,
+            "gamepad": true
+          }
+        ],
+        "hands": {
+          "left": {
+            "source": null,
+            "tracked": false,
+            "visible": false,
+            "uiTarget": null,
+            "sourceFrames": 69,
+            "wristValidFrames": 41,
+            "wristMissingFrames": 28,
+            "pose": {
+              "joints": 0,
+              "wristPoseValid": false,
+              "reason": "missing-grip-joints"
+            },
+            "jointFrames": 41,
+            "missingJointFrames": 28,
+            "visualRejectFrames": 0,
+            "visualFrames": 41,
+            "heldVisualFrames": 0,
+            "dropoutFrames": 43,
+            "retainedGrabFrames": 38,
+            "gap": false,
+            "reason": "not tracked"
+          },
+          "right": {
+            "source": "controller",
+            "tracked": true,
+            "visible": false,
+            "uiTarget": "grab",
+            "sourceFrames": 20,
+            "wristValidFrames": 0,
+            "wristMissingFrames": 0,
+            "pose": {},
+            "jointFrames": 0,
+            "missingJointFrames": 0,
+            "visualRejectFrames": 0,
+            "visualFrames": 0,
+            "heldVisualFrames": 0,
+            "dropoutFrames": 15,
+            "retainedGrabFrames": 0,
+            "gap": false,
+            "reason": "release to arm"
+          }
+        }
+      }
+    },
+    {
+      "name": "disconnect-immediately-releases-retained-grab",
+      "now": 2708.6666666666583,
+      "diagnostics": {
+        "viewer": {
+          "viewerValidFrames": 96,
+          "viewerMissingFrames": 15,
+          "viewerEmulatedFrames": 0,
+          "viewerHeldFrames": 13,
+          "visibilityChanges": 2,
+          "referenceResets": 1,
+          "frameInterruptions": 0,
+          "lastReason": "tracked",
+          "valid": true,
+          "visual": "tracked",
+          "graceMs": 160
+        },
+        "handTrackingFeature": "unknown",
+        "sessionVisibility": "visible",
+        "sources": [],
+        "hands": {
+          "left": {
+            "source": null,
+            "tracked": false,
+            "visible": false,
+            "uiTarget": null,
+            "sourceFrames": 75,
+            "wristValidFrames": 46,
+            "wristMissingFrames": 29,
+            "pose": {
+              "joints": 0,
+              "wristPoseValid": false,
+              "reason": "missing-grip-joints"
+            },
+            "jointFrames": 46,
+            "missingJointFrames": 29,
+            "visualRejectFrames": 0,
+            "visualFrames": 46,
+            "heldVisualFrames": 0,
+            "dropoutFrames": 44,
+            "retainedGrabFrames": 39,
+            "gap": false,
+            "reason": "disconnected"
+          },
+          "right": {
+            "source": null,
+            "tracked": false,
+            "visible": false,
+            "uiTarget": null,
+            "sourceFrames": 20,
+            "wristValidFrames": 0,
+            "wristMissingFrames": 0,
+            "pose": {},
+            "jointFrames": 0,
+            "missingJointFrames": 0,
+            "visualRejectFrames": 0,
+            "visualFrames": 0,
+            "heldVisualFrames": 0,
+            "dropoutFrames": 15,
+            "retainedGrabFrames": 0,
+            "gap": false,
+            "reason": "not tracked"
+          }
+        }
+      }
+    },
+    {
+      "name": "controller-gap-retains-held-button-but-explicit-release-terminates-without-throw",
+      "now": 2805.888888888879,
+      "diagnostics": {
+        "viewer": {
+          "viewerValidFrames": 103,
+          "viewerMissingFrames": 15,
+          "viewerEmulatedFrames": 0,
+          "viewerHeldFrames": 13,
+          "visibilityChanges": 2,
+          "referenceResets": 1,
+          "frameInterruptions": 0,
+          "lastReason": "tracked",
+          "valid": true,
+          "visual": "tracked",
+          "graceMs": 160
+        },
+        "handTrackingFeature": "unknown",
+        "sessionVisibility": "visible",
+        "sources": [
+          {
+            "handedness": "right",
+            "profiles": [
+              "generic-trigger"
+            ],
+            "targetRayMode": "tracked-pointer",
+            "hand": false,
+            "grip": true,
+            "gamepad": true
+          }
+        ],
+        "hands": {
+          "left": {
+            "source": null,
+            "tracked": false,
+            "visible": false,
+            "uiTarget": null,
+            "sourceFrames": 75,
+            "wristValidFrames": 46,
+            "wristMissingFrames": 29,
+            "pose": {
+              "joints": 0,
+              "wristPoseValid": false,
+              "reason": "missing-grip-joints"
+            },
+            "jointFrames": 46,
+            "missingJointFrames": 29,
+            "visualRejectFrames": 0,
+            "visualFrames": 46,
+            "heldVisualFrames": 0,
+            "dropoutFrames": 44,
+            "retainedGrabFrames": 39,
+            "gap": false,
+            "reason": "not tracked"
+          },
+          "right": {
+            "source": "controller",
+            "tracked": false,
+            "visible": false,
+            "uiTarget": null,
+            "sourceFrames": 27,
+            "wristValidFrames": 0,
+            "wristMissingFrames": 0,
+            "pose": {},
+            "jointFrames": 0,
+            "missingJointFrames": 0,
+            "visualRejectFrames": 0,
+            "visualFrames": 0,
+            "heldVisualFrames": 0,
+            "dropoutFrames": 16,
+            "retainedGrabFrames": 1,
+            "gap": false,
+            "reason": "controller released"
+          }
+        }
+      }
+    },
+    {
+      "name": "36-recovery-boundaries-use-last-valid-age-for-hand-viewer-and-controller",
+      "now": 13731.999999999998,
+      "diagnostics": {
+        "viewer": {
+          "viewerValidFrames": 551,
+          "viewerMissingFrames": 35,
+          "viewerEmulatedFrames": 0,
+          "viewerHeldFrames": 33,
+          "visibilityChanges": 2,
+          "referenceResets": 1,
+          "frameInterruptions": 6,
+          "lastReason": "tracked",
+          "valid": true,
+          "visual": "tracked",
+          "graceMs": 160
+        },
+        "handTrackingFeature": "unknown",
+        "sessionVisibility": "visible",
+        "sources": [
+          {
+            "handedness": "right",
+            "profiles": [
+              "generic-trigger"
+            ],
+            "targetRayMode": "tracked-pointer",
+            "hand": false,
+            "grip": true,
+            "gamepad": true
+          }
+        ],
+        "hands": {
+          "left": {
+            "source": null,
+            "tracked": false,
+            "visible": false,
+            "uiTarget": null,
+            "sourceFrames": 367,
+            "wristValidFrames": 318,
+            "wristMissingFrames": 49,
+            "pose": {
+              "joints": 25,
+              "wristPoseValid": true,
+              "reason": "valid"
+            },
+            "jointFrames": 318,
+            "missingJointFrames": 49,
+            "visualRejectFrames": 0,
+            "visualFrames": 318,
+            "heldVisualFrames": 0,
+            "dropoutFrames": 84,
+            "retainedGrabFrames": 79,
+            "gap": false,
+            "reason": "next recovery boundary case"
+          },
+          "right": {
+            "source": "controller",
+            "tracked": false,
+            "visible": false,
+            "uiTarget": null,
+            "sourceFrames": 183,
+            "wristValidFrames": 0,
+            "wristMissingFrames": 0,
+            "pose": {},
+            "jointFrames": 0,
+            "missingJointFrames": 0,
+            "visualRejectFrames": 0,
+            "visualFrames": 0,
+            "heldVisualFrames": 0,
+            "dropoutFrames": 56,
+            "retainedGrabFrames": 21,
+            "gap": false,
+            "reason": "next recovery boundary case"
+          }
+        }
+      }
+    },
+    {
+      "name": "16-controller-release-combinations-preserve-trigger-or-squeeze-during-gap",
+      "now": 15176.444444444422,
+      "diagnostics": {
+        "viewer": {
+          "viewerValidFrames": 655,
+          "viewerMissingFrames": 35,
+          "viewerEmulatedFrames": 0,
+          "viewerHeldFrames": 33,
+          "visibilityChanges": 2,
+          "referenceResets": 1,
+          "frameInterruptions": 6,
+          "lastReason": "tracked",
+          "valid": true,
+          "visual": "tracked",
+          "graceMs": 160
+        },
+        "handTrackingFeature": "unknown",
+        "sessionVisibility": "visible",
+        "sources": [
+          {
+            "handedness": "right",
+            "profiles": [
+              "generic-trigger"
+            ],
+            "targetRayMode": "tracked-pointer",
+            "hand": false,
+            "grip": true,
+            "gamepad": true
+          }
+        ],
+        "hands": {
+          "left": {
+            "source": null,
+            "tracked": false,
+            "visible": false,
+            "uiTarget": null,
+            "sourceFrames": 367,
+            "wristValidFrames": 318,
+            "wristMissingFrames": 49,
+            "pose": {
+              "joints": 25,
+              "wristPoseValid": true,
+              "reason": "valid"
+            },
+            "jointFrames": 318,
+            "missingJointFrames": 49,
+            "visualRejectFrames": 0,
+            "visualFrames": 318,
+            "heldVisualFrames": 0,
+            "dropoutFrames": 84,
+            "retainedGrabFrames": 79,
+            "gap": false,
+            "reason": "next combined-button case"
+          },
+          "right": {
+            "source": "controller",
+            "tracked": false,
+            "visible": false,
+            "uiTarget": null,
+            "sourceFrames": 287,
+            "wristValidFrames": 0,
+            "wristMissingFrames": 0,
+            "pose": {},
+            "jointFrames": 0,
+            "missingJointFrames": 0,
+            "visualRejectFrames": 0,
+            "visualFrames": 0,
+            "heldVisualFrames": 0,
+            "dropoutFrames": 80,
+            "retainedGrabFrames": 45,
+            "gap": false,
+            "reason": "next combined-button case"
+          }
+        }
+      }
+    },
+    {
+      "name": "long-callback-interruption-cannot-retain-or-reacquire",
+      "now": 15489.777777777754,
+      "diagnostics": {
+        "viewer": {
+          "viewerValidFrames": 661,
+          "viewerMissingFrames": 35,
+          "viewerEmulatedFrames": 0,
+          "viewerHeldFrames": 33,
+          "visibilityChanges": 2,
+          "referenceResets": 1,
+          "frameInterruptions": 7,
+          "lastReason": "tracked",
+          "valid": true,
+          "visual": "tracked",
+          "graceMs": 160
+        },
+        "handTrackingFeature": "unknown",
+        "sessionVisibility": "visible",
+        "sources": [
+          {
+            "handedness": "left",
+            "profiles": [],
+            "targetRayMode": "tracked-pointer",
+            "hand": true,
+            "grip": false,
+            "gamepad": false
+          }
+        ],
+        "hands": {
+          "left": {
+            "source": "hand",
+            "tracked": true,
+            "visible": true,
+            "uiTarget": null,
+            "sourceFrames": 373,
+            "wristValidFrames": 324,
+            "wristMissingFrames": 49,
+            "pose": {
+              "joints": 25,
+              "wristPoseValid": true,
+              "reason": "valid"
+            },
+            "jointFrames": 324,
+            "missingJointFrames": 49,
+            "visualRejectFrames": 0,
+            "visualFrames": 324,
+            "heldVisualFrames": 0,
+            "dropoutFrames": 84,
+            "retainedGrabFrames": 79,
+            "gap": false,
+            "reason": "release to arm"
+          },
+          "right": {
+            "source": null,
+            "tracked": false,
+            "visible": false,
+            "uiTarget": null,
+            "sourceFrames": 287,
+            "wristValidFrames": 0,
+            "wristMissingFrames": 0,
+            "pose": {},
+            "jointFrames": 0,
+            "missingJointFrames": 0,
+            "visualRejectFrames": 0,
+            "visualFrames": 0,
+            "heldVisualFrames": 0,
+            "dropoutFrames": 80,
+            "retainedGrabFrames": 45,
+            "gap": false,
+            "reason": "not tracked"
+          }
+        }
+      }
+    },
+    {
+      "name": "missing-poke-contact-does-not-activate-paused-ui",
+      "now": 15573.111111111086,
+      "diagnostics": {
+        "viewer": {
+          "viewerValidFrames": 667,
+          "viewerMissingFrames": 35,
+          "viewerEmulatedFrames": 0,
+          "viewerHeldFrames": 33,
+          "visibilityChanges": 2,
+          "referenceResets": 1,
+          "frameInterruptions": 7,
+          "lastReason": "tracked",
+          "valid": true,
+          "visual": "tracked",
+          "graceMs": 160
+        },
+        "handTrackingFeature": "unknown",
+        "sessionVisibility": "visible",
+        "sources": [
+          {
+            "handedness": "left",
+            "profiles": [],
+            "targetRayMode": "tracked-pointer",
+            "hand": true,
+            "grip": false,
+            "gamepad": false
+          }
+        ],
+        "hands": {
+          "left": {
+            "source": "hand",
+            "tracked": true,
+            "visible": true,
+            "uiTarget": "pause",
+            "sourceFrames": 379,
+            "wristValidFrames": 329,
+            "wristMissingFrames": 50,
+            "pose": {
+              "joints": 25,
+              "wristPoseValid": true,
+              "reason": "valid"
+            },
+            "jointFrames": 329,
+            "missingJointFrames": 50,
+            "visualRejectFrames": 0,
+            "visualFrames": 329,
+            "heldVisualFrames": 0,
+            "dropoutFrames": 85,
+            "retainedGrabFrames": 79,
+            "gap": false,
+            "reason": "UI only"
+          },
+          "right": {
+            "source": null,
+            "tracked": false,
+            "visible": false,
+            "uiTarget": null,
+            "sourceFrames": 287,
+            "wristValidFrames": 0,
+            "wristMissingFrames": 0,
+            "pose": {},
+            "jointFrames": 0,
+            "missingJointFrames": 0,
+            "visualRejectFrames": 0,
+            "visualFrames": 0,
+            "heldVisualFrames": 0,
+            "dropoutFrames": 80,
+            "retainedGrabFrames": 45,
+            "gap": false,
+            "reason": "not tracked"
+          }
+        }
+      }
+    },
+    {
+      "name": "last-good-stereo-eye-transform-restored-without-fabricating-tracking",
+      "now": 15614.777777777752,
+      "diagnostics": {
+        "viewer": {
+          "viewerValidFrames": 669,
+          "viewerMissingFrames": 36,
+          "viewerEmulatedFrames": 1,
+          "viewerHeldFrames": 34,
+          "visibilityChanges": 2,
+          "referenceResets": 1,
+          "frameInterruptions": 7,
+          "lastReason": "tracked",
+          "valid": true,
+          "visual": "tracked",
+          "graceMs": 160
+        },
+        "handTrackingFeature": "unknown",
+        "sessionVisibility": "visible",
+        "sources": [
+          {
+            "handedness": "left",
+            "profiles": [],
+            "targetRayMode": "tracked-pointer",
+            "hand": true,
+            "grip": false,
+            "gamepad": false
+          }
+        ],
+        "hands": {
+          "left": {
+            "source": "hand",
+            "tracked": false,
+            "visible": false,
+            "uiTarget": null,
+            "sourceFrames": 381,
+            "wristValidFrames": 329,
+            "wristMissingFrames": 52,
+            "pose": {
+              "joints": 0,
+              "wristPoseValid": false,
+              "reason": "missing-grip-joints"
+            },
+            "jointFrames": 329,
+            "missingJointFrames": 52,
+            "visualRejectFrames": 0,
+            "visualFrames": 329,
+            "heldVisualFrames": 3,
+            "dropoutFrames": 88,
+            "retainedGrabFrames": 79,
+            "gap": true,
+            "reason": "joint sample unavailable"
+          },
+          "right": {
+            "source": null,
+            "tracked": false,
+            "visible": false,
+            "uiTarget": null,
+            "sourceFrames": 287,
+            "wristValidFrames": 0,
+            "wristMissingFrames": 0,
+            "pose": {},
+            "jointFrames": 0,
+            "missingJointFrames": 0,
+            "visualRejectFrames": 0,
+            "visualFrames": 0,
+            "heldVisualFrames": 0,
+            "dropoutFrames": 81,
+            "retainedGrabFrames": 45,
+            "gap": false,
+            "reason": "not tracked"
+          }
+        }
+      }
+    },
+    {
+      "name": "session-end-clears-retained-pose-and-grab",
+      "now": 15698.111111111084,
+      "diagnostics": {
+        "viewer": {
+          "viewerValidFrames": 675,
+          "viewerMissingFrames": 36,
+          "viewerEmulatedFrames": 1,
+          "viewerHeldFrames": 34,
+          "visibilityChanges": 2,
+          "referenceResets": 1,
+          "frameInterruptions": 7,
+          "lastReason": "tracked",
+          "valid": false,
+          "visual": "lost",
+          "graceMs": 160
+        },
+        "handTrackingFeature": "unknown",
+        "sessionVisibility": null,
+        "sources": [],
+        "hands": {
+          "left": {
+            "source": null,
+            "tracked": false,
+            "visible": false,
+            "uiTarget": null,
+            "sourceFrames": 387,
+            "wristValidFrames": 334,
+            "wristMissingFrames": 53,
+            "pose": {
+              "joints": 0,
+              "wristPoseValid": false,
+              "reason": "missing-grip-joints"
+            },
+            "jointFrames": 334,
+            "missingJointFrames": 53,
+            "visualRejectFrames": 0,
+            "visualFrames": 334,
+            "heldVisualFrames": 0,
+            "dropoutFrames": 89,
+            "retainedGrabFrames": 80,
+            "gap": false,
+            "reason": "session ended"
+          },
+          "right": {
+            "source": null,
+            "tracked": false,
+            "visible": false,
+            "uiTarget": null,
+            "sourceFrames": 287,
+            "wristValidFrames": 0,
+            "wristMissingFrames": 0,
+            "pose": {},
+            "jointFrames": 0,
+            "missingJointFrames": 0,
+            "visualRejectFrames": 0,
+            "visualFrames": 0,
+            "heldVisualFrames": 0,
+            "dropoutFrames": 81,
+            "retainedGrabFrames": 45,
+            "gap": false,
+            "reason": "session ended"
+          }
+        }
+      }
+    }
+  ],
+  "recoveryCases": [
+    {
+      "loss": "hand",
+      "missingAt": [
+        150
+      ],
+      "age": 159,
+      "retained": true
+    },
+    {
+      "loss": "hand",
+      "missingAt": [
+        150
+      ],
+      "age": 160,
+      "retained": true
+    },
+    {
+      "loss": "hand",
+      "missingAt": [
+        150
+      ],
+      "age": 161,
+      "retained": false
+    },
+    {
+      "loss": "hand",
+      "missingAt": [
+        150
+      ],
+      "age": 200,
+      "retained": false
+    },
+    {
+      "loss": "hand",
+      "missingAt": [
+        11,
+        49,
+        96,
+        150
+      ],
+      "age": 159,
+      "retained": true
+    },
+    {
+      "loss": "hand",
+      "missingAt": [
+        11,
+        49,
+        96,
+        150
+      ],
+      "age": 160,
+      "retained": true
+    },
+    {
+      "loss": "hand",
+      "missingAt": [
+        11,
+        49,
+        96,
+        150
+      ],
+      "age": 161,
+      "retained": false
+    },
+    {
+      "loss": "hand",
+      "missingAt": [
+        11,
+        49,
+        96,
+        150
+      ],
+      "age": 200,
+      "retained": false
+    },
+    {
+      "loss": "hand",
+      "missingAt": [],
+      "age": 159,
+      "retained": true
+    },
+    {
+      "loss": "hand",
+      "missingAt": [],
+      "age": 160,
+      "retained": true
+    },
+    {
+      "loss": "hand",
+      "missingAt": [],
+      "age": 161,
+      "retained": false
+    },
+    {
+      "loss": "hand",
+      "missingAt": [],
+      "age": 200,
+      "retained": false
+    },
+    {
+      "loss": "viewer",
+      "missingAt": [
+        150
+      ],
+      "age": 159,
+      "retained": true
+    },
+    {
+      "loss": "viewer",
+      "missingAt": [
+        150
+      ],
+      "age": 160,
+      "retained": true
+    },
+    {
+      "loss": "viewer",
+      "missingAt": [
+        150
+      ],
+      "age": 161,
+      "retained": false
+    },
+    {
+      "loss": "viewer",
+      "missingAt": [
+        150
+      ],
+      "age": 200,
+      "retained": false
+    },
+    {
+      "loss": "viewer",
+      "missingAt": [
+        11,
+        49,
+        96,
+        150
+      ],
+      "age": 159,
+      "retained": true
+    },
+    {
+      "loss": "viewer",
+      "missingAt": [
+        11,
+        49,
+        96,
+        150
+      ],
+      "age": 160,
+      "retained": true
+    },
+    {
+      "loss": "viewer",
+      "missingAt": [
+        11,
+        49,
+        96,
+        150
+      ],
+      "age": 161,
+      "retained": false
+    },
+    {
+      "loss": "viewer",
+      "missingAt": [
+        11,
+        49,
+        96,
+        150
+      ],
+      "age": 200,
+      "retained": false
+    },
+    {
+      "loss": "viewer",
+      "missingAt": [],
+      "age": 159,
+      "retained": true
+    },
+    {
+      "loss": "viewer",
+      "missingAt": [],
+      "age": 160,
+      "retained": true
+    },
+    {
+      "loss": "viewer",
+      "missingAt": [],
+      "age": 161,
+      "retained": false
+    },
+    {
+      "loss": "viewer",
+      "missingAt": [],
+      "age": 200,
+      "retained": false
+    },
+    {
+      "loss": "controller",
+      "missingAt": [
+        150
+      ],
+      "age": 159,
+      "retained": true
+    },
+    {
+      "loss": "controller",
+      "missingAt": [
+        150
+      ],
+      "age": 160,
+      "retained": true
+    },
+    {
+      "loss": "controller",
+      "missingAt": [
+        150
+      ],
+      "age": 161,
+      "retained": false
+    },
+    {
+      "loss": "controller",
+      "missingAt": [
+        150
+      ],
+      "age": 200,
+      "retained": false
+    },
+    {
+      "loss": "controller",
+      "missingAt": [
+        11,
+        49,
+        96,
+        150
+      ],
+      "age": 159,
+      "retained": true
+    },
+    {
+      "loss": "controller",
+      "missingAt": [
+        11,
+        49,
+        96,
+        150
+      ],
+      "age": 160,
+      "retained": true
+    },
+    {
+      "loss": "controller",
+      "missingAt": [
+        11,
+        49,
+        96,
+        150
+      ],
+      "age": 161,
+      "retained": false
+    },
+    {
+      "loss": "controller",
+      "missingAt": [
+        11,
+        49,
+        96,
+        150
+      ],
+      "age": 200,
+      "retained": false
+    },
+    {
+      "loss": "controller",
+      "missingAt": [],
+      "age": 159,
+      "retained": true
+    },
+    {
+      "loss": "controller",
+      "missingAt": [],
+      "age": 160,
+      "retained": true
+    },
+    {
+      "loss": "controller",
+      "missingAt": [],
+      "age": 161,
+      "retained": false
+    },
+    {
+      "loss": "controller",
+      "missingAt": [],
+      "age": 200,
+      "retained": false
+    }
+  ],
+  "buttonCases": [
+    {
+      "input": "events",
+      "order": [
+        0
+      ]
+    },
+    {
+      "input": "events",
+      "order": [
+        1
+      ]
+    },
+    {
+      "input": "events",
+      "order": [
+        0,
+        1
+      ]
+    },
+    {
+      "input": "events",
+      "order": [
+        1,
+        0
+      ]
+    },
+    {
+      "input": "gamepad",
+      "order": [
+        0
+      ]
+    },
+    {
+      "input": "gamepad",
+      "order": [
+        1
+      ]
+    },
+    {
+      "input": "gamepad",
+      "order": [
+        0,
+        1
+      ]
+    },
+    {
+      "input": "gamepad",
+      "order": [
+        1,
+        0
+      ]
+    },
+    {
+      "input": "mixed-trigger-pad",
+      "order": [
+        0
+      ]
+    },
+    {
+      "input": "mixed-trigger-pad",
+      "order": [
+        1
+      ]
+    },
+    {
+      "input": "mixed-trigger-pad",
+      "order": [
+        0,
+        1
+      ]
+    },
+    {
+      "input": "mixed-trigger-pad",
+      "order": [
+        1,
+        0
+      ]
+    },
+    {
+      "input": "mixed-squeeze-pad",
+      "order": [
+        0
+      ]
+    },
+    {
+      "input": "mixed-squeeze-pad",
+      "order": [
+        1
+      ]
+    },
+    {
+      "input": "mixed-squeeze-pad",
+      "order": [
+        0,
+        1
+      ]
+    },
+    {
+      "input": "mixed-squeeze-pad",
+      "order": [
+        1,
+        0
+      ]
+    }
+  ]
+}

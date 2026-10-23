@@ -1,0 +1,484 @@
+{
+  "pass": true,
+  "scope": "Owned muted headless Chromium SwiftShader, actual Three0.160 renderer with synthetic XR provider. No physical input, GPUhardware, audio or Quest/compositor claim.",
+  "identities": {
+    "baseline": "521b7cb719db05c838150333fc3620ca06664bfaa0aeb32ecc35c49edd115b76",
+    "candidate": "1b8fc09df172f33365b6e99dff278dc79e7aa511e09242883dd0783dce24e809"
+  },
+  "desktop": [
+    {
+      "variant": "baseline",
+      "delivered": 0,
+      "world": {
+        "frame": 7,
+        "calls": 238,
+        "triangles": 172818,
+        "points": 0,
+        "lines": 0
+      },
+      "hud": {
+        "frame": 8,
+        "calls": 1,
+        "triangles": 3216,
+        "points": 0,
+        "lines": 0
+      }
+    },
+    {
+      "variant": "baseline",
+      "delivered": 5,
+      "world": {
+        "frame": 11,
+        "calls": 258,
+        "triangles": 172698,
+        "points": 0,
+        "lines": 0
+      },
+      "hud": {
+        "frame": 12,
+        "calls": 1,
+        "triangles": 3216,
+        "points": 0,
+        "lines": 0
+      }
+    },
+    {
+      "variant": "candidate",
+      "delivered": 0,
+      "world": {
+        "frame": 7,
+        "calls": 238,
+        "triangles": 172818,
+        "points": 0,
+        "lines": 0
+      },
+      "hud": {
+        "frame": 8,
+        "calls": 1,
+        "triangles": 3216,
+        "points": 0,
+        "lines": 0
+      }
+    },
+    {
+      "variant": "candidate",
+      "delivered": 5,
+      "world": {
+        "frame": 9,
+        "calls": 258,
+        "triangles": 172698,
+        "points": 0,
+        "lines": 0
+      },
+      "hud": {
+        "frame": 10,
+        "calls": 1,
+        "triangles": 3216,
+        "points": 0,
+        "lines": 0
+      }
+    }
+  ],
+  "xr": [
+    {
+      "variant": "baseline",
+      "render": {
+        "frame": 144,
+        "calls": 180,
+        "triangles": 92389,
+        "points": 0,
+        "lines": 0
+      },
+      "xr": {
+        "active": true,
+        "busy": false,
+        "supported": true,
+        "placed": true,
+        "placing": true,
+        "mode": "select",
+        "scale": 0.024,
+        "sessionMode": "immersive-ar",
+        "referenceSpace": "local-floor",
+        "hardwareVerified": false,
+        "controllerFallback": true,
+        "frames": 80,
+        "hands": {
+          "left": "not tracked",
+          "right": "not tracked"
+        },
+        "status": "Place the islands, then PLAY / DONE. Hands: pinch. Controllers: trigger to select, squeeze near a body to grab. Hardware unverified.",
+        "input": {
+          "handTrackingFeature": "unknown",
+          "sessionVisibility": "visible",
+          "sources": [],
+          "hands": {
+            "left": {
+              "source": null,
+              "tracked": false,
+              "visible": false,
+              "uiTarget": null,
+              "sourceFrames": 0,
+              "wristValidFrames": 0,
+              "wristMissingFrames": 0,
+              "pose": {},
+              "jointFrames": 0,
+              "missingJointFrames": 0,
+              "visualRejectFrames": 0,
+              "visualFrames": 0,
+              "heldVisualFrames": 0,
+              "reason": "not tracked"
+            },
+            "right": {
+              "source": null,
+              "tracked": false,
+              "visible": false,
+              "uiTarget": null,
+              "sourceFrames": 0,
+              "wristValidFrames": 0,
+              "wristMissingFrames": 0,
+              "pose": {},
+              "jointFrames": 0,
+              "missingJointFrames": 0,
+              "visualRejectFrames": 0,
+              "visualFrames": 0,
+              "heldVisualFrames": 0,
+              "reason": "not tracked"
+            }
+          }
+        },
+        "held": [],
+        "placement": {
+          "scale": 0.024,
+          "distance": 0.68,
+          "height": -0.43,
+          "center": [
+            6.878310871124267,
+            0,
+            -5.566332530975341
+          ],
+          "widthMetres": 0.9370410781860351,
+          "depthMetres": 0.8080160385131836
+        },
+        "controls": [
+          "select",
+          "grab",
+          "bless",
+          "lightning",
+          "pause",
+          "place",
+          "exit"
+        ]
+      },
+      "monitor": null
+    },
+    {
+      "variant": "candidate",
+      "render": {
+        "frame": 212,
+        "calls": 181,
+        "triangles": 92935,
+        "points": 0,
+        "lines": 0
+      },
+      "xr": {
+        "active": true,
+        "busy": false,
+        "supported": true,
+        "placed": true,
+        "placing": true,
+        "mode": "select",
+        "scale": 0.024,
+        "sessionMode": "immersive-ar",
+        "referenceSpace": "local-floor",
+        "hardwareVerified": false,
+        "controllerFallback": true,
+        "frames": 80,
+        "hands": {
+          "left": "not tracked",
+          "right": "not tracked"
+        },
+        "status": "Place the islands, then PLAY / DONE. Hands: pinch. Controllers: trigger to select, squeeze near a body to grab. Hardware unverified.",
+        "input": {
+          "viewer": {
+            "viewerValidFrames": 80,
+            "viewerMissingFrames": 0,
+            "viewerEmulatedFrames": 0,
+            "viewerHeldFrames": 0,
+            "visibilityChanges": 0,
+            "referenceResets": 0,
+            "frameInterruptions": 0,
+            "lastReason": "tracked",
+            "valid": true,
+            "visual": "tracked",
+            "graceMs": 160
+          },
+          "handTrackingFeature": "unknown",
+          "sessionVisibility": "visible",
+          "sources": [],
+          "hands": {
+            "left": {
+              "source": null,
+              "tracked": false,
+              "visible": false,
+              "uiTarget": null,
+              "sourceFrames": 0,
+              "wristValidFrames": 0,
+              "wristMissingFrames": 0,
+              "pose": {},
+              "jointFrames": 0,
+              "missingJointFrames": 0,
+              "visualRejectFrames": 0,
+              "visualFrames": 0,
+              "heldVisualFrames": 0,
+              "dropoutFrames": 0,
+              "retainedGrabFrames": 0,
+              "gap": false,
+              "reason": "not tracked"
+            },
+            "right": {
+              "source": null,
+              "tracked": false,
+              "visible": false,
+              "uiTarget": null,
+              "sourceFrames": 0,
+              "wristValidFrames": 0,
+              "wristMissingFrames": 0,
+              "pose": {},
+              "jointFrames": 0,
+              "missingJointFrames": 0,
+              "visualRejectFrames": 0,
+              "visualFrames": 0,
+              "heldVisualFrames": 0,
+              "dropoutFrames": 0,
+              "retainedGrabFrames": 0,
+              "gap": false,
+              "reason": "not tracked"
+            }
+          }
+        },
+        "held": [],
+        "placement": {
+          "scale": 0.024,
+          "distance": 0.68,
+          "height": -0.43,
+          "center": [
+            6.878310871124267,
+            0,
+            -5.566332530975341
+          ],
+          "widthMetres": 0.9370410781860351,
+          "depthMetres": 0.8080160385131836
+        },
+        "controls": [
+          "select",
+          "grab",
+          "bless",
+          "lightning",
+          "pause",
+          "place",
+          "exit"
+        ]
+      },
+      "monitor": {
+        "mode": "XR",
+        "frameMs": 13.888888888888687,
+        "fps": 72.00000000000105,
+        "calls": 181,
+        "intervals": 73,
+        "sampleSpanMs": 1013.8888888888741,
+        "resets": 2,
+        "callbacks": 139,
+        "text": "XR CALLBACK 72 FPS\n13.9 MS 181 DRAWS",
+        "updates": 12,
+        "visible": true,
+        "tracking": "tracked",
+        "vertices": 1638,
+        "geometryBytes": 245088,
+        "updatePeriodMs": 250,
+        "xrDrawsPerEye": 1
+      }
+    }
+  ],
+  "captures": [
+    "baseline-tracking-desktop.png",
+    "baseline-tracking-xr.png",
+    "candidate-tracking-desktop.png",
+    "candidate-tracking-mobile.png",
+    "candidate-tracking-xr.png",
+    "candidate-tracking-stereo.png"
+  ],
+  "backend": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+  "desktopLayout": {
+    "top": 56,
+    "bottom": 98.375,
+    "right": 1272,
+    "text": "DESKTOP CALLBACK 25 FPS\n40.4 MS 259 DRAWS",
+    "pointerEvents": "none"
+  },
+  "mobileLayout": {
+    "top": 104,
+    "right": 382,
+    "left": 216.25,
+    "xrBottom": 96
+  },
+  "monitorLayout": {
+    "minX": -0.13661670392643924,
+    "maxX": 0.13661670392643924,
+    "minY": 0.8325008343738464,
+    "maxY": 0.9388460620700441,
+    "raycastIsNoOp": true,
+    "vertices": 1638
+  },
+  "menuClearance": {
+    "monitorBottom": 0.8374924542538066,
+    "menuTop": 0.8058478434621996
+  },
+  "monitorCost": {
+    "withMonitor": {
+      "frame": 212,
+      "calls": 181,
+      "triangles": 92935,
+      "points": 0,
+      "lines": 0
+    },
+    "withoutMonitor": {
+      "frame": 213,
+      "calls": 180,
+      "triangles": 92389,
+      "points": 0,
+      "lines": 0
+    },
+    "calls": 1,
+    "triangles": 546
+  },
+  "viewerLoss": {
+    "head": [
+      1,
+      0,
+      0,
+      0,
+      0,
+      0.9393727128473789,
+      -0.34289780745545134,
+      0,
+      0,
+      0.34289780745545134,
+      0.9393727128473789,
+      0,
+      0,
+      1.6,
+      0,
+      1
+    ],
+    "scene": [
+      0.024,
+      0,
+      0,
+      0,
+      0,
+      0.024,
+      0,
+      0,
+      0,
+      0,
+      0.024,
+      0,
+      -0.16507946090698242,
+      1.1700000000000002,
+      -0.5464080192565919,
+      1
+    ],
+    "one": {
+      "visible": true,
+      "view": "held",
+      "valid": false,
+      "calls": 181,
+      "eye": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        0.9393727128473789,
+        -0.34289780745545134,
+        0,
+        0,
+        0.34289780745545134,
+        0.9393727128473789,
+        0,
+        0,
+        1.6,
+        0,
+        1
+      ]
+    },
+    "two": {
+      "visible": true,
+      "calls": 181
+    },
+    "sustained": {
+      "visible": false,
+      "view": "lost",
+      "calls": 0
+    },
+    "recovered": {
+      "visible": true,
+      "calls": 181,
+      "scene": [
+        0.024,
+        0,
+        0,
+        0,
+        0,
+        0.024,
+        0,
+        0,
+        0,
+        0,
+        0.024,
+        0,
+        -0.16507946090698242,
+        1.1700000000000002,
+        -0.5464080192565919,
+        1
+      ]
+    }
+  },
+  "stereo": {
+    "eyeCount": 2,
+    "withMonitor": {
+      "frame": 252,
+      "calls": 362,
+      "triangles": 185866,
+      "points": 0,
+      "lines": 0
+    },
+    "without": {
+      "frame": 253,
+      "calls": 360,
+      "triangles": 184778,
+      "points": 0,
+      "lines": 0
+    },
+    "delta": 2,
+    "monitor": {
+      "mode": "XR",
+      "frameMs": 13.888888888888687,
+      "fps": 72.00000000000105,
+      "calls": 362,
+      "intervals": 73,
+      "sampleSpanMs": 1013.8888888888741,
+      "resets": 2,
+      "callbacks": 181,
+      "text": "XR CALLBACK 72 FPS\n13.9 MS 362 DRAWS",
+      "updates": 14,
+      "visible": true,
+      "tracking": "tracked",
+      "vertices": 1632,
+      "geometryBytes": 245088,
+      "updatePeriodMs": 250,
+      "xrDrawsPerEye": 1
+    }
+  },
+  "browserClosed": true
+}

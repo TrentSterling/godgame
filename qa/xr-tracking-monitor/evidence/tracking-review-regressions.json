@@ -1,0 +1,21 @@
+{
+  "previousCandidate": "7f3f26487c252373695d08e89c9e1130c5560cc2",
+  "observedBeforeFix": [
+    {
+      "state": "Original runtime plus added execution tests",
+      "failure": "AssertionError: hand recovery at 161 ms expires the old joint before processing fresh input"
+    },
+    {
+      "state": "Expiry corrected; original controller release callback",
+      "failure": "AssertionError: events: ending 0 preserves the other held button; false !== true"
+    }
+  ],
+  "final": {
+    "pass": true,
+    "recoveryCases": 36,
+    "controllerButtonCases": 16,
+    "trackingGroups": 16
+  },
+  "boundaries": "Retention is inclusive through 160 ms since the previous valid sample; fresh recovery above 160 ms cancels the old grab and requires fresh open input before rearming.",
+  "scope": "Production callbacks with synthetic poses and real native Rapier; no physical Quest/compositor acceptance."
+}
