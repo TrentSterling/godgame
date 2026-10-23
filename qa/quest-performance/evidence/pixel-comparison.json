@@ -1,0 +1,7 @@
+{
+  "scope": "Full matched 1280x720 screenshots after asynchronous XR support probe settles",
+  "comparedPixels": 921600,
+  "changedPixels": 8,
+  "maxChannelDifference": 23,
+  "meanAbsoluteChannelDifference": 0.00010054976851851852
+}

@@ -1,0 +1,39 @@
+{
+  "pass": true,
+  "scope": "Production Village bridge callbacks and native Rapier in non-rendering mocked DOM/WebXR. No browser, GPU, real permissions, HMD tracking, performance or comfort claims.",
+  "identity": {
+    "sourceFiles": 115,
+    "testFiles": 10,
+    "runtimeAssets": 3,
+    "settlementMainSHA256": "72dc1a57d4c318fa0c687476e04369216ef98f07a1d91f15b3d70394c0d81ee7",
+    "deliveredHTMLSHA256": "02362b3e8a92a4225ca05ec01377928b00de266a4354bdbf63cd41869e5dbf1d",
+    "unchangedDuringRun": true,
+    "changed": []
+  },
+  "runs": [
+    {
+      "command": "node qa/xr-village/build-native.cjs",
+      "status": 0
+    },
+    {
+      "command": "node qa/xr-village/transformed-picker.test.mjs",
+      "status": 0
+    },
+    {
+      "command": "node qa/xr-village/bridge-lifecycle.test.mjs",
+      "status": 0
+    },
+    {
+      "command": "node qa/xr-village/native-interactions.test.mjs",
+      "status": 0
+    },
+    {
+      "command": "node qa/xr-village/native-placement.test.mjs",
+      "status": 0
+    },
+    {
+      "command": "node qa/xr-village/hand-ui.test.mjs",
+      "status": 0
+    }
+  ]
+}

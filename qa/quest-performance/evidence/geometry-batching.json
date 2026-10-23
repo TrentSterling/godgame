@@ -1,0 +1,69 @@
+{
+  "pass": true,
+  "batches": 6,
+  "comparedVertices": 5736,
+  "physics": "Byte-identical serialized Rapier worlds",
+  "states": [
+    {
+      "fraction": 1,
+      "baseline": {
+        "draws": 46,
+        "triangles": 3124
+      },
+      "candidate": {
+        "draws": 19,
+        "triangles": 3124
+      },
+      "rayQueries": 28
+    },
+    {
+      "fraction": 0.8,
+      "baseline": {
+        "draws": 44,
+        "triangles": 3004
+      },
+      "candidate": {
+        "draws": 19,
+        "triangles": 3004
+      },
+      "rayQueries": 28
+    },
+    {
+      "fraction": 0.5,
+      "baseline": {
+        "draws": 40,
+        "triangles": 2764
+      },
+      "candidate": {
+        "draws": 19,
+        "triangles": 2764
+      },
+      "rayQueries": 28
+    },
+    {
+      "fraction": 0.2,
+      "baseline": {
+        "draws": 36,
+        "triangles": 2524
+      },
+      "candidate": {
+        "draws": 19,
+        "triangles": 2524
+      },
+      "rayQueries": 28
+    },
+    {
+      "fraction": 0,
+      "baseline": {
+        "draws": 33,
+        "triangles": 2344
+      },
+      "candidate": {
+        "draws": 17,
+        "triangles": 2344
+      },
+      "rayQueries": 28
+    }
+  ],
+  "scope": "CPU geometry, colors, normals, bounds, visibility/draw-range, surface rays and disposal. Draw counts are scene candidates here, not actual renderer counters."
+}

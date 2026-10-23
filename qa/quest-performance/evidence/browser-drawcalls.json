@@ -1,0 +1,264 @@
+{
+  "pass": true,
+  "scope": "Actual WebGL renderer.info from existing headless Chromium SwiftShader, single desktop camera. No hardware GPU, native input, audio, real XR compositor or Quest timing.",
+  "identities": {
+    "baseline": "0fc797800189e78e628cf81adf1f261b92ccae6656890e13a785de8803927e90",
+    "candidate": "02362b3e8a92a4225ca05ec01377928b00de266a4354bdbf63cd41869e5dbf1d"
+  },
+  "rows": [
+    {
+      "mode": "baseline",
+      "fraction": 1,
+      "view": "desktop",
+      "world": {
+        "frame": 3,
+        "calls": 322,
+        "triangles": 172818,
+        "points": 0,
+        "lines": 0
+      },
+      "hud": {
+        "frame": 4,
+        "calls": 1,
+        "triangles": 3216,
+        "points": 0,
+        "lines": 0
+      },
+      "geometries": 160,
+      "textures": 6
+    },
+    {
+      "mode": "baseline",
+      "fraction": 1,
+      "view": "wide-shadowless",
+      "world": {
+        "frame": 5,
+        "calls": 192,
+        "triangles": 90211,
+        "points": 0,
+        "lines": 0
+      },
+      "hud": {
+        "frame": 5,
+        "calls": 0,
+        "triangles": 0,
+        "points": 0,
+        "lines": 0
+      },
+      "geometries": 160,
+      "textures": 6
+    },
+    {
+      "mode": "baseline",
+      "fraction": 0.5,
+      "view": "desktop",
+      "world": {
+        "frame": 6,
+        "calls": 310,
+        "triangles": 172098,
+        "points": 0,
+        "lines": 0
+      },
+      "hud": {
+        "frame": 7,
+        "calls": 1,
+        "triangles": 3216,
+        "points": 0,
+        "lines": 0
+      },
+      "geometries": 160,
+      "textures": 6
+    },
+    {
+      "mode": "baseline",
+      "fraction": 0.5,
+      "view": "wide-shadowless",
+      "world": {
+        "frame": 8,
+        "calls": 186,
+        "triangles": 89851,
+        "points": 0,
+        "lines": 0
+      },
+      "hud": {
+        "frame": 8,
+        "calls": 0,
+        "triangles": 0,
+        "points": 0,
+        "lines": 0
+      },
+      "geometries": 160,
+      "textures": 6
+    },
+    {
+      "mode": "baseline",
+      "fraction": 0,
+      "view": "desktop",
+      "world": {
+        "frame": 9,
+        "calls": 296,
+        "triangles": 171258,
+        "points": 0,
+        "lines": 0
+      },
+      "hud": {
+        "frame": 10,
+        "calls": 1,
+        "triangles": 3216,
+        "points": 0,
+        "lines": 0
+      },
+      "geometries": 160,
+      "textures": 6
+    },
+    {
+      "mode": "baseline",
+      "fraction": 0,
+      "view": "wide-shadowless",
+      "world": {
+        "frame": 11,
+        "calls": 179,
+        "triangles": 89431,
+        "points": 0,
+        "lines": 0
+      },
+      "hud": {
+        "frame": 11,
+        "calls": 0,
+        "triangles": 0,
+        "points": 0,
+        "lines": 0
+      },
+      "geometries": 160,
+      "textures": 6
+    },
+    {
+      "mode": "candidate",
+      "fraction": 1,
+      "view": "desktop",
+      "world": {
+        "frame": 3,
+        "calls": 268,
+        "triangles": 172818,
+        "points": 0,
+        "lines": 0
+      },
+      "hud": {
+        "frame": 4,
+        "calls": 1,
+        "triangles": 3216,
+        "points": 0,
+        "lines": 0
+      },
+      "geometries": 157,
+      "textures": 6
+    },
+    {
+      "mode": "candidate",
+      "fraction": 1,
+      "view": "wide-shadowless",
+      "world": {
+        "frame": 5,
+        "calls": 165,
+        "triangles": 90211,
+        "points": 0,
+        "lines": 0
+      },
+      "hud": {
+        "frame": 5,
+        "calls": 0,
+        "triangles": 0,
+        "points": 0,
+        "lines": 0
+      },
+      "geometries": 157,
+      "textures": 6
+    },
+    {
+      "mode": "candidate",
+      "fraction": 0.5,
+      "view": "desktop",
+      "world": {
+        "frame": 6,
+        "calls": 268,
+        "triangles": 172098,
+        "points": 0,
+        "lines": 0
+      },
+      "hud": {
+        "frame": 7,
+        "calls": 1,
+        "triangles": 3216,
+        "points": 0,
+        "lines": 0
+      },
+      "geometries": 157,
+      "textures": 6
+    },
+    {
+      "mode": "candidate",
+      "fraction": 0.5,
+      "view": "wide-shadowless",
+      "world": {
+        "frame": 8,
+        "calls": 165,
+        "triangles": 89851,
+        "points": 0,
+        "lines": 0
+      },
+      "hud": {
+        "frame": 8,
+        "calls": 0,
+        "triangles": 0,
+        "points": 0,
+        "lines": 0
+      },
+      "geometries": 157,
+      "textures": 6
+    },
+    {
+      "mode": "candidate",
+      "fraction": 0,
+      "view": "desktop",
+      "world": {
+        "frame": 9,
+        "calls": 264,
+        "triangles": 171258,
+        "points": 0,
+        "lines": 0
+      },
+      "hud": {
+        "frame": 10,
+        "calls": 1,
+        "triangles": 3216,
+        "points": 0,
+        "lines": 0
+      },
+      "geometries": 157,
+      "textures": 6
+    },
+    {
+      "mode": "candidate",
+      "fraction": 0,
+      "view": "wide-shadowless",
+      "world": {
+        "frame": 11,
+        "calls": 163,
+        "triangles": 89431,
+        "points": 0,
+        "lines": 0
+      },
+      "hud": {
+        "frame": 11,
+        "calls": 0,
+        "triangles": 0,
+        "points": 0,
+        "lines": 0
+      },
+      "geometries": 157,
+      "textures": 6
+    }
+  ],
+  "backend": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+  "browserClosed": true
+}
