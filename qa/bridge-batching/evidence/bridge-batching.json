@@ -1,0 +1,88 @@
+{
+  "pass": true,
+  "baseline": "c845caddaa7a7c1d9da9124503b110fe2383af75",
+  "vertices": 720,
+  "rays": 945,
+  "cullingChecks": 125,
+  "bounds": [
+    [
+      1.114999771118164,
+      0.03500001132488251,
+      3.574999898672104
+    ],
+    [
+      1.1150007247924805,
+      0.03500001132488251,
+      3.574999898672104
+    ],
+    [
+      1.114999771118164,
+      0.03500001132488251,
+      3.574999898672104
+    ],
+    [
+      1.114999771118164,
+      0.03500001132488251,
+      3.574999898672104
+    ],
+    [
+      1.114999771118164,
+      0.03500001132488251,
+      3.574999898672104
+    ]
+  ],
+  "sourceGeometriesDisposed": 20,
+  "planMaterials": {
+    "before": 20,
+    "after": 1
+  },
+  "physics": "Byte-identical native Rapier snapshots across nine construction/update cases",
+  "states": [
+    {
+      "delivered": 0,
+      "complete": false,
+      "visiblePlans": 5
+    },
+    {
+      "delivered": 1,
+      "complete": false,
+      "visiblePlans": 4
+    },
+    {
+      "delivered": 2,
+      "complete": false,
+      "visiblePlans": 3
+    },
+    {
+      "delivered": 3,
+      "complete": false,
+      "visiblePlans": 2
+    },
+    {
+      "delivered": 4,
+      "complete": false,
+      "visiblePlans": 1
+    },
+    {
+      "delivered": 5,
+      "complete": true,
+      "visiblePlans": 0
+    },
+    {
+      "delivered": 5,
+      "complete": true,
+      "visiblePlans": 0
+    },
+    {
+      "delivered": 3,
+      "complete": false,
+      "visiblePlans": 0
+    },
+    {
+      "delivered": 0,
+      "complete": false,
+      "visiblePlans": 0
+    }
+  ],
+  "scope": "CPU world geometry, material/shadow properties, separate section culling, XR-transformed surface picking and native collider lifecycle"
+}

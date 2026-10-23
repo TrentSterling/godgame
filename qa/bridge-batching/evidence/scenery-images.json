@@ -1,0 +1,85 @@
+{
+  "scope": "Original unedited before/after captures retained in generated; all sixteen SHA256 hashes",
+  "images": [
+    {
+      "file": "generated/baseline-bridge-0-desktop.png",
+      "sha256": "3626e5373cc8eb4cfe6489542be8bdfa9ca359fc634165628675e8d9d1ff529b",
+      "bytes": 245838
+    },
+    {
+      "file": "generated/baseline-bridge-0-wide-shadowless.png",
+      "sha256": "256a83b24c6650543bd14294d17b9f24bce1f9dee6e404ddbcc7cfddab44e934",
+      "bytes": 132855
+    },
+    {
+      "file": "generated/baseline-bridge-1-desktop.png",
+      "sha256": "b5debd46c0aa05f2178e646b6da4411886d965a1b9a2e7365bd3c67fa9f0828f",
+      "bytes": 245069
+    },
+    {
+      "file": "generated/baseline-bridge-1-wide-shadowless.png",
+      "sha256": "78d189421ecae9db6f25fa03e1f48beed793887ccc5776a97fc5ff6acbf87da9",
+      "bytes": 132499
+    },
+    {
+      "file": "generated/baseline-bridge-3-desktop.png",
+      "sha256": "2240e2b0b5ce8913024f896508596faae3cbe85f2e5e65305ae6de6ee0119530",
+      "bytes": 245678
+    },
+    {
+      "file": "generated/baseline-bridge-3-wide-shadowless.png",
+      "sha256": "a152e1b445875133b65a406e10a0f9698595a2ede6e35489ac62c16b38a96ed1",
+      "bytes": 132587
+    },
+    {
+      "file": "generated/baseline-bridge-5-desktop.png",
+      "sha256": "143aa23f7589507ca5488dbfc76aed615f354a5547c41e6a3c04fb6e1ffde261",
+      "bytes": 245115
+    },
+    {
+      "file": "generated/baseline-bridge-5-wide-shadowless.png",
+      "sha256": "1de385adf09c4ba312f91974b692a8e174ad79599d750c917249a9bedf96ca12",
+      "bytes": 132570
+    },
+    {
+      "file": "generated/candidate-bridge-0-desktop.png",
+      "sha256": "ed2f248debb8514c254026deca48e94a41e9e31561a6161a9345c7fca4354912",
+      "bytes": 245835
+    },
+    {
+      "file": "generated/candidate-bridge-0-wide-shadowless.png",
+      "sha256": "45d4eb2ec71b212bf9fd8872dbac1d029fa28b55678fb097549212eaa5bfd9a1",
+      "bytes": 132855
+    },
+    {
+      "file": "generated/candidate-bridge-1-desktop.png",
+      "sha256": "b5debd46c0aa05f2178e646b6da4411886d965a1b9a2e7365bd3c67fa9f0828f",
+      "bytes": 245069
+    },
+    {
+      "file": "generated/candidate-bridge-1-wide-shadowless.png",
+      "sha256": "78d189421ecae9db6f25fa03e1f48beed793887ccc5776a97fc5ff6acbf87da9",
+      "bytes": 132499
+    },
+    {
+      "file": "generated/candidate-bridge-3-desktop.png",
+      "sha256": "2240e2b0b5ce8913024f896508596faae3cbe85f2e5e65305ae6de6ee0119530",
+      "bytes": 245678
+    },
+    {
+      "file": "generated/candidate-bridge-3-wide-shadowless.png",
+      "sha256": "a152e1b445875133b65a406e10a0f9698595a2ede6e35489ac62c16b38a96ed1",
+      "bytes": 132587
+    },
+    {
+      "file": "generated/candidate-bridge-5-desktop.png",
+      "sha256": "143aa23f7589507ca5488dbfc76aed615f354a5547c41e6a3c04fb6e1ffde261",
+      "bytes": 245115
+    },
+    {
+      "file": "generated/candidate-bridge-5-wide-shadowless.png",
+      "sha256": "1de385adf09c4ba312f91974b692a8e174ad79599d750c917249a9bedf96ca12",
+      "bytes": 132570
+    }
+  ]
+}

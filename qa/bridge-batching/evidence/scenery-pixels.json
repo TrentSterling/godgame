@@ -1,0 +1,61 @@
+{
+  "scope": "Eight matched screenshots: four bridge construction states and two camera/shadow configurations. Pixel differences are reported, not hidden by a tolerance.",
+  "rows": [
+    {
+      "view": "bridge-0-desktop",
+      "pixels": 921600,
+      "changedPixels": 3,
+      "maxChannelDifference": 5,
+      "meanAbsoluteChannelDifference": 7.0529513888888886e-06
+    },
+    {
+      "view": "bridge-0-wide-shadowless",
+      "pixels": 921600,
+      "changedPixels": 2,
+      "maxChannelDifference": 4,
+      "meanAbsoluteChannelDifference": 2.9839409722222224e-06
+    },
+    {
+      "view": "bridge-1-desktop",
+      "pixels": 921600,
+      "changedPixels": 0,
+      "maxChannelDifference": 0,
+      "meanAbsoluteChannelDifference": 0.0
+    },
+    {
+      "view": "bridge-1-wide-shadowless",
+      "pixels": 921600,
+      "changedPixels": 0,
+      "maxChannelDifference": 0,
+      "meanAbsoluteChannelDifference": 0.0
+    },
+    {
+      "view": "bridge-3-desktop",
+      "pixels": 921600,
+      "changedPixels": 0,
+      "maxChannelDifference": 0,
+      "meanAbsoluteChannelDifference": 0.0
+    },
+    {
+      "view": "bridge-3-wide-shadowless",
+      "pixels": 921600,
+      "changedPixels": 0,
+      "maxChannelDifference": 0,
+      "meanAbsoluteChannelDifference": 0.0
+    },
+    {
+      "view": "bridge-5-desktop",
+      "pixels": 921600,
+      "changedPixels": 0,
+      "maxChannelDifference": 0,
+      "meanAbsoluteChannelDifference": 0.0
+    },
+    {
+      "view": "bridge-5-wide-shadowless",
+      "pixels": 921600,
+      "changedPixels": 0,
+      "maxChannelDifference": 0,
+      "meanAbsoluteChannelDifference": 0.0
+    }
+  ]
+}
