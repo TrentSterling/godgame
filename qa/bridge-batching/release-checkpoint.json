@@ -1,0 +1,52 @@
+{
+  "reviewedSourceCommit": "15d852ba9996bfb927c0f1ffc85c94a6b6b76b36",
+  "baselineSourceCommit": "c845caddaa7a7c1d9da9124503b110fe2383af75",
+  "baselineReleaseCommit": "d66a31a8dd79852256974bb5f5a81d9bb4a087be",
+  "baselineHTMLSHA256": "02362b3e8a92a4225ca05ec01377928b00de266a4354bdbf63cd41869e5dbf1d",
+  "rootHTML": {
+    "sha256": "521b7cb719db05c838150333fc3620ca06664bfaa0aeb32ecc35c49edd115b76",
+    "bytes": 8503720,
+    "gitBlob": "542685338caf7024f7506ea4f2967ea95884406d"
+  },
+  "sourceBundle": {
+    "file": "reviewed-source.bundle",
+    "sha256": "6d9074f330eb32782e9073ce31a4277d873c7e6686ddba66da6d3e2fa68ffe82",
+    "branch": "perf/local-scenery-batches"
+  },
+  "runtimeModules": [
+    "settlement-world.js"
+  ],
+  "sourceHashes": {
+    "settlement-world.js": "07e5c560d330752d4a6dcda153ef15982b0c6028a9518a678abf12c195552280"
+  },
+  "review": {
+    "approved": true,
+    "reviewerThread": "01a1660e-a0f5-704b-a15a-7c03c3749019",
+    "confirmation": "Parent confirmed independent approval of exact source SHA and rebuild; no blocking findings."
+  },
+  "scope": "One local mesh per bridge construction outline with one shared material. Separate culling, visibility and picking retained; no changes to colliders, simulation, hand/UI, resolution or foveation.",
+  "performance": {
+    "openingDesktopCalls": [
+      268,
+      238
+    ],
+    "wideShadowlessCalls": [
+      165,
+      150
+    ],
+    "completedBridgeDesktopCalls": [
+      258,
+      258
+    ],
+    "completedBridgeShadowlessCalls": [
+      160,
+      160
+    ],
+    "limitation": "Savings apply while bridge construction outlines exist and disappear after completion. Desktop software-WebGL counters are not Quest FPS."
+  },
+  "rollback": {
+    "branch": "rollback/pre-bridge-batching-20261023",
+    "commit": "d66a31a8dd79852256974bb5f5a81d9bb4a087be"
+  },
+  "quest": "Actual headset acceptance and FPS remain unmeasured"
+}
