@@ -1,0 +1,24 @@
+{
+  "at": "2026-10-24T06:12:56.087Z",
+  "result": "approved",
+  "sha": "989940e6ed8d447f59f61ccda18a64ac0a28367b",
+  "reviewer": "/root/grab_follow",
+  "blockers": [],
+  "independentChecks": {
+    "terrainPoints": 156904,
+    "footprints": 12583,
+    "dynamicBridgeStates": 6,
+    "simulationPhases": 13,
+    "serializedStatePhysicsCountsAndHUDExact": true,
+    "fileIdentities": 137,
+    "sourceFiles": 118,
+    "testFiles": 16,
+    "runtimeAssets": 3,
+    "byteIdenticalRebuild": true
+  },
+  "html": {
+    "bytes": 8516233,
+    "sha256": "7fd2d69432ba5be28afbca952a128a990428826fe862b8343c6b2ec4dc65c187"
+  },
+  "scope": "Read-only independent CPU/native source review. No browser, GPU, physical input, focus or audio; host profiling is not Quest timing."
+}

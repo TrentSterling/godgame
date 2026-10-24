@@ -1,0 +1,618 @@
+diff --git a/qa/performance/budget-cpu-evidence.json b/qa/performance/budget-cpu-evidence.json
+new file mode 100644
+index 0000000..f8deb65
+--- /dev/null
++++ b/qa/performance/budget-cpu-evidence.json
+@@ -0,0 +1,306 @@
++{
++  "baseline": "8e51eabecb36fd852b684461d45e9d43ba9d1f54",
++  "sourceHashes": {
++    "anatomical-joints.js": "95c89d6eea7f2898ce87bcd4bcbe5a95e91311897b48ce2b4affb5a75164bf4d",
++    "arena-art.js": "8e6c8a852bf18c674afdfb3cca5a68b25f1af73226154aefccc324d1d61d6a39",
++    "army-formation.js": "dbe7a1ef3eddb87256291bca8138c74fbb8e758b2b8263fac6fc9ace02217c7e",
++    "battle-encounters.js": "3ccd193c6b7894cef2c7cbcfd54d6761e75e4aaa1014faf2ef53c4c9a237dfff",
++    "battle-outcome.js": "1fd4a5aa6f5adb0197da25b7125f271d4e2f81a8b3db51514fb8a7692b1bc018",
++    "battle-round.js": "003de5b790d90b08c7adffaee32f71d0748625bc624bf0ef08522ba23e4147c8",
++    "battle-start-gate.js": "b9e56b0c214ede2b0e2c13de280b91e8cc9e287b3a089c86afdf7ef6da77af54",
++    "bless-feedback.js": "dd924af72edf954ed596b05f94a11227d1f6d96f53ddfdcaf4110d1daa17ac61",
++    "carried-load-handoff.js": "61764035edb6100be4cf3752ee4818c36530f7bffd592e2019bfe70fa471f795",
++    "causal-strike-contact.js": "0578b259df9223f2cbdce91c37fc3169972eaa808283a5ff2c84b9b1bd649fa0",
++    "character-mesh.js": "bc00a0b4f008ec68d239c2679fe9901f02f233c4ca39dba6b7ce4d1ddeca7007",
++    "civilian-art.js": "dad24abc7e537310fde13fc7b2fb73a156a3b473c1959e3acfd6511da25c1453",
++    "civilian-ground-point.js": "ca9f07d12bf74728ee25f8e8b0214ea82640b703001e4961f33938e1ccc8717e",
++    "civilian-motion.js": "dc26a155d94dd4c1daa9d9ef054c83ac48bb580818768303f73353603ec98786",
++    "civilian-navigation.js": "d9fc0b20eaf8939989d77be2ee57098a8fd5d03ec5063b3ace83ea9e59a03bb7",
++    "civilian-placement-blend.js": "6b2cc3c905d9ebc4b9828d645eb5964458559612709df068e595a10a2ec50cb7",
++    "civilian-quarry-contact.js": "81b101a3211f936d7a097bb04f3c7965055cfd20d45dd496cee88c7b830eb070",
++    "civilian-traffic.js": "41ea3ca5c8ba57af6d9da416f2fc04864ea65cecc78063d1f5b2eab67f9a78be",
++    "combat-feedback.js": "2288c0637c1a3637f614af6bb2df0e8ab80cd438e19d2e62fcdca9b1a5731ea9",
++    "contact-audio.js": "848f28676c51d49cf877a4027c638af366e7f8cac2f05865c22ad10726153457",
++    "critical-feedback-profile.js": "2f66d821d5562a1efb5947ba8d7a90f7644629ac5d6212aef592d38a0c6ae84b",
++    "crowd-approach.js": "e09d6b2c9e87d637b120626d196a717c5bda4f1446c77f07206502b058d77858",
++    "deformed-query-positions.js": "6969f9b16086ad594a78112ec4e03ac72b11511a82f2cb463b01678570a4b8ea",
++    "desktop-bless-intent.js": "08bc6d831fe423a8af7cf42725740bfc9b5733030ccc4ff8226a68e93d0b1ee3",
++    "desktop-camera-framing.js": "d789a6f5d8d7a74d327a7f8e0eae748a4fb14ec9323914bc9f5a91b0d2a6eaad",
++    "desktop-drag-space.js": "a548f27dea4aacdd854f0e22cfa563d7a98f146cad1b54a259261500ad3c2c3b",
++    "desktop-grab-intent.js": "fb7bd55e1e3a65e0f4994bc48b36e995e3e170f76111f3cffd9948cc16cc9634",
++    "desktop-hand-motion.js": "8c3474763782ea7457b8e93a57d31317324309fe6aec895df8223ef2623d13dd",
++    "desktop-hud-layout.js": "a0221ea2b638696de5b0ac68fc58f0b8305c3c73d3d6ec819ea3e29e6b6e3262",
++    "desktop-palm-presentation.js": "64af1abc2468de3b84c7e91b93620794911019db3f77c1cee7edae3e9c875eb6",
++    "desktop-power-hand.js": "6b6f6590f0cc1fad75a8832199e36af16b58b8dad713a3b9b45d648eb92bd718",
++    "desktop-settlement-navigation.js": "0d5286f338fae628a5f12d35d5fe7ca5bb520a29024456c91926f47d25b4ee32",
++    "fixed-step.js": "dd940d52e6efbea62d0cbf16b470f5af22a86f1ef673ca2fd91fbebfc165e17c",
++    "floating-world.js": "cdb7ace59a4c6fd3f4fdae9d16e5a8636dc4e5dfebeb5871c36a1604e3f006c0",
++    "garden-improvement-art.js": "d29064a3b10c07d8ddf751cf11f7dccc606d3ed7b68fae286223885c1ee04bdd",
++    "god-powers.js": "f599e7849d7b84e6049c1b9edd8b16c3be0d184b78dc455c07cd45dfe48b01eb",
++    "gpu-hud.js": "9dc413882e5b50d98043c337273795cb9a4fc5caf8ba3137e720127eec77d1c7",
++    "hand-contact-adapter.js": "6040bd58ee3adb597aea54f147b4015c2cb9d746e5706f195037e63dfa243847",
++    "hand-motion.js": "d2057bb5593c2fa41d9d0a3cb751406d9637170d9b2f452ab80f71d4204badfe",
++    "held-food-destination.js": "22c248bd6693992885e95c297c6daf043260135ef7f9425d16bcfa80d374efc4",
++    "hero-art.js": "b0beb133883a7202fb53230373f7820d58636c0ebc45082ff54eb3abf7cd3e0f",
++    "hit-knockback.js": "70f62968016a0ddef8abdf78f239730bb3f241ac82bcaf88574f08711e77243f",
++    "lightning-feedback.js": "4f58aa1dbc1ebb43d611847d421beac2846595d0489cbb25e48b016c6a9ecbff",
++    "main.js": "a96f2fd48dcd318bf490bffadac09cb3247e620838d755049f66dc34b5dd06a8",
++    "melee-profile.js": "7365320a158bfa12d685d5bf74ba821f9a9f899fee446b14b7d09cf18f122d71",
++    "paired-rival-hands.js": "b57078a3ed9d8e81861c9525adaadd661b90752b1c5d2007c95fd5af35a9946a",
++    "palm-outcome-copy.js": "6a0322bc5a7394ace3218cbcd64e75d5382d1bd8587c3bfa5d105aaa15cf0122",
++    "pending-physical-delivery.js": "9a0e70f2b3f1eadc35cb90f363b12aacb14f554e259d2bddc53fcbcefbf3d69b",
++    "performance-monitor.js": "83b68795a82e0c7a2ad6215169f8627f13a19d6bd3ac1adbfc9f9e3dfaae1da7",
++    "physics.js": "432bc4936c77372bcfda3554e5dddb371bace496a4fe81c785f472845eecfc5a",
++    "player-palm-strike.js": "f3214f228b7816acd08a4303a838ab1c87ffa2c4e051b438958e3bd84a67339b",
++    "player-throw-impact.js": "5aa9d44e92ece88c89df118d0830b78f0b272134c2d100e16a91026f0ed214c1",
++    "power-combat-policy.js": "a58781ffc8fa2798ebb74432612cb9fb43647b22d50344a7d4804fd8659adcc5",
++    "power-feedback-layout.js": "26e996c04b66fdef6d7f3febf7d54bd36938267fa0044f84c06940b92332bbad",
++    "predictive-landing.js": "60fe87c151c453a9f1f19bea6d42fe2f001730584f43e1629dcda08658f633ac",
++    "quarry-safety.js": "54385a7c46498a2dec6e2b72dd5d54f3e1b46589c7c38f132f68f852b471fd90",
++    "reachable-club.js": "bc24d523b9d54629cc629fd604e4a40ef1059a2bf92078d0e0a1693397f686d5",
++    "resource-stone-picker.js": "bec4a352e9b9e4ff10bcedcde6c04e5696682dea557a327d0d310373235a8fae",
++    "rival-hand-appearance.js": "2e8777d7cda68e3594a2bfcbe2966bef5592e6b8fad914bf6be9856403360bf2",
++    "rival-hand-rigged.js": "a06c9286791cced19579458e8df18f7f5b9d62e69eb715eb334cd66adda1f076",
++    "rival-hand.js": "bf112ee2204e5d822d1e57254d360e988a985845312e86bbb8198058b457ffef",
++    "selection-cue.js": "4e048f00269c1650b34c9980178b54dfddde201a9a42ea36fd9208db105cf8c9",
++    "settlement-blessing.js": "c70470916005a2c26e8c63882ed9a89375a7d1b6fe5f4c770d3bf824ae39b236",
++    "settlement-cliff-art.js": "4221f9d2dfb878e65e85f9c25fc169301a6f66cfe9e957a727a7bc98bec243b3",
++    "settlement-defense.js": "204e6c3f94a426203d92332cee9ba637efed7de6adf111ed482ab398c141b0b3",
++    "settlement-economy.js": "1633fcacb30ec20da46cce96e663623cf307b8082c8d5e3e29a427f5d0100f7b",
++    "settlement-environment-art.js": "0ca40b0f04824291c2a71241315cae7ea858409ad3434ab2246b0f2f59d72d9d",
++    "settlement-food-art.js": "288f7f09bc2e7cd930177c226a52067a52b5159727aac600890c49b95db51fc6",
++    "settlement-food-hud.js": "818eabf7526c7e28f85f8c90816c9bf76af4edbc0486c8c04543bd0ed93adffe",
++    "settlement-hud.js": "cd0a97dcf7ab51835c291d4464c5d2b21af61bafd9152f40bbf6423bbd6df9d2",
++    "settlement-jobs.js": "9445c7aadf93d8590b5a1134013c22f4bce905a364e59b09807858823825ea4e",
++    "settlement-land-regions.js": "7cc4a11756bae6202b8f71b88face9fe196b6b072eb3b52757b29f3a6fcad7c2",
++    "settlement-main.js": "eba21611afc0df36bc6cbfb36e39014fd6230d2f0b4e0ff81ae8b25e51885534",
++    "settlement-minimal-hud.js": "3ffb74eb11658aecc2e6458eb81be6dda5499dae3c34ce03cd9b662b1cbd70ae",
++    "settlement-next-need.js": "eb94fef48fda4c753fe57bb8ab4fe988fe409bd59c5e70f51385e74ae112449d",
++    "settlement-quarry-geology.js": "e9c8f809a181d7e512355af84bb960f77a7f4d5eff088c1b9ff3eed4092196ce",
++    "settlement-raid.js": "4f9cb7b400c6c906981cb4697e11a94bede502ce36797fc581b3e4fd062498f2",
++    "settlement-recruit.js": "6781796f0a4285ad01b9289e5a49344816eb0659e49cc16ede2039d0582d737c",
++    "settlement-resource-art.js": "4412eef948447731e2203674c93f96fa794fa82a68319684ecbeba3a3bce953c",
++    "settlement-village-buildings.js": "e3e704497c828692bf4e1d3d5f92e45a77236729875bc0576746f610e7f19c4a",
++    "settlement-worker-feedback.js": "ba8e1d29a719dd397944960dcca4d6db12a762beb43ee45decaeec1e52a255c1",
++    "settlement-worker-orders.js": "194cce5455b17579bdefcef4613b7d871a1099e385a6bb08254dd1a6ddcdcc92",
++    "settlement-world-actions.js": "05461514c2b9a3a63c07dd59771d2ca31bda2eae9cbee20c846c484cf9df8144",
++    "settlement-world-cues.js": "225fc5ec68f53b6fae8187b7df0baaed111360b8e30fbf973ec667de53ecb2a8",
++    "settlement-world.js": "5dcca097d72472738e23d95a3ba43744aa38aaa51ae79b71347579420af6164f",
++    "settlement-xr.js": "9bcac5fc7147ec4eed6609e1bfad37ec1d174e433fea5425227bfbfc71fa93c8",
++    "shared-hero-visuals.js": "74037f4cd03e12812d64aecb8301d7baedcf2ad07c136833b74c12f442acb4b1",
++    "shield-hit-knockback.js": "2a64f9122fcc951cd93a58ffaab45cf4484c3f05987e64c5b4ed134649e8753f",
++    "shrine-campaign.js": "90ca7e8bb73ae4378f7cd3664d495c44011a5d3a22f8a666f81db97a7989031c",
++    "shrine-challenge.js": "d61806248666a154b259438e714230f750849133942762b0b282cdb2234c954c",
++    "shrine-objective-copy.js": "358989aad2bc48fc1c41024ad0e7a34e062465e7bd3e549b523e96564591e4e7",
++    "shrine-power-target.js": "f5c4b2710c319c0019fbb9cd69b4040277666de071bc9d4b7db03e7983a2aeec",
++    "shrine-pressure-cues.js": "b17764143569d75851478b796f46515c9d20d3916848dfdccf040de179858871",
++    "shrine-pressure-feedback.js": "ea04b7176c7f61b61649a1d7a4e9faa766d847ee323b23a34471732a0b998933",
++    "shrine-pressure-streams.js": "fba2dbe662c22574314409722d6d03d94e53755b0fd077157304dce96367f2d7",
++    "shrine-rival-intervention.js": "bd502291d29adadfe8baa94e79994ec63a693371327a69994b5027efb8040508",
++    "shrine-visual.js": "57c8feb62edb8e12cdd52fcc47e1a46a087af1f07c1683e1d1166b6d2c4df976",
++    "skinned-query-chunks.js": "7caa40672494611cb563f6d835974674d793f6b28caff4f620c3bb93910cd75e",
++    "startup-settle.js": "c5bd1558dcd1c7cfb68df22f05e3dee7231d7c29e92fb4778245c1911ed1f33a",
++    "static-scenery-batch.js": "366128d3bf3b69ff6a398777ff12ed3d33a3ce03925951a5c64ba86d73977e53",
++    "stone-columns.js": "63ab808245cea7ddd397b85271d1042fb38a6605016237902a5b4f79e440f04a",
++    "stone-hand-rig.js": "717f68f50e9cd882189d57e43cfb82398172eacad70d85a47c21e6c570548f4c",
++    "stone-impact-feedback.js": "2a2c39fa8d956c7f5c0ce56f2956978246ed0c4201fb7ff6e23812f19de45283",
++    "stranded-food-courier.js": "fa6a25b94325af04ce8b505b62dadf94d8534ff40ea7929d0d53c926db5bfa93",
++    "surface-support.js": "444e622441919e9507ae8b13ea9c5231fb293b1638d0a4fa42af2d5bed67546e",
++    "swept-melee.js": "f94fb65db32c9e7147c053000200d58b38c4504888d9e9c83a69ae75e0265592",
++    "terrain.js": "b03b06bfbbd7acadd2e02b95bbc4c385a9cba6b5f86d1b35c32eb84d4480955c",
++    "visible-surface-picker.js": "cd387657d9b42578bbe62ad1ac6e6910326a12fadae414476a9959eb47cb09c4",
++    "windup-clearance.js": "87ea9537b4b7d941fd1deae4080cad74002edf004617e1bae480df74fda593a4",
++    "windup-cue.js": "dabaa2f88013c6b1cd2f44f2c7432917f6fc4ead64768682df8abf5564708b15",
++    "xr-arena-placement.js": "5e0fea245a3aadfe4d60ab61452b2ddb764b3f154b7ec0e6561f39dfa905bbac",
++    "xr-grab-feedback.js": "c93c569cfb07c68cf7417d8175f27d509e58548d7ce47646e33056e7888245e7",
++    "xr-hand-grip.js": "53f6bdc13ec5dbcc60dc06c5f8e094783a1ffced163788e78f9bb2c5759e63f2",
++    "xr-hand-math.js": "d018944f1c34e360ad5840381eb5d117a4a9bb88e4649fb7ad51f5516ae8b3ab",
++    "xr-hands.js": "c39045dfe9036b71608aa2b893f476792b7d53ed92d4788b8a861975ac365d27",
++    "xr-palm-intent.js": "52c66284dfd7be9753064ca22f27bd08b90784124f40c93a397e5c787292bd67",
++    "xr-ui-poke.js": "d514d19dce00cdc70c1c85b9c46adec5e71283424b0916e72c1d3fb1cac40462",
++    "xr-view-retention.js": "bafdd7e7db1ee203c5561193199a090fadad63d3cda115958fa56c3c0dd4ab84"
++  },
++  "scope": "CPU-only deterministic production animation callbacks with native Rapier and mock DOM/WebXR; no rendering. Host CPU includes profiler overhead. Allocation samples estimate transient allocation volume, not live heap. Wrapped times overlap. No Quest FPS or GPU claims.",
++  "comparisons": [
++    {
++      "variant": "matched-nohands",
++      "finalPhysicsSHA256": "9d25b972a74a89e4a655ff0c00404c49dec5061fb6c636b3fe8afdd1fb827e5a",
++      "rows": [
++        {
++          "name": "XR running early matched-nohands",
++          "frames": 360,
++          "physicsSteps": 600,
++          "elapsedMs": {
++            "baseline": 1089.397,
++            "candidate": 1044.757
++          },
++          "navigationInclusiveMs": {
++            "baseline": 41.546,
++            "candidate": 27.121
++          },
++          "estimatedTransientAllocationBytes": {
++            "baseline": 653564432,
++            "candidate": 582458976
++          }
++        },
++        {
++          "name": "XR running later matched-nohands",
++          "frames": 360,
++          "physicsSteps": 600,
++          "elapsedMs": {
++            "baseline": 2566.572,
++            "candidate": 1586.513
++          },
++          "navigationInclusiveMs": {
++            "baseline": 1460.05,
++            "candidate": 507.45
++          },
++          "estimatedTransientAllocationBytes": {
++            "baseline": 2552446784,
++            "candidate": 735279840
++          }
++        },
++        {
++          "name": "XR paused matched-nohands",
++          "frames": 144,
++          "physicsSteps": 0,
++          "elapsedMs": {
++            "baseline": 62.301,
++            "candidate": 65.953
++          },
++          "navigationInclusiveMs": {
++            "baseline": 0,
++            "candidate": 0
++          },
++          "estimatedTransientAllocationBytes": {
++            "baseline": 36732968,
++            "candidate": 32915128
++          }
++        }
++      ]
++    },
++    {
++      "variant": "matched-hands",
++      "finalPhysicsSHA256": "9d25b972a74a89e4a655ff0c00404c49dec5061fb6c636b3fe8afdd1fb827e5a",
++      "rows": [
++        {
++          "name": "XR running early matched-hands",
++          "frames": 360,
++          "physicsSteps": 600,
++          "elapsedMs": {
++            "baseline": 1471.87,
++            "candidate": 1405.141
++          },
++          "navigationInclusiveMs": {
++            "baseline": 42.94,
++            "candidate": 25.644
++          },
++          "estimatedTransientAllocationBytes": {
++            "baseline": 1046447392,
++            "candidate": 975063824
++          }
++        },
++        {
++          "name": "XR running later matched-hands",
++          "frames": 360,
++          "physicsSteps": 600,
++          "elapsedMs": {
++            "baseline": 3293.858,
++            "candidate": 2280.069
++          },
++          "navigationInclusiveMs": {
++            "baseline": 1495.529,
++            "candidate": 546.582
++          },
++          "estimatedTransientAllocationBytes": {
++            "baseline": 2919706728,
++            "candidate": 1113022960
++          }
++        },
++        {
++          "name": "XR paused matched-hands",
++          "frames": 144,
++          "physicsSteps": 0,
++          "elapsedMs": {
++            "baseline": 94.558,
++            "candidate": 105.799
++          },
++          "navigationInclusiveMs": {
++            "baseline": 0,
++            "candidate": 0
++          },
++          "estimatedTransientAllocationBytes": {
++            "baseline": 63587256,
++            "candidate": 62168056
++          }
++        }
++      ]
++    }
++  ],
++  "proof": {
++    "pass": true,
++    "baseline": "8e51eabecb36fd852b684461d45e9d43ba9d1f54",
++    "pointChecks": 156904,
++    "footprintChecks": 12583,
++    "bridgeStates": 6,
++    "fullFootprintSupportReads": {
++      "baseline": 18,
++      "candidate": 9
++    },
++    "scope": "Exact JavaScript numeric results, original Float32 terrain, custom bounds, callback replacement and native dynamic bridge topology. No browser/GPU or Quest performance."
++  },
++  "simulationPhases": [
++    {
++      "name": "cold-desktop-render-72",
++      "physicsSHA256": "6c9462df3a3caf9ad2dbf8176d595307903be8c1528edce85d1ea24dac0cc22f"
++    },
++    {
++      "name": "desktop-running-120",
++      "physicsSHA256": "921f8a59c5542ed397abf098e4f8ef0f15cdb954a0750f9e8211c17c3423065c"
++    },
++    {
++      "name": "desktop-paused-72",
++      "physicsSHA256": "921f8a59c5542ed397abf098e4f8ef0f15cdb954a0750f9e8211c17c3423065c"
++    },
++    {
++      "name": "commands-next-frame",
++      "physicsSHA256": "1f42571aa7fdbc9b80bda56e085e07a37d957db67e08655258f611536c021625"
++    },
++    {
++      "name": "xr-placement-72",
++      "physicsSHA256": "1f42571aa7fdbc9b80bda56e085e07a37d957db67e08655258f611536c021625"
++    },
++    {
++      "name": "xr-running-360",
++      "physicsSHA256": "537778b97af460fd190bdcdd874a3f7d11e62a35d88e9c0df54fba5a95a107f3"
++    },
++    {
++      "name": "xr-paused-72",
++      "physicsSHA256": "537778b97af460fd190bdcdd874a3f7d11e62a35d88e9c0df54fba5a95a107f3"
++    },
++    {
++      "name": "xr-gap-80ms",
++      "physicsSHA256": "a75bf4e0800ba14e02405242c6dc3cd4700f527da981f122b90789673433cb82"
++    },
++    {
++      "name": "desktop-after-xr-exit",
++      "physicsSHA256": "521851fe25a75d204fb31d556431c00eb51644f196a77d7f04d5c74a9c039035"
++    },
++    {
++      "name": "desktop-economy-1800",
++      "physicsSHA256": "dd1c0d6edffef89585f95cb8cc1b46f0e72d79ed606f11271a8bc86be6f4f9f5"
++    },
++    {
++      "name": "lost-load-command",
++      "physicsSHA256": "b9df30ff7228cc037fa2e9901d86a9900beb25f2d9a4898b176c5e1965940677"
++    },
++    {
++      "name": "terminal-transition",
++      "physicsSHA256": "74e3ff688414030365dd419475c15d3095b7ad283dd0a020d2703e660ec4d6bc"
++    },
++    {
++      "name": "terminal-held-72",
++      "physicsSHA256": "74e3ff688414030365dd419475c15d3095b7ad283dd0a020d2703e660ec4d6bc"
++    }
++  ]
++}
+diff --git a/qa/performance/budget-profile-compare.mjs b/qa/performance/budget-profile-compare.mjs
+new file mode 100644
+index 0000000..5c58ba3
+--- /dev/null
++++ b/qa/performance/budget-profile-compare.mjs
+@@ -0,0 +1,21 @@
++import assert from 'node:assert/strict';
++import fs from 'node:fs';
++import crypto from 'node:crypto';
++const read=name=>JSON.parse(fs.readFileSync(new URL('./generated/'+name+'.json',import.meta.url)));
++const hash=data=>crypto.createHash('sha256').update(data).digest('hex');
++const comparisons=[];
++for(const variant of ['matched-nohands','matched-hands']){
++ const b=read('budget-profile-baseline-'+variant),c=read('budget-profile-candidate-'+variant);
++ assert.equal(c.finalPhysics,b.finalPhysics,variant+' complete native physics snapshot');
++ const rows=c.rows.map((after,i)=>{
++  const before=b.rows[i];assert.equal(after.name,before.name);assert.equal(after.frames,before.frames);assert.equal(after.physicsSteps,before.physicsSteps);
++  assert.deepEqual(Object.fromEntries(Object.entries(after.calls).map(([k,v])=>[k,v.calls])),Object.fromEntries(Object.entries(before.calls).map(([k,v])=>[k,v.calls])));
++  return{name:after.name,frames:after.frames,physicsSteps:after.physicsSteps,elapsedMs:{baseline:before.elapsedMs,candidate:after.elapsedMs},navigationInclusiveMs:{baseline:before.calls['navigation.update'].inclusiveMs,candidate:after.calls['navigation.update'].inclusiveMs},estimatedTransientAllocationBytes:{baseline:before.allocation.estimatedBytes,candidate:after.allocation.estimatedBytes}};
++ });
++ comparisons.push({variant,finalPhysicsSHA256:hash(Buffer.from(c.finalPhysics,'base64')),rows});
++}
++const identity=read('candidate-identity'),proof=read('terrain-budget'),simulation=read('budget-simulation');
++assert(proof.pass&&simulation.pass);
++const report={baseline:identity.baselineSource,sourceHashes:identity.sourceHashes,scope:'CPU-only deterministic production animation callbacks with native Rapier and mock DOM/WebXR; no rendering. Host CPU includes profiler overhead. Allocation samples estimate transient allocation volume, not live heap. Wrapped times overlap. No Quest FPS or GPU claims.',comparisons,proof,simulationPhases:simulation.rows.map(({name,physicsSHA256})=>({name,physicsSHA256}))};
++fs.writeFileSync(new URL('./budget-cpu-evidence.json',import.meta.url),JSON.stringify(report,null,2)+'\n');
++console.log(JSON.stringify({pass:true,comparisons:comparisons.map(({variant,rows})=>({variant,rows}))}));
+diff --git a/qa/performance/budget-profile.mjs b/qa/performance/budget-profile.mjs
+new file mode 100644
+index 0000000..126847e
+--- /dev/null
++++ b/qa/performance/budget-profile.mjs
+@@ -0,0 +1,29 @@
++// Read-only source audit runner. Operates on the verified non-rendering bundle;
++// only ignored receipt writes, no browser, GPU, audio, native input or listening port.
++import fs from 'node:fs';
++import {Session} from 'node:inspector/promises';
++import {pathToFileURL,fileURLToPath} from 'node:url';
++const root=fileURLToPath(new URL('../..',import.meta.url));const mode=process.argv[2];if(!['baseline','candidate'].includes(mode))throw Error('Expected baseline or candidate');globalThis.__perf={snapshots:0,economyUpdates:0,commands:0,beforeSteps:0,observations:0,renders:0,hudUpdates:0,worldCueUpdates:0};
++const f=await import(pathToFileURL(root+'/qa/xr-village/dom-xr-fixture.mjs'));
++let now=1000;Object.defineProperty(globalThis,'performance',{value:{now:()=>now},configurable:true});location.search='';
++await (await import(pathToFileURL(root+'/qa/performance/generated/'+mode+'.mjs'))).ready;await f.flush();
++const qa=SETTLEMENTQA,c=qa.context,T=c.THREE,xr=c.villageXR,counts={};
++function instrument(object,key,label=key){if(!object||typeof object[key]!=='function')return;const original=object[key];counts[label]={calls:0,ms:0};object[key]=function(...args){const start=process.hrtime.bigint();try{return original.apply(this,args);}finally{counts[label].calls++;counts[label].ms+=Number(process.hrtime.bigint()-start)/1e6;}};}
++for(const [obj,key,label] of [[c.world,'step','Rapier world.step'],[c.motion,'update','civilian motion.update'],[c.motion,'status','civilian motion.status'],[c.navigation,'update','navigation.update'],[c.worldCues,'update','worldCues.update'],[c.jobs,'update','economy.update'],[c.jobs,'snapshot','economy.snapshot'],[c.scene,'updateMatrixWorld','scene.updateMatrixWorld'],[c.villageXR,'update','XR input.update'],[c.surfacePicker,'pick','surfacePicker.pick']])instrument(obj,key,label);
++const viewer=f.pose({x:.2,y:1.65,z:.1}),empty=new f.Frame({viewer});const left=f.handSource('left'),right=f.handSource('right');
++await xr.startSession();f.controls.lastSession.sources([left]);xr.update(now,empty);
++function frames(n,frame=empty){for(let i=0;i<n;i++){now+=1000/72;c.renderer.frame(now,frame);}}
++function poke(id){c.scene.updateMatrixWorld(true);const b=c.scene.getObjectByName('Village XR '+id);for(const z of [.075,.075,.075,.075,.045,.018]){const tip=b.localToWorld(new T.Vector3(0,0,z)),points=f.handPoints({x:tip.x-.055/2,y:tip.y,z:tip.z},.055);xr.update(now+=1000/72,new f.Frame({viewer,hands:new Map([[left,points]])}));}}
++const inspector=new Session();inspector.connect();await inspector.post('Profiler.enable');await inspector.post('Profiler.setSamplingInterval',{interval:1000});
++function allocationSummary(profile){const groups=new Map();let total=0;function walk(n){total+=n.selfSize;const key=(n.callFrame.url.endsWith('/'+mode+'.mjs')?'runtime:':n.callFrame.url.includes('dom-xr-fixture')?'fixture:':'other:')+(n.callFrame.functionName||'(anonymous)');groups.set(key,(groups.get(key)||0)+n.selfSize);for(const child of n.children)walk(child);}walk(profile.head);return{estimatedBytes:total,samples:profile.samples.length,topAllocators:[...groups].sort((a,b)=>b[1]-a[1]).slice(0,18)};}
++function cpuSummary(profile){const nodes=new Map(profile.nodes.map(n=>[n.id,n.callFrame])),groups=new Map();let total=0;for(let i=0;i<profile.samples.length;i++){const n=nodes.get(profile.samples[i]),dt=profile.timeDeltas[i]||0;total+=dt;const key=(n.url.endsWith('/'+mode+'.mjs')?'runtime:':n.url.includes('dom-xr-fixture')?'fixture:':'other:')+(n.functionName||'(anonymous)');groups.set(key,(groups.get(key)||0)+dt);}return{sampledMs:total/1000,topSelfMs:[...groups].sort((a,b)=>b[1]-a[1]).slice(0,18).map(([k,v])=>[k,+(v/1000).toFixed(3)])};}
++const rows=[];
++async function phase(name,n,frame=empty){frames(12,frame);for(const v of Object.values(counts)){v.calls=0;v.ms=0;}globalThis.gc?.();await inspector.post('HeapProfiler.startSampling',{samplingInterval:16384,includeObjectsCollectedByMajorGC:true,includeObjectsCollectedByMinorGC:true});await inspector.post('Profiler.start');const tick=c.sim.tick,start=process.hrtime.bigint();frames(n,frame);const ms=Number(process.hrtime.bigint()-start)/1e6;const cpu=(await inspector.post('Profiler.stop')).profile;const allocation=(await inspector.post('HeapProfiler.stopSampling')).profile;rows.push({name,frames:n,physicsSteps:c.sim.tick-tick,elapsedMs:+ms.toFixed(3),calls:Object.fromEntries(Object.entries(counts).map(([k,v])=>[k,{calls:v.calls,inclusiveMs:+v.ms.toFixed(3)}])),cpu:cpuSummary(cpu),allocation:allocationSummary(allocation)});}
++const variant=process.argv[3]||'matched-nohands';if(!['matched-nohands','matched-hands'].includes(variant))throw Error('Unknown variant');
++frames(144);poke('done');if(xr.shouldHoldSimulation())throw Error('Placement not completed');frames(1);
++const hands=new f.Frame({viewer,hands:new Map([[left,f.handPoints({x:.02,y:1.35,z:-.36})],[right,f.handPoints({x:.35,y:1.35,z:-.36})]])});
++f.controls.lastSession.sources(variant==='matched-hands'?[left,right]:[]);const runFrame=variant==='matched-hands'?hands:empty;
++await phase('XR running early '+variant,360,runFrame);await phase('XR running later '+variant,360,runFrame);qa.pause(true);await phase('XR paused '+variant,144,runFrame);
++function geometry(g){const attributes=Object.fromEntries(Object.entries(g.attributes).map(([k,a])=>[k,{count:a.count,itemSize:a.itemSize,bytes:a.array.byteLength}]));return{vertices:g.attributes.position.count,triangles:(g.index?.count??g.attributes.position.count)/3,indexBytes:g.index?.array.byteLength,attributes};}
++const materials=[];const unique=new Set();c.scene.traverse(o=>{if(!o.isMesh)return;for(const m of Array.isArray(o.material)?o.material:[o.material])if(!unique.has(m)){unique.add(m);materials.push({name:o.name,type:m.type,roughness:m.roughness,metalness:m.metalness,transparent:m.transparent,side:m.side,flatShading:m.flatShading,normalMap:!!m.normalMap,roughnessMap:!!m.roughnessMap,metalnessMap:!!m.metalnessMap,map:!!m.map,envMap:!!m.envMap});}});
++const report={mode,variant,scope:'CPU-only baseline8e51eabe versus candidate identified by generated source hashes; native Rapier/production callbacks with mock DOM/XR and empty texture decode. Profiling is in-process without network listener. Sampled allocation estimates and host CPU timings are not Quest measurements. Wrapped times are inclusive and overlap; fixture and instrumentation costs are identified separately.',rows,civilians:geometry(c.hero.geometry),hands:geometry(c.xrHands.left.mesh.geometry),materials,finalPhysics:Buffer.from(c.world.takeSnapshot()).toString('base64')};await xr.end();inspector.disconnect();fs.writeFileSync(new URL('./generated/budget-profile-'+mode+'-'+variant+'.json',import.meta.url),JSON.stringify(report,null,2));console.log(JSON.stringify({mode,variant,rows:rows.map(({cpu,allocation,...r})=>({...r,allocation:allocation.estimatedBytes,cpu:cpu.topSelfMs.slice(0,5)}))},null,2));
+diff --git a/qa/performance/budget-simulation.mjs b/qa/performance/budget-simulation.mjs
+new file mode 100644
+index 0000000..f3e6d6c
+--- /dev/null
++++ b/qa/performance/budget-simulation.mjs
+@@ -0,0 +1,12 @@
++import assert from 'node:assert/strict';
++import fs from 'node:fs';
++import {spawnSync} from 'node:child_process';
++const env={...process.env,BASELINE_SOURCE:'8e51eabecb36fd852b684461d45e9d43ba9d1f54',BASELINE_DEPLOYMENT:'2cb3d9af0f96ec3e4661983de0e2026ac51fd140'};
++for(const args of [['qa/performance/build.cjs'],['qa/performance/scenario.mjs','baseline'],['qa/performance/scenario.mjs','candidate']]){
++ const run=spawnSync(process.execPath,args,{env,encoding:'utf8',maxBuffer:16*1024*1024});process.stdout.write(run.stdout);process.stderr.write(run.stderr);assert.equal(run.status,0,args.join(' '));
++}
++const read=name=>JSON.parse(fs.readFileSync(new URL('./generated/'+name+'.json',import.meta.url))),b=read('baseline'),c=read('candidate'),identities={baseline:read('baseline-identity'),candidate:read('candidate-identity')};
++const changedModules=Object.keys(identities.candidate.sourceHashes).filter(n=>identities.candidate.sourceHashes[n]!==identities.baseline.sourceHashes[n]);
++assert.deepEqual(changedModules,['civilian-ground-point.js','civilian-navigation.js','settlement-land-regions.js','terrain.js']);assert.equal(c.rows.length,13);
++const rows=c.rows.map((r,i)=>{const before=b.rows[i];assert.equal(r.name,before.name);assert.deepEqual(r.state,before.state,r.name+' complete public state');assert.equal(r.physicsSHA256,before.physicsSHA256,r.name+' native snapshot');assert.deepEqual(r.counts,before.counts,r.name+' cadence');assert.deepEqual(r.hud,before.hud);return{name:r.name,physicsSHA256:r.physicsSHA256,counts:r.counts,physicsSteps:r.physicsSteps};});
++const report={pass:true,baseline:env.BASELINE_SOURCE,changedModules,identities,rows,scope:'Thirteen identical deterministic production phases, full public state, native Rapier snapshot and operation counts; no GPU or Quest timings.'};fs.writeFileSync(new URL('./generated/budget-simulation.json',import.meta.url),JSON.stringify(report,null,2));console.log(JSON.stringify({pass:true,phases:rows.length,changedModules}));
+diff --git a/qa/performance/terrain-budget.test.mjs b/qa/performance/terrain-budget.test.mjs
+new file mode 100644
+index 0000000..274e2cd
+--- /dev/null
++++ b/qa/performance/terrain-budget.test.mjs
+@@ -0,0 +1,61 @@
++import assert from 'node:assert/strict';
++import fs from 'node:fs';
++import path from 'node:path';
++import {execFileSync} from 'node:child_process';
++import {fileURLToPath} from 'node:url';
++import {build} from 'esbuild';
++import RAPIER from '@dimforge/rapier3d-compat';
++import * as THREE from 'three';
++const root=fileURLToPath(new URL('../..',import.meta.url)),out=new URL('./generated/',import.meta.url),baseline='8e51eabecb36fd852b684461d45e9d43ba9d1f54';
++fs.mkdirSync(out,{recursive:true});
++for(const mode of ['baseline','candidate']){
++ const plugin={name:'reviewed-source',setup(b){if(mode==='baseline')b.onLoad({filter:/\.js$/},args=>{if(path.dirname(args.path)!==path.join(root,'src'))return;return{contents:execFileSync('git',['show',baseline+':src/'+path.basename(args.path)],{cwd:root,encoding:'utf8'}),loader:'js'};});}};
++ await build({stdin:{contents:"export * as terrain from './terrain.js'; export * as regions from './settlement-land-regions.js'; export * as ground from './civilian-ground-point.js'; export {createSettlementWorld} from './settlement-world.js';",resolveDir:path.join(root,'src')},bundle:true,platform:'node',format:'esm',packages:'external',outfile:fileURLToPath(new URL('terrain-'+mode+'.mjs',out)),plugins:[plugin]});
++}
++const b=await import(new URL('terrain-baseline.mjs',out)),c=await import(new URL('terrain-candidate.mjs',out));
++let pointChecks=0,footprints=0,seed=2387913;
++const random=()=>((seed=Math.imul(seed,1664525)+1013904223>>>0)/4294967296);
++function point(x,z){assert.equal(c.terrain.inArena(x,z),b.terrain.inArena(x,z));assert(Object.is(c.terrain.terrainHeight(x,z),b.terrain.terrainHeight(x,z)),`exact height at ${x},${z}`);pointChecks++;}
++for(const scale of [1,1.25,1.5,2]){
++ b.terrain.configureArenaScale(scale);c.terrain.configureArenaScale(scale);
++ const bs=b.terrain.getArenaSurface(),cs=c.terrain.getArenaSurface();assert.deepEqual(cs,bs,'Same Float32 collision/render mesh');
++ for(let i=0;i<bs.vertices.length;i+=3){const x=bs.vertices[i],z=bs.vertices[i+2];for(const factor of [1-1e-8,1,1+1e-8])point(x*factor,z*factor);}
++ for(let i=0;i<30000;i++)point((random()*2-1)*32,(random()*2-1)*25);
++ for(const [x,z]of [[0,0],[-0,-0],[1e-11,-1e-11],[NaN,0],[Infinity,0],[-Infinity,Infinity],[1e308,1e308]])point(x,z);
++}
++function compareFootprint(be,ce,x,z){
++ const expected=b.ground.supportedCivilianPoint(be,x,z),actual=c.ground.supportedCivilianPoint(ce,x,z);
++ assert.deepEqual(actual,expected);assert.equal(c.ground.supportedCivilianHeight(ce,x,z),expected?.y??null);
++ assert.deepEqual(c.ground.supportedCivilianRoot(ce,x,z),b.ground.supportedCivilianRoot(be,x,z));footprints++;
++}
++// Generic callbacks keep their independent bounds contract and callback order.
++for(const height of [-50,-20,0,.13,NaN,Infinity])for(const bounded of [false,true]){
++ const be={support:()=>height,inBounds:()=>bounded},ce={...be};compareFootprint(be,ce,0,0);
++}
++for(let i=0;i<1000;i++){
++ const be={support:(x,z)=>Math.sin(x)*.15+z*.08,inBounds:(x,z)=>x>=-.8&&z<=.9},ce={...be};compareFootprint(be,ce,random()*3-1.5,random()*3-1.5);
++}
++let oldReads=0,newReads=0;
++function flat(module,count){return module.regions.createLandRegionRegistry({regions:[{id:'flat',bounds:{minX:-10,maxX:10,minZ:-10,maxZ:10},contains:()=>true,support:()=>{count();return .1;}}]});}
++const oldFlat=flat(b,()=>oldReads++),newFlat=flat(c,()=>newReads++);
++assert.deepEqual(c.ground.supportedCivilianPoint(newFlat,0,0),b.ground.supportedCivilianPoint(oldFlat,0,0));assert.equal(oldReads,18);assert.equal(newReads,9);
++const fullFootprintSupportReads={baseline:oldReads,candidate:newReads};
++for(const replacement of [{inBounds:()=>false},{inBounds:(x,z)=>x>=0},{support:(x,z)=>Math.abs(x)>.6?2:.1}]){
++ // A spread keeps the metadata but replacing either callback must disable reuse.
++ for(const x of [-.5,0,.5])compareFootprint({...oldFlat,...replacement},{...newFlat,...replacement},x,0);
++}
++// A mutable bridge support closure is read on every call. No spatial or frame cache.
++await RAPIER.init();b.terrain.configureArenaScale(1);c.terrain.configureArenaScale(1);
++const bw=new RAPIER.World({x:0,y:-9.81,z:0}),cw=new RAPIER.World({x:0,y:-9.81,z:0});
++try{
++ const be=b.createSettlementWorld(new THREE.Scene(),bw,RAPIER),ce=c.createSettlementWorld(new THREE.Scene(),cw,RAPIER);
++ for(let delivery=0;delivery<=5;delivery++){
++  be.update(delivery);ce.update(delivery);
++  for(let x=11.9;x<=19.4;x+=.125)for(const z of [-3.8,-3.75,-3.5,-2,-.5,-.25,-.2]){
++   assert.equal(ce.support(x,z),be.support(x,z));assert.equal(ce.inBounds(x,z),be.inBounds(x,z));compareFootprint(be,ce,x,z);
++  }
++  for(let i=0;i<1500;i++){const x=random()*45-16,z=random()*35-24;assert.equal(ce.support(x,z),be.support(x,z));compareFootprint(be,ce,x,z);}
++ }
++}finally{bw.free();cw.free();}
++const report={pass:true,baseline,pointChecks,footprintChecks:footprints,bridgeStates:6,fullFootprintSupportReads,scope:'Exact JavaScript numeric results, original Float32 terrain, custom bounds, callback replacement and native dynamic bridge topology. No browser/GPU or Quest performance.'};
++fs.writeFileSync(new URL('terrain-budget.json',out),JSON.stringify(report,null,2));console.log(JSON.stringify(report));
+diff --git a/src/civilian-ground-point.js b/src/civilian-ground-point.js
+index 1b6f1c7..2a19370 100644
+--- a/src/civilian-ground-point.js
++++ b/src/civilian-ground-point.js
+@@ -3,28 +3,35 @@
+ const OFFSETS = Array.from({length:8}, (_, i) =>
+   [Math.cos(i*Math.PI/4)*.72, Math.sin(i*Math.PI/4)*.72]);
+ 
+-export function supportedCivilianPoint(environment, x, z) {
++// Height-only callers need the identical footprint test, not a discarded point.
++export function supportedCivilianHeight(environment, x, z) {
+   const {support, inBounds} = environment;
+-  if (!inBounds(x,z)) return null;
++  const combined=environment.supportBounds?.support===support&&environment.supportBounds?.inBounds===inBounds;
++  if (!combined&&!inBounds(x,z)) return null;
+   const y = support(x,z);
+-  if (!Number.isFinite(y) || y < -20) return null;
+-  for (const [dx,dz] of OFFSETS) {
++  if (!Number.isFinite(y) || y < -20 || (combined&&y<=-20)) return null;
++  for (let i=0;i<OFFSETS.length;i++) {
++    const dx=OFFSETS[i][0],dz=OFFSETS[i][1];
+     const h = support(x+dx,z+dz);
+-    if (!inBounds(x+dx,z+dz) || !Number.isFinite(h) || Math.abs(h-y) >= .24) return null;
++    if ((combined?h<=-20:!inBounds(x+dx,z+dz)) || !Number.isFinite(h) || Math.abs(h-y) >= .24) return null;
+   }
+-  return {x,y,z};
++  return y;
++}
++export function supportedCivilianPoint(environment, x, z) {
++  const y=supportedCivilianHeight(environment,x,z);return y===null?null:{x,y,z};
+ }
+ 
+ /** Existing physical foot stance used by recovery. This is not an ordinary
+  * route waypoint: a full-footprint connector is required before walking out. */
+ export function supportedCivilianRoot(environment,x,z) {
+   const {support,inBounds}=environment;
+-  if(!inBounds(x,z))return null;
++  const combined=environment.supportBounds?.support===support&&environment.supportBounds?.inBounds===inBounds;
++  if(!combined&&!inBounds(x,z))return null;
+   const y=support(x,z);
+-  if(!Number.isFinite(y)||y < -20)return null;
++  if(!Number.isFinite(y)||y < -20||(combined&&y<=-20))return null;
+   for(const [dx,dz] of [[.47,0],[-.47,0],[0,.47],[0,-.47]]) {
+     const h=support(x+dx,z+dz);
+-    if(!inBounds(x+dx,z+dz)||!Number.isFinite(h)||Math.abs(h-y)>=.24)return null;
++    if((combined?h<=-20:!inBounds(x+dx,z+dz))||!Number.isFinite(h)||Math.abs(h-y)>=.24)return null;
+   }
+   return {x,y,z};
+ }
+diff --git a/src/civilian-navigation.js b/src/civilian-navigation.js
+index 3d95987..92716b5 100644
+--- a/src/civilian-navigation.js
++++ b/src/civilian-navigation.js
+@@ -2,7 +2,7 @@
+  * Only replaces an intent's next target after finding a complete supported route.
+  * Motion still owns all bodies, speed/turn limits, collision, spacing and grabs.
+  */
+-import {supportedCivilianPoint,supportedCivilianRoot} from './civilian-ground-point.js';
++import {supportedCivilianPoint,supportedCivilianRoot,supportedCivilianHeight} from './civilian-ground-point.js';
+ export function createCivilianNavigation({THREE, RAPIER, sim, motion, environment}) {
+   const world = sim.world, support = environment.support, inBounds = environment.inBounds;
+   const STEP = .65, RADIUS = .72, SAMPLE = .30, SKIN = .025;
+@@ -75,13 +75,13 @@ export function createCivilianNavigation({THREE, RAPIER, sim, motion, environmen
+     // approves the same impossible segment. These are terrain reads, not
+     // extra native queries; all collision casts keep their shared budget.
+     const supportSteps=Math.max(1,Math.ceil(length/SKIN));
+-    let fullSupport=!!groundPoint(a.x,a.z);
++    let fullSupport=supportedCivilianHeight(environment,a.x,a.z)!==null;
+     for(let i=1;i<=supportSteps;i++){
+       const t=i/supportSteps,x=a.x+(b.x-a.x)*t,z=a.z+(b.z-a.z)*t;
+-      if(groundPoint(x,z))fullSupport=true;
++      if(supportedCivilianHeight(environment,x,z)!==null)fullSupport=true;
+       else if(fullSupport || length*t>1.4 || !supportedCivilianRoot(environment,x,z))return false;
+     }
+-    let previous = a;fullSupport=!!groundPoint(a.x,a.z);
++    let previous = a;fullSupport=supportedCivilianHeight(environment,a.x,a.z)!==null;
+     // A physically recovered root can have the old narrow foot support.
+     // Admit only a short, native-swept connector into the full footprint.
+     // Every normal grid point and all later segments still need full support.
+diff --git a/src/settlement-land-regions.js b/src/settlement-land-regions.js
+index a44dd68..541d1fd 100644
+--- a/src/settlement-land-regions.js
++++ b/src/settlement-land-regions.js
+@@ -4,7 +4,7 @@
+  */
+ const finite=(...values)=>values.every(Number.isFinite);
+ export function polygonContains(polygon,x,z){
+-  if(!finite(x,z))return false;let inside=false;
++  if(!Number.isFinite(x)||!Number.isFinite(z))return false;let inside=false;
+   for(let i=0,j=polygon.length-1;i<polygon.length;j=i++){
+     const a=polygon[j],b=polygon[i],dx=b[0]-a[0],dz=b[1]-a[1],cross=(x-a[0])*dz-(z-a[1])*dx;
+     if(Math.abs(cross)<1e-7&&x>=Math.min(a[0],b[0])-1e-7&&x<=Math.max(a[0],b[0])+1e-7&&z>=Math.min(a[1],b[1])-1e-7&&z<=Math.max(a[1],b[1])+1e-7)return true;
+@@ -24,16 +24,21 @@ export function createLandRegionRegistry({regions,connections=[]}={}){
+   for(const c of connections)if(!c.id||!byId.has(c.from)||!byId.has(c.to)||c.from===c.to||typeof c.support!=='function')throw new TypeError('Every connection needs distinct registered endpoints and physical support');
+   if(new Set(connections.map(c=>c.id)).size!==connections.length)throw new TypeError('Connection ids must be unique');
+   const bounds={minX:Math.min(...regions.map(r=>r.bounds.minX)),maxX:Math.max(...regions.map(r=>r.bounds.maxX)),minZ:Math.min(...regions.map(r=>r.bounds.minZ)),maxZ:Math.max(...regions.map(r=>r.bounds.maxZ))};
+-  const connectionAt=(x,z)=>connections.find(c=>{const y=c.support(x,z);return Number.isFinite(y)&&y> -20;})??null;
++  const connectionAt=(x,z)=>{for(let i=0;i<connections.length;i++){const c=connections[i],y=c.support(x,z);if(Number.isFinite(y)&&y> -20)return c;}return null;};
+   const regionAt=(x,z)=>regions.find(r=>r.contains(x,z))?.id??connectionAt(x,z)?.from??null;
+-  const support=(x,z)=>{if(!finite(x,z))return -50;const c=connectionAt(x,z);if(c)return c.support(x,z);for(const r of regions)if(r.contains(x,z))return r.support(x,z);return -50;};
++  const support=(x,z)=>{if(!Number.isFinite(x)||!Number.isFinite(z))return -50;const c=connectionAt(x,z);if(c)return c.support(x,z);for(let i=0;i<regions.length;i++){const r=regions[i];if(r.contains(x,z))return r.support(x,z);}return -50;};
++  const inBounds=(x,z)=>support(x,z)>-20;
++  // Explicit identity contract: these bounds are exactly this support query.
++  // Footprint callers can read once, but custom/replaced callbacks fall back to
++  // both predicates. There is no cache to invalidate when a bridge is built.
++  const supportBounds=Object.freeze({support,inBounds});
+   function isConnected(from,to){
+     if(!byId.has(from)||!byId.has(to))return false;if(from===to)return true;
+     const visited=new Set([from]),queue=[from];
+     for(let i=0;i<queue.length;i++)for(const c of connections){if(c.complete!==true)continue;const next=c.from===queue[i]?c.to:c.to===queue[i]?c.from:null;if(next==null||visited.has(next))continue;if(next===to)return true;visited.add(next);queue.push(next);}
+     return false;
+   }
+-  return{regions,connections,bounds,regionAt,connectionAt,support,inBounds:(x,z)=>support(x,z)> -20,isConnected,canTravel:(from,to)=>!!from&&!!to&&isConnected(regionAt(from.x,from.z),regionAt(to.x,to.z)),getRegion:id=>byId.get(id)??null};
++  return{regions,connections,bounds,regionAt,connectionAt,support,inBounds,supportBounds,isConnected,canTravel:(from,to)=>!!from&&!!to&&isConnected(regionAt(from.x,from.z),regionAt(to.x,to.z)),getRegion:id=>byId.get(id)??null};
+ }
+ 
+ export const ARCHIPELAGO_LANDMARKS=Object.freeze({
+diff --git a/src/terrain.js b/src/terrain.js
+index 38f9066..32d23eb 100644
+--- a/src/terrain.js
++++ b/src/terrain.js
+@@ -24,21 +24,27 @@ export function getArenaSurface(){
+  cache.halfExtents=[Math.max(...cache.boundary.map(p=>Math.abs(p[0]))),Math.max(...cache.boundary.map(p=>Math.abs(p[1])))];return cache;
+ }
+ function locate(x,z){
+- const d=getArenaSurface();if(Math.abs(x)+Math.abs(z)<1e-9)return {inside:true,i:0,j:1};
++ const d=getArenaSurface();if(Math.abs(x)+Math.abs(z)<1e-9)return 0;
+  let a=Math.atan2(z/RZ,x/RX);if(a<0)a+=Math.PI*2;const i=Math.min(N-1,Math.floor(a/(Math.PI*2)*N)),p=d.boundary[i],q=d.boundary[(i+1)%N];
+- const cross=(a,b,c,e)=>a*e-b*c,den=cross(x,z,q[0]-p[0],q[1]-p[1]);
+- const edgeRatio=cross(p[0],p[1],q[0]-p[0],q[1]-p[1])/den,t=1/edgeRatio;
+- return{inside:t<=1+1e-8&&t>=0,i,j:Math.max(1,Math.min(M,Math.ceil(t*M))),t};
++ const dx=q[0]-p[0],dz=q[1]-p[1],den=x*dz-z*dx;
++ const edgeRatio=(p[0]*dz-p[1]*dx)/den,t=1/edgeRatio;
++ // Encode the same sector/ring in a scalar. Navigation samples this immutable
++ // surface many times per step; no point, closure or result object is needed.
++ return t<=1+1e-8&&t>=0?i*M+Math.max(1,Math.min(M,Math.ceil(t*M)))-1:-1;
++}
++export function inArena(x,z){return Number.isFinite(x+z)&&locate(x,z)>=0;}
++function triangleHeight(v,x,z,a,b,c,checkInside=false){
++ const ax=v[a*3],az=v[a*3+2],bx=v[b*3],bz=v[b*3+2],cx=v[c*3],cz=v[c*3+2],den=(bz-cz)*(ax-cx)+(cx-bx)*(az-cz),wa=((bz-cz)*(x-cx)+(cx-bx)*(z-cz))/den,wb=((cz-az)*(x-cx)+(ax-cx)*(z-cz))/den;
++ const y=wa*v[a*3+1]+wb*v[b*3+1]+(1-wa-wb)*v[c*3+1];
++ return checkInside&&!(wa>=-1e-6&&wb>=-1e-6&&wa+wb<=1+1e-6)?null:y;
+ }
+-export function inArena(x,z){return Number.isFinite(x+z)&&locate(x,z).inside;}
+ export function terrainHeight(x,z){
+- if(!Number.isFinite(x+z))return 0;const d=getArenaSurface(),s=locate(x,z);
++ if(!Number.isFinite(x+z))return 0;const d=getArenaSurface(),cell=locate(x,z);
+  // Outside the visible island there is genuinely no supported floor. A finite
+  // abyss fallback prevents NaNs in existing controllers without inventing land.
+- if(!s.inside)return -50;
+- const v=d.vertices,lerp=(a,b,c)=>{const ax=v[a*3],az=v[a*3+2],bx=v[b*3],bz=v[b*3+2],cx=v[c*3],cz=v[c*3+2],den=(bz-cz)*(ax-cx)+(cx-bx)*(az-cz),wa=((bz-cz)*(x-cx)+(cx-bx)*(z-cz))/den,wb=((cz-az)*(x-cx)+(ax-cx)*(z-cz))/den;return {y:wa*v[a*3+1]+wb*v[b*3+1]+(1-wa-wb)*v[c*3+1],inside:wa>=-1e-6&&wb>=-1e-6&&wa+wb<=1+1e-6};};
+- const {i,j}=s;if(j===1)return lerp(0,1+(i+1)%N,1+i).y;
+- const a=1+(j-2)*N+i,b=1+(j-2)*N+(i+1)%N,c=1+(j-1)*N+i,e=1+(j-1)*N+(i+1)%N,r=lerp(a,b,c);return r.inside?r.y:lerp(b,e,c).y;
++ if(cell<0)return -50;
++ const v=d.vertices,i=Math.floor(cell/M),j=cell%M+1;if(j===1)return triangleHeight(v,x,z,0,1+(i+1)%N,1+i);
++ const a=1+(j-2)*N+i,b=1+(j-2)*N+(i+1)%N,c=1+(j-1)*N+i,e=1+(j-1)*N+(i+1)%N,y=triangleHeight(v,x,z,a,b,c,true);return y===null?triangleHeight(v,x,z,b,e,c):y;
+ }
+ export function makeArena(scene,world,R){
+  const d=getArenaSurface(),g=new THREE.BufferGeometry(),colors=[];
