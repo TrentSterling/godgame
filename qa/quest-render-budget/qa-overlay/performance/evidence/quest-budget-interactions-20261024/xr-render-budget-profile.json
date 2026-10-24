@@ -1,0 +1,75 @@
+{
+  "pass": true,
+  "three": "160",
+  "scope": "CPU-only real production scene with native Rapier, mock XR/DOM and no renderer/GPU. Counts are uncropped visible-scene candidates, not renderer draw calls. begin/end timing includes host allocation sampler overhead, not Quest timings or shader cost.",
+  "before": {
+    "MeshBasicMaterial": {
+      "objects": 69,
+      "triangles": 7598
+    },
+    "MeshStandardMaterial": {
+      "objects": 87,
+      "triangles": 99349
+    }
+  },
+  "after": {
+    "MeshBasicMaterial": {
+      "objects": 69,
+      "triangles": 7598
+    },
+    "MeshLambertMaterial": {
+      "objects": 85,
+      "triangles": 99337
+    },
+    "MeshStandardMaterial": {
+      "objects": 2,
+      "triangles": 12
+    }
+  },
+  "warm": {
+    "visited": 292,
+    "convertedMeshes": 85,
+    "convertedMaterials": 23,
+    "cachedMaterials": 23,
+    "createdMaterials": 23
+  },
+  "overhead": {
+    "frames": 20000,
+    "elapsedMs": 162.7781,
+    "meanMs": 0.008138905,
+    "estimatedTransientAllocationBytes": 16400,
+    "topAllocators": [
+      [
+        "traverseVisible",
+        16400
+      ],
+      [
+        "(root)",
+        0
+      ],
+      [
+        "",
+        0
+      ],
+      [
+        "file:///C:/Users/trent/Documents/Codex/2026-10-22/task-8/godgame-quest-current/qa/performance/xr-render-budget-profile.mjs",
+        0
+      ],
+      [
+        "beginFrame",
+        0
+      ]
+    ],
+    "createdMaterialsAfterWarmup": 0
+  },
+  "shaderEvidence": {
+    "standard": "Three0.160 lights_physical_pars_fragment RE_Direct_Physical invokes BRDF_GGX for direct specular",
+    "lambert": "Three0.160 lights_lambert_pars_fragment RE_Direct_Lambert accumulates diffuse only; still per-fragment lighting"
+  },
+  "remainingGates": [
+    "Matched real-renderer calls/triangles and captures",
+    "Visual/readability review with shadows already off in XR",
+    "GPU timing only under coordinated owned muted browser lease",
+    "Physical Quest acceptance remains user-owned"
+  ]
+}

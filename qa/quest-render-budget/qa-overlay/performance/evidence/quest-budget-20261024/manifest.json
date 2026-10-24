@@ -1,0 +1,19 @@
+{
+  "baseline-desktop-a9df91b980f507c1.png": "a9df91b980f507c1067c5c778a007bd5f9e533c9b626bebd5e094b0e36f9068f",
+  "baseline-xr-hands-6018b3662c7b00c6.png": "6018b3662c7b00c6164302779be97eb83a485d73fad1ba475e940915e5d79916",
+  "baseline-xr-mono-95bc0afd721f8885.png": "95bc0afd721f8885758c7a4ea8ee62f4f0f5d5089feba5cd1743dd6a02c740f5",
+  "baseline-xr-stereo-built-79b942063e806be6.png": "79b942063e806be698f58354506294d3d214279a9eb5bf6584a2da2e2e864311",
+  "baseline-xr-stereo-hands-759ceed91ab7aa02.png": "759ceed91ab7aa028bc49f7d46e4fa5c2607dc1308e2bf0f089c35d31fb05fa7",
+  "budget-render-simulation.json": "3250a63d022edd0ccd4ee3b31410e2120b8be978ad8fa4bb54f462ecd451f0dc",
+  "candidate-desktop-a9df91b980f507c1.png": "a9df91b980f507c1067c5c778a007bd5f9e533c9b626bebd5e094b0e36f9068f",
+  "candidate-xr-hands-2d210c7068fc5713.png": "2d210c7068fc5713e2af4472408d05583a918ccb4587f858aaffad46bf7328a7",
+  "candidate-xr-mono-fe1c5d8caae2abab.png": "fe1c5d8caae2abab318552ef4ac7c96d6be583c430b3e34656456d1bc5abc2e4",
+  "candidate-xr-stereo-built-96711fc09b6d9bdf.png": "96711fc09b6d9bdfe860c1b46b3b64b94ae7f80682f2622ab0bb2d89e0fc3d36",
+  "candidate-xr-stereo-hands-b9e256c106e35fca.png": "b9e256c106e35fcaa1a7ce54b0326d51ace6869ad781e8c7da60141070c2baad",
+  "cue-batching.json": "79673df46ea46f732f85ea2550c44d2b78fa6952647d690a97d6e52a334c4785",
+  "native-source-identity.json": "5831d4aca224ffe430dc58c1c734c217c0c08f95c02bcccbab5470a69c437703",
+  "native-summary.json": "9a9cc0d57e31e5ea6e87202e87bfacd586185c35f080f5eca1e92834b730b93b",
+  "pixels.json": "df04fb9c917226dd5e55960780be101459a9f9b0996ac3f3bdfb2dc889e26ae1",
+  "quest-budget-owned-fbo-browser.json": "6368e5e454a29f7569f2cfdf54aedbc01342e0945fde7daf5882751dd15a0c62",
+  "xr-render-budget-profile.json": "9ad86b77253af310c2ef9cd02632088901aa24445cecc5471ab5c59d4201163f"
+}

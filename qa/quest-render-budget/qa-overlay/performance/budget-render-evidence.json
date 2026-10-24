@@ -1,0 +1,714 @@
+{
+  "pass": true,
+  "parentCPUCommit": "989940e6ed8d447f59f61ccda18a64ac0a28367b",
+  "parentInteractionCommit": "be71df7671bf82038f326b64e70b06f98ac30711",
+  "baselineDeployment": "195e4972c7615b3c81043e75118e8ab9c91d2e6f",
+  "sourceHashes": {
+    "settlement-main.js": "c9064b57a87143701dbf612c3d462f6d05138812002e036159e140f49367622a",
+    "settlement-world-cues.js": "2af54ae0da652ff934729abf37b9b50065f851bdf10c03c25fd22ceb99320113",
+    "xr-render-budget.js": "5d130241e9791d5f0ff0e249c948dad2b0fda3694328314a8cb5372fec2ea2a4"
+  },
+  "build": {
+    "bytes": 8526887,
+    "sha256": "b9e92a752e52462a95e3b5c1fa8d2f49b2414c62215fce1df74ec0522929139a"
+  },
+  "integrationStatus": "Integrated production entry point creates one cached budget and brackets immersive world rendering with beginFrame/finally/endFrame. All application material references are restored before further input, physics or UI work.",
+  "unchanged": "No geometry/skeleton/physics/quality-scale/shadow/light/control changes. Current XR already disables shadows. Basic/transparent/custom/PBR-only materials remain unchanged; shared textures/source materials remain application-owned. Desktop uses Standard materials; sign batching applies in both modes.",
+  "profile": {
+    "pass": true,
+    "three": "160",
+    "scope": "CPU-only real production scene with native Rapier, mock XR/DOM and no renderer/GPU. Counts are uncropped visible-scene candidates, not renderer draw calls. begin/end timing includes host allocation sampler overhead, not Quest timings or shader cost.",
+    "before": {
+      "MeshBasicMaterial": {
+        "objects": 69,
+        "triangles": 7598
+      },
+      "MeshStandardMaterial": {
+        "objects": 87,
+        "triangles": 99349
+      }
+    },
+    "after": {
+      "MeshBasicMaterial": {
+        "objects": 69,
+        "triangles": 7598
+      },
+      "MeshLambertMaterial": {
+        "objects": 85,
+        "triangles": 99337
+      },
+      "MeshStandardMaterial": {
+        "objects": 2,
+        "triangles": 12
+      }
+    },
+    "warm": {
+      "visited": 292,
+      "convertedMeshes": 85,
+      "convertedMaterials": 23,
+      "cachedMaterials": 23,
+      "createdMaterials": 23
+    },
+    "overhead": {
+      "frames": 20000,
+      "elapsedMs": 162.7781,
+      "meanMs": 0.008138905,
+      "estimatedTransientAllocationBytes": 16400,
+      "topAllocators": [
+        [
+          "traverseVisible",
+          16400
+        ],
+        [
+          "(root)",
+          0
+        ],
+        [
+          "",
+          0
+        ],
+        [
+          "file:///C:/Users/trent/Documents/Codex/2026-10-22/task-8/godgame-quest-current/qa/performance/xr-render-budget-profile.mjs",
+          0
+        ],
+        [
+          "beginFrame",
+          0
+        ]
+      ],
+      "createdMaterialsAfterWarmup": 0
+    },
+    "shaderEvidence": {
+      "standard": "Three0.160 lights_physical_pars_fragment RE_Direct_Physical invokes BRDF_GGX for direct specular",
+      "lambert": "Three0.160 lights_lambert_pars_fragment RE_Direct_Lambert accumulates diffuse only; still per-fragment lighting"
+    },
+    "remainingGates": [
+      "Matched real-renderer calls/triangles and captures",
+      "Visual/readability review with shadows already off in XR",
+      "GPU timing only under coordinated owned muted browser lease",
+      "Physical Quest acceptance remains user-owned"
+    ]
+  },
+  "cues": {
+    "pass": true,
+    "baseline": "be71df7671bf82038f326b64e70b06f98ac30711",
+    "controls": 8,
+    "vertices": 64800,
+    "normals": 64800,
+    "rays": 1728,
+    "cullingChecks": 384,
+    "sourceDrawCandidates": 59,
+    "batchedDrawCandidates": 16,
+    "sourceAndTemporaryGeometriesDisposed": 118,
+    "stateDrawCandidates": [
+      {
+        "baseline": 43,
+        "candidate": 24
+      },
+      {
+        "baseline": 49,
+        "candidate": 27
+      },
+      {
+        "baseline": 50,
+        "candidate": 28
+      },
+      {
+        "baseline": 60,
+        "candidate": 32
+      },
+      {
+        "baseline": 59,
+        "candidate": 31
+      },
+      {
+        "baseline": 49,
+        "candidate": 27
+      },
+      {
+        "baseline": 50,
+        "candidate": 28
+      },
+      {
+        "baseline": 49,
+        "candidate": 27
+      }
+    ],
+    "scope": "CPU geometry, world transforms, normals/UVs, state/labels/materials, exact button rays, local culling and disposal. Scene counts are not renderer counts or Quest measurements."
+  },
+  "simulation": {
+    "pass": true,
+    "scope": "Thirteen identical deterministic production phases with the real integrated XR render-budget entry point. Full public state, native Rapier snapshot and operation counts; no GPU or Quest timings. No application integration adapter.",
+    "rows": [
+      {
+        "name": "cold-desktop-render-72",
+        "physicsSHA256": "6c9462df3a3caf9ad2dbf8176d595307903be8c1528edce85d1ea24dac0cc22f",
+        "counts": {
+          "snapshots": 72,
+          "economyUpdates": 0,
+          "commands": 0,
+          "beforeSteps": 0,
+          "observations": 0,
+          "renders": 72,
+          "hudUpdates": 72,
+          "worldCueUpdates": 144
+        },
+        "physicsSteps": 0
+      },
+      {
+        "name": "desktop-running-120",
+        "physicsSHA256": "921f8a59c5542ed397abf098e4f8ef0f15cdb954a0750f9e8211c17c3423065c",
+        "counts": {
+          "snapshots": 596,
+          "economyUpdates": 476,
+          "commands": 0,
+          "beforeSteps": 238,
+          "observations": 476,
+          "renders": 120,
+          "hudUpdates": 120,
+          "worldCueUpdates": 240
+        },
+        "physicsSteps": 238
+      },
+      {
+        "name": "desktop-paused-72",
+        "physicsSHA256": "921f8a59c5542ed397abf098e4f8ef0f15cdb954a0750f9e8211c17c3423065c",
+        "counts": {
+          "snapshots": 72,
+          "economyUpdates": 0,
+          "commands": 0,
+          "beforeSteps": 0,
+          "observations": 0,
+          "renders": 72,
+          "hudUpdates": 72,
+          "worldCueUpdates": 144
+        },
+        "physicsSteps": 0
+      },
+      {
+        "name": "commands-next-frame",
+        "physicsSHA256": "1f42571aa7fdbc9b80bda56e085e07a37d957db67e08655258f611536c021625",
+        "counts": {
+          "snapshots": 5,
+          "economyUpdates": 4,
+          "commands": 0,
+          "beforeSteps": 2,
+          "observations": 4,
+          "renders": 1,
+          "hudUpdates": 1,
+          "worldCueUpdates": 2
+        },
+        "physicsSteps": 2
+      },
+      {
+        "name": "xr-placement-72",
+        "physicsSHA256": "1f42571aa7fdbc9b80bda56e085e07a37d957db67e08655258f611536c021625",
+        "counts": {
+          "snapshots": 72,
+          "economyUpdates": 0,
+          "commands": 0,
+          "beforeSteps": 0,
+          "observations": 0,
+          "renders": 72,
+          "hudUpdates": 0,
+          "worldCueUpdates": 144
+        },
+        "physicsSteps": 0
+      },
+      {
+        "name": "xr-running-360",
+        "physicsSHA256": "537778b97af460fd190bdcdd874a3f7d11e62a35d88e9c0df54fba5a95a107f3",
+        "counts": {
+          "snapshots": 1560,
+          "economyUpdates": 1200,
+          "commands": 0,
+          "beforeSteps": 600,
+          "observations": 1200,
+          "renders": 360,
+          "hudUpdates": 0,
+          "worldCueUpdates": 720
+        },
+        "physicsSteps": 600
+      },
+      {
+        "name": "xr-paused-72",
+        "physicsSHA256": "537778b97af460fd190bdcdd874a3f7d11e62a35d88e9c0df54fba5a95a107f3",
+        "counts": {
+          "snapshots": 72,
+          "economyUpdates": 0,
+          "commands": 0,
+          "beforeSteps": 0,
+          "observations": 0,
+          "renders": 72,
+          "hudUpdates": 0,
+          "worldCueUpdates": 144
+        },
+        "physicsSteps": 0
+      },
+      {
+        "name": "xr-gap-80ms",
+        "physicsSHA256": "a75bf4e0800ba14e02405242c6dc3cd4700f527da981f122b90789673433cb82",
+        "counts": {
+          "snapshots": 17,
+          "economyUpdates": 16,
+          "commands": 0,
+          "beforeSteps": 8,
+          "observations": 16,
+          "renders": 1,
+          "hudUpdates": 0,
+          "worldCueUpdates": 2
+        },
+        "physicsSteps": 8
+      },
+      {
+        "name": "desktop-after-xr-exit",
+        "physicsSHA256": "521851fe25a75d204fb31d556431c00eb51644f196a77d7f04d5c74a9c039035",
+        "counts": {
+          "snapshots": 5,
+          "economyUpdates": 4,
+          "commands": 0,
+          "beforeSteps": 2,
+          "observations": 4,
+          "renders": 1,
+          "hudUpdates": 1,
+          "worldCueUpdates": 2
+        },
+        "physicsSteps": 2
+      },
+      {
+        "name": "desktop-economy-1800",
+        "physicsSHA256": "dd1c0d6edffef89585f95cb8cc1b46f0e72d79ed606f11271a8bc86be6f4f9f5",
+        "counts": {
+          "snapshots": 9000,
+          "economyUpdates": 7200,
+          "commands": 0,
+          "beforeSteps": 3600,
+          "observations": 7200,
+          "renders": 1800,
+          "hudUpdates": 1800,
+          "worldCueUpdates": 3600
+        },
+        "physicsSteps": 3600
+      },
+      {
+        "name": "lost-load-command",
+        "physicsSHA256": "b9df30ff7228cc037fa2e9901d86a9900beb25f2d9a4898b176c5e1965940677",
+        "counts": {
+          "snapshots": 7,
+          "economyUpdates": 4,
+          "commands": 1,
+          "beforeSteps": 2,
+          "observations": 4,
+          "renders": 1,
+          "hudUpdates": 1,
+          "worldCueUpdates": 2
+        },
+        "physicsSteps": 2
+      },
+      {
+        "name": "terminal-transition",
+        "physicsSHA256": "74e3ff688414030365dd419475c15d3095b7ad283dd0a020d2703e660ec4d6bc",
+        "counts": {
+          "snapshots": 11,
+          "economyUpdates": 4,
+          "commands": 3,
+          "beforeSteps": 2,
+          "observations": 4,
+          "renders": 1,
+          "hudUpdates": 1,
+          "worldCueUpdates": 2
+        },
+        "physicsSteps": 2
+      },
+      {
+        "name": "terminal-held-72",
+        "physicsSHA256": "74e3ff688414030365dd419475c15d3095b7ad283dd0a020d2703e660ec4d6bc",
+        "counts": {
+          "snapshots": 72,
+          "economyUpdates": 0,
+          "commands": 0,
+          "beforeSteps": 0,
+          "observations": 0,
+          "renders": 72,
+          "hudUpdates": 72,
+          "worldCueUpdates": 144
+        },
+        "physicsSteps": 0
+      }
+    ],
+    "adapters": [
+      "Original GLBs with empty texture decode; no GPU",
+      "Mock DOM and WebXR; native Rapier",
+      "Read-only counters inserted in memory",
+      "Export render/advanceSimulation for deterministic tests"
+    ]
+  },
+  "native": {
+    "pass": true,
+    "runs": [
+      {
+        "command": "node qa/xr-village/build-native.cjs",
+        "status": 0
+      },
+      {
+        "command": "node qa/xr-village/transformed-picker.test.mjs",
+        "status": 0
+      },
+      {
+        "command": "node qa/xr-village/bridge-lifecycle.test.mjs",
+        "status": 0
+      },
+      {
+        "command": "node qa/xr-village/native-interactions.test.mjs",
+        "status": 0
+      },
+      {
+        "command": "node qa/xr-village/native-placement.test.mjs",
+        "status": 0
+      },
+      {
+        "command": "node qa/xr-village/hand-ui.test.mjs",
+        "status": 0
+      },
+      {
+        "command": "node qa/xr-village/tracking-retention.test.mjs",
+        "status": 0
+      },
+      {
+        "command": "node qa/xr-village/sticky-grip.test.mjs",
+        "status": 0
+      },
+      {
+        "command": "node qa/xr-village/hand-grip-state.test.mjs",
+        "status": 0
+      },
+      {
+        "command": "node qa/xr-village/throw-gap.test.mjs",
+        "status": 0
+      },
+      {
+        "command": "node qa/xr-village/grab-follow.test.mjs",
+        "status": 0
+      },
+      {
+        "command": "node qa/xr-village/controller-god-hand.test.mjs",
+        "status": 0
+      },
+      {
+        "command": "node qa/xr-village/controller-visual-integration.test.mjs",
+        "status": 0
+      },
+      {
+        "command": "node qa/xr-village/group-interactions.test.mjs",
+        "status": 0
+      },
+      {
+        "command": "node qa/xr-village/group-selection.test.mjs",
+        "status": 0
+      }
+    ],
+    "identity": {
+      "sourceFiles": 120,
+      "testFiles": 23,
+      "runtimeAssets": 3,
+      "settlementMainSHA256": "3de1ad6bcc5f7f9bffc1654834c1246af2647bf0989bed7d23a8f342f68ff88e",
+      "deliveredHTMLSHA256": "b9e92a752e52462a95e3b5c1fa8d2f49b2414c62215fce1df74ec0522929139a",
+      "unchangedDuringRun": true,
+      "changed": []
+    }
+  },
+  "renderer": [
+    {
+      "label": "desktop",
+      "baselineCalls": 239,
+      "candidateCalls": 217,
+      "nonMonitorTriangles": 176034,
+      "eyes": 1,
+      "baselineGPUMediansMs": [
+        0.11784,
+        0.182336
+      ],
+      "candidateGPUMediansMs": [
+        0.136832,
+        0.13440000000000002
+      ]
+    },
+    {
+      "label": "xr-mono",
+      "baselineCalls": 171,
+      "candidateCalls": 149,
+      "nonMonitorTriangles": 92449,
+      "eyes": 1,
+      "baselineGPUMediansMs": [
+        0.06529599999999999,
+        0.072464
+      ],
+      "candidateGPUMediansMs": [
+        0.055856,
+        0.06056
+      ]
+    },
+    {
+      "label": "xr-controllers",
+      "baselineCalls": 179,
+      "candidateCalls": 157,
+      "nonMonitorTriangles": 103491,
+      "eyes": 1,
+      "baselineGPUMediansMs": [
+        0.09824,
+        0.107184
+      ],
+      "candidateGPUMediansMs": [
+        0.08463999999999999,
+        0.089296
+      ]
+    },
+    {
+      "label": "xr-stereo-controllers",
+      "baselineCalls": 358,
+      "candidateCalls": 314,
+      "nonMonitorTriangles": 206982,
+      "eyes": 2,
+      "baselineGPUMediansMs": [
+        0.136944,
+        0.15060800000000002
+      ],
+      "candidateGPUMediansMs": [
+        0.11998400000000001,
+        0.123584
+      ]
+    },
+    {
+      "label": "xr-hands",
+      "baselineCalls": 177,
+      "candidateCalls": 155,
+      "nonMonitorTriangles": 103491,
+      "eyes": 1,
+      "baselineGPUMediansMs": [
+        0.084336,
+        0.09464
+      ],
+      "candidateGPUMediansMs": [
+        0.07595199999999999,
+        0.07744
+      ]
+    },
+    {
+      "label": "xr-stereo-hands",
+      "baselineCalls": 354,
+      "candidateCalls": 310,
+      "nonMonitorTriangles": 206982,
+      "eyes": 2,
+      "baselineGPUMediansMs": [
+        0.134544,
+        0.13262400000000002
+      ],
+      "candidateGPUMediansMs": [
+        0.107904,
+        0.108688
+      ]
+    },
+    {
+      "label": "xr-stereo-built",
+      "baselineCalls": 374,
+      "candidateCalls": 330,
+      "nonMonitorTriangles": 206862,
+      "eyes": 2,
+      "baselineGPUMediansMs": [
+        0.135168,
+        0.138224
+      ],
+      "candidateGPUMediansMs": [
+        0.10816,
+        0.10921600000000001
+      ]
+    }
+  ],
+  "pixels": {
+    "pass": true,
+    "scope": "Exact decoded PNG pixels, not image preview cache; lighting differences reported, not hidden by a tolerance.",
+    "rows": [
+      {
+        "label": "desktop",
+        "differentPixels": 0,
+        "meanRGBDifference": 0,
+        "maxRGBDifference": 0,
+        "menuDifferentPixels": 0,
+        "baselineMenuOpaquePixels": 232960,
+        "candidateMenuOpaquePixels": 232960
+      },
+      {
+        "label": "xr-mono",
+        "differentPixels": 138488,
+        "meanRGBDifference": 0.6506564670138889,
+        "maxRGBDifference": 211,
+        "menuDifferentPixels": 0,
+        "baselineMenuOpaquePixels": 64882,
+        "candidateMenuOpaquePixels": 64882
+      },
+      {
+        "label": "xr-controllers",
+        "differentPixels": 142009,
+        "meanRGBDifference": 0.6424594907407407,
+        "maxRGBDifference": 211,
+        "menuDifferentPixels": 0,
+        "baselineMenuOpaquePixels": 64882,
+        "candidateMenuOpaquePixels": 64882
+      },
+      {
+        "label": "xr-stereo-controllers",
+        "differentPixels": 225191,
+        "meanRGBDifference": 1.0054242621527778,
+        "maxRGBDifference": 211,
+        "menuDifferentPixels": 0,
+        "baselineMenuOpaquePixels": 129774,
+        "candidateMenuOpaquePixels": 129774
+      },
+      {
+        "label": "xr-hands",
+        "differentPixels": 155003,
+        "meanRGBDifference": 0.6961433015046297,
+        "maxRGBDifference": 211,
+        "menuDifferentPixels": 0,
+        "baselineMenuOpaquePixels": 64882,
+        "candidateMenuOpaquePixels": 64882
+      },
+      {
+        "label": "xr-stereo-hands",
+        "differentPixels": 231101,
+        "meanRGBDifference": 1.0323133680555556,
+        "maxRGBDifference": 211,
+        "menuDifferentPixels": 0,
+        "baselineMenuOpaquePixels": 129774,
+        "candidateMenuOpaquePixels": 129774
+      },
+      {
+        "label": "xr-stereo-built",
+        "differentPixels": 237313,
+        "meanRGBDifference": 1.0369307002314814,
+        "maxRGBDifference": 211,
+        "menuDifferentPixels": 0,
+        "baselineMenuOpaquePixels": 129774,
+        "candidateMenuOpaquePixels": 129774
+      }
+    ]
+  },
+  "browser": {
+    "backend": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 Ti (0x00002C05) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "captureMethod": "Owned mock XR RGBA8/depth24 framebuffer, single-sample, synchronous readPixels in the same evaluate and draw as the census; no real XR compositor.",
+    "captures": [
+      {
+        "variant": "baseline",
+        "label": "desktop",
+        "name": "baseline-desktop-a9df91b980f507c1.png",
+        "sha256": "a9df91b980f507c1067c5c778a007bd5f9e533c9b626bebd5e094b0e36f9068f",
+        "bytes": 361872
+      },
+      {
+        "variant": "baseline",
+        "label": "xr-mono",
+        "name": "baseline-xr-mono-95bc0afd721f8885.png",
+        "sha256": "95bc0afd721f8885758c7a4ea8ee62f4f0f5d5089feba5cd1743dd6a02c740f5",
+        "bytes": 196019
+      },
+      {
+        "variant": "baseline",
+        "label": "xr-controllers",
+        "name": "baseline-xr-controllers-bfeb987b59248241.png",
+        "sha256": "bfeb987b5924824168fcbbe4767a743766c13bfd68387618f61e2ffb33bc4d0b",
+        "bytes": 226819
+      },
+      {
+        "variant": "baseline",
+        "label": "xr-stereo-controllers",
+        "name": "baseline-xr-stereo-controllers-9d9ce5ed2c719108.png",
+        "sha256": "9d9ce5ed2c7191084dbd4da787aa7b54256353056cfc641c5ca974fe18b22409",
+        "bytes": 349284
+      },
+      {
+        "variant": "baseline",
+        "label": "xr-hands",
+        "name": "baseline-xr-hands-6018b3662c7b00c6.png",
+        "sha256": "6018b3662c7b00c6164302779be97eb83a485d73fad1ba475e940915e5d79916",
+        "bytes": 259963
+      },
+      {
+        "variant": "baseline",
+        "label": "xr-stereo-hands",
+        "name": "baseline-xr-stereo-hands-759ceed91ab7aa02.png",
+        "sha256": "759ceed91ab7aa028bc49f7d46e4fa5c2607dc1308e2bf0f089c35d31fb05fa7",
+        "bytes": 361068
+      },
+      {
+        "variant": "baseline",
+        "label": "xr-stereo-built",
+        "name": "baseline-xr-stereo-built-79b942063e806be6.png",
+        "sha256": "79b942063e806be698f58354506294d3d214279a9eb5bf6584a2da2e2e864311",
+        "bytes": 358496
+      },
+      {
+        "variant": "candidate",
+        "label": "desktop",
+        "name": "candidate-desktop-a9df91b980f507c1.png",
+        "sha256": "a9df91b980f507c1067c5c778a007bd5f9e533c9b626bebd5e094b0e36f9068f",
+        "bytes": 361872
+      },
+      {
+        "variant": "candidate",
+        "label": "xr-mono",
+        "name": "candidate-xr-mono-fe1c5d8caae2abab.png",
+        "sha256": "fe1c5d8caae2abab318552ef4ac7c96d6be583c430b3e34656456d1bc5abc2e4",
+        "bytes": 195444
+      },
+      {
+        "variant": "candidate",
+        "label": "xr-controllers",
+        "name": "candidate-xr-controllers-7f1ade02424e9324.png",
+        "sha256": "7f1ade02424e932462f8661c597ed6401c731678d3652973511fd7fe6f950c6b",
+        "bytes": 227199
+      },
+      {
+        "variant": "candidate",
+        "label": "xr-stereo-controllers",
+        "name": "candidate-xr-stereo-controllers-4b5ee0c4e7520f9e.png",
+        "sha256": "4b5ee0c4e7520f9e3ba6d219cffd73400701f3172dcf3ea68ef71f95a89c463a",
+        "bytes": 346642
+      },
+      {
+        "variant": "candidate",
+        "label": "xr-hands",
+        "name": "candidate-xr-hands-2d210c7068fc5713.png",
+        "sha256": "2d210c7068fc5713e2af4472408d05583a918ccb4587f858aaffad46bf7328a7",
+        "bytes": 260340
+      },
+      {
+        "variant": "candidate",
+        "label": "xr-stereo-hands",
+        "name": "candidate-xr-stereo-hands-b9e256c106e35fca.png",
+        "sha256": "b9e256c106e35fcaa1a7ce54b0326d51ace6869ad781e8c7da60141070c2baad",
+        "bytes": 357084
+      },
+      {
+        "variant": "candidate",
+        "label": "xr-stereo-built",
+        "name": "candidate-xr-stereo-built-96711fc09b6d9bdf.png",
+        "sha256": "96711fc09b6d9bdfe860c1b46b3b64b94ae7f80682f2622ab0bb2d89e0fc3d36",
+        "bytes": 354387
+      }
+    ],
+    "allQueriesValid": true,
+    "browserClosed": true,
+    "evidence": "evidence/quest-budget-interactions-20261024/quest-budget-owned-fbo-browser.json"
+  },
+  "limitations": [
+    "Synthetic XR at1280x720, single-sample RGBA8/depth24 owned framebuffer. Controlled72Hz timestamps are fixture cadence, not Quest FPS or compositor evidence.",
+    "Host GPU durations are small/noisy. CPU submission timings include QA overhead and must not be called GPU time.",
+    "Eligible diffuse surfaces intentionally omit Standard GGX/specular. Lambert remains per-fragment lighting, not geometry LOD or vertex lighting.",
+    "Earlier wrong-loop, overwritten or ambiguous diagnostic receipts are excluded; final frozen ABBA run and hash-verified PNGs are the browser evidence."
+  ],
+  "reviewGates": [
+    "Independent source review of this exact integrated candidate",
+    "Required CI and normal live verification",
+    "Physical Quest performance, lighting/readability and interaction acceptance remains user-owned; no publication by this agent"
+  ]
+}

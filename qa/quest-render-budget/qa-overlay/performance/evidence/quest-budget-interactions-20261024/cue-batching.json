@@ -1,0 +1,47 @@
+{
+  "pass": true,
+  "baseline": "be71df7671bf82038f326b64e70b06f98ac30711",
+  "controls": 8,
+  "vertices": 64800,
+  "normals": 64800,
+  "rays": 1728,
+  "cullingChecks": 384,
+  "sourceDrawCandidates": 59,
+  "batchedDrawCandidates": 16,
+  "sourceAndTemporaryGeometriesDisposed": 118,
+  "stateDrawCandidates": [
+    {
+      "baseline": 43,
+      "candidate": 24
+    },
+    {
+      "baseline": 49,
+      "candidate": 27
+    },
+    {
+      "baseline": 50,
+      "candidate": 28
+    },
+    {
+      "baseline": 60,
+      "candidate": 32
+    },
+    {
+      "baseline": 59,
+      "candidate": 31
+    },
+    {
+      "baseline": 49,
+      "candidate": 27
+    },
+    {
+      "baseline": 50,
+      "candidate": 28
+    },
+    {
+      "baseline": 49,
+      "candidate": 27
+    }
+  ],
+  "scope": "CPU geometry, world transforms, normals/UVs, state/labels/materials, exact button rays, local culling and disposal. Scene counts are not renderer counts or Quest measurements."
+}

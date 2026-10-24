@@ -1,0 +1,217 @@
+{
+  "reviewedSourceCommit": "500154398e8eed6f6df1a3e29da9e0aa3f6ef3b4",
+  "baselineSourceCommit": "be71df7671bf82038f326b64e70b06f98ac30711",
+  "baselineReleaseCommit": "195e4972c7615b3c81043e75118e8ab9c91d2e6f",
+  "rootHTML": {
+    "sha256": "b9e92a752e52462a95e3b5c1fa8d2f49b2414c62215fce1df74ec0522929139a",
+    "bytes": 8526887,
+    "gitBlob": "35e842a8f1d03aba7e501c2320a5dd0e528f3a60"
+  },
+  "sourceBundle": {
+    "sha256": "c21997564a34adb690df690f55408d984428ab04e49c3c1b7b8b2a10063755e5",
+    "branch": "perf/quest-render-interactions"
+  },
+  "runtimeModules": [
+    "settlement-main.js",
+    "settlement-world-cues.js",
+    "xr-render-budget.js"
+  ],
+  "review": {
+    "sha": "500154398e8eed6f6df1a3e29da9e0aa3f6ef3b4",
+    "result": "approved",
+    "reviewer": "/root/grab_follow",
+    "blockers": [],
+    "baselineSource": "be71df7671bf82038f326b64e70b06f98ac30711",
+    "baselineDeployment": "195e4972c7615b3c81043e75118e8ab9c91d2e6f",
+    "html": {
+      "bytes": 8526887,
+      "sha256": "b9e92a752e52462a95e3b5c1fa8d2f49b2414c62215fce1df74ec0522929139a",
+      "independentInMemoryRebuildByteIdentical": true
+    },
+    "scope": {
+      "runtimeFiles": [
+        "src/settlement-main.js",
+        "src/settlement-world-cues.js",
+        "src/xr-render-budget.js"
+      ],
+      "reviewed": [
+        "XR-only material replacement and exact reference restoration",
+        "callback exclusions and render exception cleanup",
+        "material cache invalidation and ownership/disposal",
+        "installed Three r160 Lambert shader maps, skinning, morphs and diffuse lighting",
+        "local decorative cue merging with preserved hit plates, transforms and culling",
+        "native and simulation regressions",
+        "immutable renderer and decoded pixel evidence"
+      ],
+      "unchanged": "All baseline runtime modules except settlement-main.js and settlement-world-cues.js are unchanged; xr-render-budget.js is the sole new runtime module. CPU, sticky grip, group physics, controller helper, input lifecycle, monitor and resolution configuration are preserved. Main changes are limited to budget import/init, beginFrame/finally/endFrame and QA exposure."
+    },
+    "independentChecks": {
+      "exactHeadAndCleanWorktree": true,
+      "exactRuntimeDiffModules": 3,
+      "sourceTestAssetIdentities": 146,
+      "sourceModules": 120,
+      "nativeBundleSHA256": "1d08c1a453b62f975b32d15e357ad317a9361ad6516f4a574529a17d4ed54d6e",
+      "materialLifecycleTests": {
+        "passed": true,
+        "checks": 8,
+        "warmMaterialCreationStable": true
+      },
+      "cueGeometryFreshInMemoryBaselineComparison": {
+        "passed": true,
+        "vertices": 64800,
+        "normals": 64800,
+        "uvsPreserved": true,
+        "pickingRays": 1728,
+        "cullingChecks": 384,
+        "uiStates": 8,
+        "sourceAndTemporaryGeometryDisposals": 118
+      },
+      "nativeGroupIntegrationRerun": {
+        "passed": true,
+        "groups": 8,
+        "includes": [
+          "fixed membership and independent two-hand ownership",
+          "prolonged missing tracking",
+          "bounded recovery and group throws",
+          "source churn",
+          "paused release",
+          "combined controller buttons",
+          "destroyed-member cleanup"
+        ]
+      },
+      "simulationRerun": {
+        "passed": true,
+        "baselinePhases": 13,
+        "candidatePhases": 13,
+        "fullPublicStateExact": true,
+        "diagnosticExclusions": [],
+        "nativePhysicsExact": true,
+        "operationCountsExact": true,
+        "hudExact": true,
+        "sourceAndBundleIdentitiesVerified": true
+      },
+      "immutableRendererEvidence": {
+        "directory": "qa/performance/evidence/quest-budget-interactions-20261024",
+        "manifestFilesMatchedBeforeAndAfterReview": 22,
+        "scenes": 7,
+        "abbaRows": 28,
+        "captures": 14,
+        "validAsynchronousGpuSamples": 672,
+        "disjointOrGlErrors": 0,
+        "browserClosed": true,
+        "matchedCameraSceneUiFramebufferAndEyes": true,
+        "xrMissingViewerFrames": 0,
+        "nonMonitorTrianglesUnchanged": true,
+        "calls": {
+          "desktop": [
+            239,
+            217
+          ],
+          "xrMono": [
+            171,
+            149
+          ],
+          "xrControllersMono": [
+            179,
+            157
+          ],
+          "xrControllersStereo": [
+            358,
+            314
+          ],
+          "xrHandsMono": [
+            177,
+            155
+          ],
+          "xrHandsStereo": [
+            354,
+            310
+          ],
+          "xrStereoBridgeBuilt": [
+            374,
+            330
+          ]
+        },
+        "stereoCountersAlreadyIncludeBothEyes": true,
+        "reviewerLaunchedBrowserOrGpu": false
+      },
+      "rawPixelValidation": {
+        "passed": true,
+        "allFourteenPngHashesVerified": true,
+        "desktopPixelsAndPngBytesIdentical": true,
+        "allXrMenuDifferentPixels": 0,
+        "monoMenuOpaquePixelsEach": 64882,
+        "stereoMenuOpaquePixelsEach": 129774,
+        "fpsLineAndMonitorPanelAlphaExact": true,
+        "fullImageMeanRgbDifferenceRange": [
+          0.6424594907407407,
+          1.0369307002314814
+        ],
+        "maximumRgbDifference": 211,
+        "previewDiscrepancy": "The image tool again displayed an apparently absent candidate stereo menu. Pillow/numpy and an independent stdlib PNG decoder (IHDR/IDAT, zlib and PNG row unfilters) both prove the saved menu bytes are identical. This excludes a missing menu in these immutable captures; the tool preview discrepancy cause is not established.",
+        "independentStdlibDecoder": {
+          "menuDifferentBytes": 0,
+          "menuRGBAsha256": "a7739c2a36f7efcfb42e9c2509d3d564aed45b9469482983623bfc1ce10eb8d3",
+          "menuPixelsAt200x100And900x100": [
+            38,
+            62,
+            65,
+            255
+          ],
+          "pngChunksOnlyIHDR_IDAT_IEND": true,
+          "noAnimation": true
+        }
+      }
+    },
+    "limitations": [
+      "Eligible opaque nonmetal Standard materials intentionally lose GGX/specular lighting during XR. Lambert remains per-fragment diffuse lighting, with unchanged geometry and skeletons; this is a material quality tradeoff, not geometry LOD.",
+      "The already published controller rigs still add four calls and 10,978 non-monitor triangles per eye compared with the former shells. This candidate does not remove that cost.",
+      "The 22-call-per-eye savings and GPU samples come from matched synthetic XR scenes on the host. Controlled 72 Hz timestamps, host GPU durations and CPU timings are not Quest FPS, GPU time on Quest or compositor evidence.",
+      "XR shadows were already disabled; no shadow or resolution reduction is introduced or credited to this patch.",
+      "Required hosted release CI, live byte verification and physical Quest lighting/readability/interaction acceptance remain outstanding release and device gates."
+    ],
+    "execution": "Read-only repository review, in-memory build/test adapters and existing local evidence only. No browser/GPU run, physical input, focus, audio, installation or security change. Only this requested receipt was written outside the repository."
+  },
+  "rollback": {
+    "branch": "rollback/pre-quest-render-budget-20261024",
+    "commit": "195e4972c7615b3c81043e75118e8ab9c91d2e6f"
+  },
+  "scope": "Per-sign local decoration batching and cached diffuse XR material tier; preserve interactions, CPU optimization, monitor, geometry and resolution.",
+  "measuredCalls": {
+    "desktop": [
+      239,
+      217
+    ],
+    "xrMono": [
+      171,
+      149
+    ],
+    "xrControllerMono": [
+      179,
+      157
+    ],
+    "xrControllerStereo": [
+      358,
+      314
+    ],
+    "xrHandMono": [
+      177,
+      155
+    ],
+    "xrHandStereo": [
+      354,
+      310
+    ],
+    "xrBridgeCompletedStereo": [
+      374,
+      330
+    ]
+  },
+  "geometry": "Non-monitor triangles unchanged",
+  "shadows": "XR shadows already off; no new shadow savings claimed",
+  "existingControllerCostPerEye": {
+    "extraCalls": 4,
+    "extraTriangles": 10978
+  },
+  "quest": "Matched host synthetic WebXR evidence; no Quest FPS or compositor acceptance claim."
+}
