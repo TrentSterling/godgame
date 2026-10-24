@@ -1,0 +1,30 @@
+import fs from 'node:fs';
+import crypto from 'node:crypto';
+import {spawnSync} from 'node:child_process';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+const directory = path.dirname(fileURLToPath(import.meta.url));
+const report = {pass: true, scope: 'Production Village bridge callbacks and native Rapier in non-rendering mocked DOM/WebXR. No browser, GPU, real permissions, HMD tracking, performance or comfort claims.', runs: []};
+const commands = [['build-native.cjs'], ['transformed-picker.test.mjs']];
+for (const file of ['bridge-lifecycle.test.mjs', 'native-interactions.test.mjs', 'native-placement.test.mjs', 'hand-ui.test.mjs', 'tracking-retention.test.mjs', 'sticky-grip.test.mjs', 'hand-grip-state.test.mjs', 'throw-gap.test.mjs', 'grab-follow.test.mjs', 'controller-god-hand.test.mjs', 'controller-visual-integration.test.mjs', 'group-interactions.test.mjs', 'group-selection.test.mjs']) if (fs.existsSync(path.join(directory, file))) commands.push([file]);
+for (const args of commands) {
+  const started = Date.now();
+  const run = spawnSync(process.execPath, args.map(argument => path.join(directory, argument)), {encoding: 'utf8', cwd: path.join(directory, '../..'), maxBuffer: 16 * 1024 * 1024});
+  const result = {command: `node qa/xr-village/${args.join(' ')}`, status: run.status, elapsedMs: Date.now() - started, stdout: run.stdout, stderr: run.stderr};
+  report.runs.push(result); report.pass &&= run.status === 0;
+  console.log(result.command, run.status === 0 ? 'PASS' : 'FAIL');
+  if (run.stdout) process.stdout.write(run.stdout); if (run.stderr) process.stderr.write(run.stderr);
+}
+const identity = JSON.parse(fs.readFileSync(path.join(directory,'generated/source-identity.json')));
+const hash = file => crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');
+const changed = [];
+for (const [name, expected] of Object.entries(identity.hashes)) if(hash(path.join(identity.sourceRoot,name)) !== expected) changed.push('src/'+name);
+for (const [name, expected] of Object.entries(identity.testHashes)) if(hash(path.join(identity.testRoot,name)) !== expected) changed.push('qa/xr-village/'+name);
+for (const [name, expected] of Object.entries(identity.runtimeAssetHashes)) if(hash(path.join(directory,'../..',name)) !== expected) changed.push(name);
+if(hash(path.join(directory,'../../dist/HOLLOW_HANDS_SETTLEMENT_FOOD_MISSION.html')) !== identity.deliveredHTMLSHA256) changed.push('dist/HOLLOW_HANDS_SETTLEMENT_FOOD_MISSION.html');
+report.identity = {sourceFiles: Object.keys(identity.hashes).length, testFiles: Object.keys(identity.testHashes).length, runtimeAssets: Object.keys(identity.runtimeAssetHashes).length, settlementMainSHA256: identity.hashes['settlement-main.js'], deliveredHTMLSHA256: identity.deliveredHTMLSHA256, unchangedDuringRun: changed.length === 0, changed};
+report.pass &&= changed.length === 0;
+console.log(JSON.stringify({identity:report.identity,pass:report.pass}));
+fs.mkdirSync(path.join(directory, 'generated'), {recursive: true});
+fs.writeFileSync(path.join(directory, 'generated/summary.json'), JSON.stringify(report, null, 2));
+if (!report.pass) process.exitCode = 1;

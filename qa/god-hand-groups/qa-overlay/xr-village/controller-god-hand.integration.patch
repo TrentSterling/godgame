@@ -1,0 +1,72 @@
+--- a/src/settlement-xr.js
++++ b/src/settlement-xr.js
+@@ -1,4 +1,5 @@
+ import * as T from 'three';
++import {createControllerGodHand,controllerFingerAmount} from './controller-god-hand.js';
+ import {createXRViewRetention} from './xr-view-retention.js';
+ import {FONT} from './gpu-hud.js';
+ import {workerFeedbackLines} from './settlement-worker-feedback.js';
+@@ -41,7 +42,7 @@
+  const ui=document.createElement('section');ui.id='village-xr';ui.setAttribute('aria-label','Village WebXR');ui.innerHTML='<button id="village-xr-enter" disabled>Checking XR…</button><button id="village-xr-exit" hidden>Exit XR</button><p id="village-xr-status" role="status"></p>';
+  const style=document.createElement('style');style.textContent='#village-xr{position:fixed;left:12px;top:12px;z-index:30;max-width:255px;color:#e3ece8;font:11px/1.35 system-ui;background:#203b42ed;border:1px solid #8ca7a7;border-radius:6px;padding:7px 9px}#village-xr button{font:600 12px system-ui;padding:6px 12px;color:#18383b;background:#dbeae1;border:0;border-radius:4px;cursor:pointer}#village-xr button:disabled{opacity:.6;cursor:default}#village-xr p{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);margin:0}#village-xr:focus-within p,#village-xr:hover p{left:0;top:100%;width:235px;height:auto;clip-path:none;margin:4px 0 0;padding:8px;background:#203b42f5;border-radius:4px;pointer-events:none}@media(max-width:650px){#village-xr{top:52px}}#village-xr :focus-visible{outline:3px solid #e5c987}';document.head.appendChild(style);document.body.appendChild(ui);
+  const enter=ui.querySelector('#village-xr-enter'),exit=ui.querySelector('#village-xr-exit'),status=ui.querySelector('#village-xr-status');
+- const hands=Object.fromEntries(sides.map(side=>{const marker=new T.Group();marker.name=`Village ${side} tracked controller`;marker.visible=false;const shell=new T.Mesh(new T.CylinderGeometry(.012,.018,.065,8),new T.MeshStandardMaterial({color:side==='left'?'#bed4d1':'#e2ddd0',roughness:.65}));shell.rotation.x=Math.PI/2;marker.add(shell);const line=new T.Line(new T.BufferGeometry().setFromPoints([V(),new T.Vector3(0,0,-1)]),new T.LineBasicMaterial({color:'#bad7d3',transparent:true,opacity:.65}));marker.add(line);scene.add(marker);return[side,{source:null,pinch:makePinchState(),poke:makeUIPokeState(),uiTarget:null,poseDiagnostics:{},sourceFrames:0,wristValidFrames:0,wristMissingFrames:0,jointFrames:0,missingJointFrames:0,visualRejectFrames:0,visualFrames:0,lastVisualAt:-Infinity,visualMisses:0,lastTrackedAt:-Infinity,gap:false,dropoutFrames:0,retainedGrabFrames:0,suppressThrowUntil:-Infinity,tracked:false,armed:false,stable:0,pressed:false,squeeze:false,press:null,offset:V(),lastPoint:null,marker,line,feedback:createGrabFeedback(scene,side,()=>state.scale)}];}));
++ const hands=Object.fromEntries(sides.map(side=>{const marker=new T.Group();marker.name=`Village ${side} tracked controller`;marker.visible=false;const line=new T.Line(new T.BufferGeometry().setFromPoints([V(),new T.Vector3(0,0,-1)]),new T.LineBasicMaterial({color:'#bad7d3',transparent:true,opacity:.65}));marker.add(line);scene.add(marker);return[side,{source:null,controllerVisual:createControllerGodHand(playerHands[side]),visualKind:null,rayValid:false,pinch:makePinchState(),poke:makeUIPokeState(),uiTarget:null,poseDiagnostics:{},sourceFrames:0,wristValidFrames:0,wristMissingFrames:0,jointFrames:0,missingJointFrames:0,visualRejectFrames:0,visualFrames:0,lastVisualAt:-Infinity,visualMisses:0,lastTrackedAt:-Infinity,gap:false,dropoutFrames:0,retainedGrabFrames:0,suppressThrowUntil:-Infinity,tracked:false,armed:false,stable:0,pressed:false,squeeze:false,press:null,offset:V(),lastPoint:null,marker,line,feedback:createGrabFeedback(scene,side,()=>state.scale)}];}));
+  function report(text){state.status=text;status.textContent=text;}
+  function syncUI(){
+   const s=getStatus(),placing=state.placing;
+@@ -68,7 +69,7 @@
+   state.scale=settings.scale;state.placed=true;scene.visible=true;syncAnchor();syncUI();
+  }
+  function clearHand(side,reason='tracking lost',retainVisual=false){
+-  const h=hands[side];release(side,false);h.feedback.hide();h.marker.visible=false;playerHands[side].group.visible=false;if(!retainVisual){h.lastVisualAt=-Infinity;h.visualMisses=0;}h.uiTarget=null;resetUIPoke(h.poke);h.tracked=false;h.armed=false;h.stable=0;h.pressed=false;h.squeeze=false;h.eventSelect=h.eventSqueeze=false;h.press=null;h.lastPoint=null;h.lastTrackedAt=-Infinity;h.gap=false;h.suppressThrowUntil=-Infinity;updatePinch(h.pinch,null,0);state.hands[side]=reason;
++  const h=hands[side];release(side,false);h.feedback.hide();h.marker.visible=false;playerHands[side].group.visible=false;if(!retainVisual){h.lastVisualAt=-Infinity;h.visualMisses=0;h.controllerVisual.releaseToTracking();h.visualKind=null;h.rayValid=false;}h.uiTarget=null;resetUIPoke(h.poke);h.tracked=false;h.armed=false;h.stable=0;h.pressed=false;h.squeeze=false;h.eventSelect=h.eventSqueeze=false;h.press=null;h.lastPoint=null;h.lastTrackedAt=-Infinity;h.gap=false;h.suppressThrowUntil=-Infinity;updatePinch(h.pinch,null,0);state.hands[side]=reason;
+  }
+  function releaseAll(reason='cancelled'){for(const side of sides)clearHand(side,reason);sim.playerThrowImpacts?.cancel();onCancel(reason);}
+  function controllerButton(h,index){const button=h.source?.gamepad?.buttons?.[index];return !!(button?.pressed||button?.value>.65||(index===0?h.eventSelect:h.eventSqueeze));}
+@@ -118,7 +119,13 @@
+  function holdRecentVisual(side,now){
+   const h=hands[side];h.visualMisses++;
+   const visible=now>=h.lastVisualAt&&now-h.lastVisualAt<=TRACKING_GRACE_MS;
+-  playerHands[side].group.visible=!!h.source?.hand&&visible;h.marker.visible=!!h.source&&!h.source.hand&&visible;
++  playerHands[side].group.visible=!!h.visualKind&&visible;h.marker.visible=!!h.source&&!h.source.hand&&h.rayValid&&visible;
++ }
++ function showControllerHand(side,grip,now){
++  const h=hands[side];
++  const visible=h.controllerVisual.update(grip,inverse,{trigger:controllerFingerAmount(h.source?.gamepad?.buttons?.[0],h.eventSelect),squeeze:controllerFingerAmount(h.source?.gamepad?.buttons?.[1],h.eventSqueeze)});
++  if(visible){h.visualKind='controller-posed';h.lastVisualAt=now;h.visualMisses=0;h.visualFrames++;}
++  return visible;
+  }
+  function missingInput(side,now,reason){
+   const h=hands[side];h.dropoutFrames++;h.tracked=false;h.press=null;h.uiTarget=null;resetUIPoke(h.poke);h.feedback.hide();
+@@ -145,7 +152,7 @@
+   const enabled=session?.enabledFeatures;
+   return{viewer:{...tracking,valid:validView,visual:viewRetention.mode(),graceMs:TRACKING_GRACE_MS},handTrackingFeature:enabled?Array.from(enabled).includes('hand-tracking')?'enabled':'not-enabled':'unknown',sessionVisibility:session?.visibilityState??null,
+    sources:Array.from(session?.inputSources??[],source=>({handedness:source.handedness,profiles:Array.from(source.profiles??[]),targetRayMode:source.targetRayMode,hand:!!source.hand,grip:!!source.gripSpace,gamepad:!!source.gamepad})),
+-   hands:Object.fromEntries(sides.map(side=>{const h=hands[side];return[side,{source:h.source?.hand?'hand':h.source?'controller':null,tracked:h.tracked,visible:playerHands[side].group.visible,uiTarget:h.uiTarget,sourceFrames:h.sourceFrames,wristValidFrames:h.wristValidFrames,wristMissingFrames:h.wristMissingFrames,pose:{...h.poseDiagnostics},jointFrames:h.jointFrames,missingJointFrames:h.missingJointFrames,visualRejectFrames:h.visualRejectFrames,visualFrames:h.visualFrames,heldVisualFrames:h.visualMisses,dropoutFrames:h.dropoutFrames,retainedGrabFrames:h.retainedGrabFrames,gap:h.gap,reason:state.hands[side]}];}))};
++   hands:Object.fromEntries(sides.map(side=>{const h=hands[side];return[side,{source:h.source?.hand?'hand':h.source?'controller':null,tracked:h.tracked,visualKind:h.visualKind,articulatedHandTracking:!!h.source?.hand&&h.tracked,visible:playerHands[side].group.visible,uiTarget:h.uiTarget,sourceFrames:h.sourceFrames,wristValidFrames:h.wristValidFrames,wristMissingFrames:h.wristMissingFrames,pose:{...h.poseDiagnostics},jointFrames:h.jointFrames,missingJointFrames:h.missingJointFrames,visualRejectFrames:h.visualRejectFrames,visualFrames:h.visualFrames,heldVisualFrames:h.visualMisses,dropoutFrames:h.dropoutFrames,retainedGrabFrames:h.retainedGrabFrames,gap:h.gap,reason:state.hands[side]}];}))};
+  }
+  function update(now,frame){
+   if(!state.active)return;syncUI();validView=false;
+@@ -169,17 +176,17 @@
+    h.sourceFrames++;let worldPoint,worldRay=null,pressed=false,began=false,endedPress=false,squeeze=false,pokeAction=null;
+    if(source.hand){
+     const points=readHandJoints(frame,source,space,h.poseDiagnostics);if(h.poseDiagnostics.wristPoseValid)h.wristValidFrames++;else h.wristMissingFrames++;if(!points){h.missingJointFrames++;missingInput(side,now,'joint sample unavailable');continue;}h.jointFrames++;const pinch=updatePinch(h.pinch,points,dt);if(pinch.lost){clearHand(side);continue;}
+-    worldPoint=pinch.point;pressed=pinch.pinched;began=pinch.started;endedPress=pinch.ended;h.armed=h.pinch.armed;h.marker.visible=false;const poke=pokeHit(points['index-finger-tip']);h.uiTarget=poke?.id??null;if(pressed||began)resetUIPoke(h.poke);else pokeAction=updateUIPoke(h.poke,poke);playerHands[side].group.visible=retargetHand(playerHands[side],points,inverse);if(playerHands[side].group.visible){h.lastVisualAt=now;h.visualMisses=0;h.visualFrames++;}else{h.visualRejectFrames++;holdRecentVisual(side,now);}
++    worldPoint=pinch.point;pressed=pinch.pinched;began=pinch.started;endedPress=pinch.ended;h.armed=h.pinch.armed;h.marker.visible=false;const poke=pokeHit(points['index-finger-tip']);h.uiTarget=poke?.id??null;if(pressed||began)resetUIPoke(h.poke);else pokeAction=updateUIPoke(h.poke,poke);if(h.controllerVisual.isControllerPosed())h.controllerVisual.releaseToTracking();playerHands[side].group.visible=retargetHand(playerHands[side],points,inverse);if(playerHands[side].group.visible){h.visualKind='tracked-hand';h.lastVisualAt=now;h.visualMisses=0;h.visualFrames++;}else{h.visualRejectFrames++;holdRecentVisual(side,now);}
+     let aim;try{aim=frame.getPose(source.targetRaySpace,space);}catch{}worldRay=rayFromPose(aim,ray,true);
+     if(!worldRay){const direction=points['index-finger-tip'].clone().sub(points['index-finger-phalanx-proximal']);if(direction.lengthSq()>1e-7){ray.set(points['index-finger-tip'],direction.normalize());ray.near=0;ray.far=2.5;worldRay=ray;}}
+    }else{
+     let grip,aim;try{grip=frame.getPose(source.gripSpace,space);aim=frame.getPose(source.targetRaySpace,space);}catch{}
+-    if(!finitePose(grip)||!finitePose(aim)){if(sim.xrGrabs.has(side)&&source.gamepad?.buttons?.[0]&&!controllerDown(h))clearHand(side,'controller released');else missingInput(side,now,'controller pose unavailable');continue;}worldPoint=V().copy(grip.transform.position);worldRay=rayFromPose(aim,ray);
+-    if(h.lastPoint&&h.lastPoint.distanceTo(worldPoint)>.09+dt*1.2){clearHand(side,'pose jumped');h.lastPoint=worldPoint;continue;}
++    h.rayValid=finitePose(aim);if(!finitePose(grip)||!h.rayValid){if(sim.xrGrabs.has(side)&&source.gamepad?.buttons?.[0]&&!controllerDown(h))clearHand(side,'controller released');else missingInput(side,now,'controller pose unavailable');h.marker.visible=false;if(finitePose(grip))showControllerHand(side,grip,now);continue;}worldPoint=V().copy(grip.transform.position);worldRay=rayFromPose(aim,ray);
++    if(h.lastPoint&&h.lastPoint.distanceTo(worldPoint)>.09+dt*1.2){clearHand(side,'pose jumped');h.lastPoint=worldPoint;showControllerHand(side,grip,now);continue;}
+     h.lastPoint=worldPoint.clone();squeeze=controllerButton(h,1);
+     const down=controllerDown(h);h.stable++;if(!down&&!squeeze&&h.stable>=3)h.armed=true;
+     pressed=h.pressed?down:h.armed&&down;began=!h.pressed&&pressed;endedPress=h.pressed&&!pressed;if(began)h.armed=false;
+-    playerHands[side].group.visible=false;h.marker.visible=true;h.lastVisualAt=now;h.visualMisses=0;h.marker.position.copy(worldPoint).applyMatrix4(inverse);h.marker.quaternion.copy(scene.quaternion).invert().multiply(new T.Quaternion().copy(grip.transform.orientation));h.marker.scale.setScalar(1/state.scale);h.line.visible=state.mode!=='grab';h.marker.updateWorldMatrix(true,false);const positions=h.line.geometry.attributes.position;const lineStart=h.marker.worldToLocal(worldRay.ray.origin.clone()),lineEnd=h.marker.worldToLocal(worldRay.ray.at(1,V()));positions.setXYZ(0,lineStart.x,lineStart.y,lineStart.z);positions.setXYZ(1,lineEnd.x,lineEnd.y,lineEnd.z);positions.needsUpdate=true;
++    showControllerHand(side,grip,now);h.marker.visible=true;h.lastVisualAt=now;h.visualMisses=0;h.marker.position.copy(worldPoint).applyMatrix4(inverse);h.marker.quaternion.copy(scene.quaternion).invert().multiply(new T.Quaternion().copy(grip.transform.orientation));h.marker.scale.setScalar(1/state.scale);h.line.visible=state.mode!=='grab';h.marker.updateWorldMatrix(true,false);const positions=h.line.geometry.attributes.position;const lineStart=h.marker.worldToLocal(worldRay.ray.origin.clone()),lineEnd=h.marker.worldToLocal(worldRay.ray.at(1,V()));positions.setXYZ(0,lineStart.x,lineStart.y,lineStart.z);positions.setXYZ(1,lineEnd.x,lineEnd.y,lineEnd.z);positions.needsUpdate=true;
+    }
+    if(h.gap){h.suppressThrowUntil=now+THROW_REARM_MS;h.gap=false;}h.lastTrackedAt=now;h.tracked=true;h.pressed=pressed;h.squeeze=squeeze;const at=worldPoint.clone().applyMatrix4(inverse),overUI=uiHit(worldRay,worldPoint),s=getStatus(),eligible=!state.placing&&s.started&&!s.paused&&!s.ended;
+    if(!h.uiTarget)h.uiTarget=overUI?.id??null;
