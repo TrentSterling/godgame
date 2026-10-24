@@ -1,0 +1,41 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import {controls,Frame,pose,handSource,handPoints,controllerSource,flush} from './dom-xr-fixture.mjs';
+await (await import('./generated/native.mjs')).ready;await flush();
+const qa=SETTLEMENTQA,c=qa.context,T=c.THREE,xr=c.villageXR,checks=[];
+assert(await xr.startSession());const session=controls.lastSession;let now=1000;
+const viewer=pose({x:.2,y:1.65,z:.1}),sources={left:handSource('left'),right:handSource('right')},at={};
+const frame=(data={},ms=1000/72)=>{now+=ms;xr.update(now,new Frame({viewer,...data}));};
+const world=point=>new T.Vector3().copy(point).applyMatrix4(c.scene.matrixWorld);
+const members=side=>c.sim.xrGrabMembers(side),bodyIds=side=>members(side).map(g=>c.sim.colliderOwners.get(c.sim.characters.flatMap(x=>x.parts).find(p=>p.body===g.body).collider.handle).character.id);
+function aim(source,point){return new Map([[source.gripSpace,pose(point)],[source.targetRaySpace,pose(point)]]);}
+function ui(id){const source=controllerSource('right'),point=c.scene.getObjectByName('Village XR '+id).getWorldPosition(new T.Vector3()),origin=point.clone().add(new T.Vector3(0,0,.18)),poses=new Map([[source.gripSpace,pose(origin)],[source.targetRaySpace,pose(origin)]]);session.sources([source]);for(let i=0;i<4;i++)frame({poses});source.gamepad.buttons[0].pressed=true;frame({poses});source.gamepad.buttons[0].pressed=false;frame({poses});}
+frame();ui('done');qa.step(1/60);ui('grab');
+// Only fixture transforms reposition the four existing native characters into
+// controlled clusters. Production picking, grabs, physics and actions stay real.
+function cluster(points){xr.releaseAll('fixture setup');for(let i=0;i<4;i++){const char=c.villagers[i];c.motion.interrupt(char);const head=char.parts.find(p=>p.bone.name==='head').body,delta=new T.Vector3(...points[i]).sub(new T.Vector3().copy(head.translation()));for(const p of char.parts){p.body.setTranslation(new T.Vector3().copy(p.body.translation()).add(delta),true);p.body.setLinvel({x:0,y:0,z:0},true);p.body.setAngvel({x:0,y:0,z:0},true);}}c.world.propagateModifiedBodyPositionsToColliders();c.sim.step(1/120);}
+function hands(gaps={},missing=[],ms=1000/72){const data=new Map();for(const side of ['left','right'])if(at[side])data.set(sources[side],missing.includes(side)?{}:handPoints(at[side],gaps[side]??.01));frame({hands:data},ms);}
+function acquire(sides=['left']){session.sources(sides.map(side=>sources[side]));for(let i=0;i<4;i++)hands({left:.055,right:.055});hands();}
+const close=(a,b,epsilon=1e-7)=>assert(new T.Vector3().copy(a).distanceTo(new T.Vector3().copy(b))<epsilon);
+cluster([[0,8,0],[.8,8,0],[-.8,8,0],[0,8,.8]]);at.left=world(c.villagers[0].parts.find(p=>p.bone.name==='head').body.translation());at.right=null;acquire();
+assert.equal(members('left').length,3);assert.equal(new Set(bodyIds('left')).size,3);const initialIds=bodyIds('left');const exact=members('left').slice(),offsets=exact.map(g=>g.groupOffset.clone());
+assert.equal(c.sim.activeGrabs().length,3);assert(exact.every(g=>c.sim.isCharacterHeld(c.sim.characters.find(ch=>ch.parts.some(p=>p.body===g.body)))));
+assert.equal(xr.state().input.hands.left.feedback.memberCount,3);
+const rings=c.scene.getObjectByName('XR left grab feedback').getObjectByName('Target attachment ring');assert(rings.isInstancedMesh);assert.equal(rings.count,3);
+for(let i=0;i<6;i++){at.left.x+=.003;hands();for(let n=0;n<3;n++)close(exact[n].target.clone().sub(exact[0].target),offsets[n]);qa.step(1/60);}
+assert.deepEqual(bodyIds('left'),initialIds);checks.push('three distinct characters, fixed membership, offsets and one instanced ring draw');
+for(const gap of [14,1000,5000,30000]){hands({},['left'],gap);const frozen=exact.map(g=>g.anchor.translation());for(let i=0;i<3;i++){hands({},['left']);qa.step(1/60);exact.forEach((g,n)=>{assert.equal(members('left')[n],g);close(g.anchor.translation(),frozen[n]);assert.equal(g.velocity.length(),0);});}at.left.x+=.03;hands();assert.deepEqual(members('left'),exact);}
+const flicks=c.sim.events.filter(e=>e.type==='flick').length;for(let i=0;i<6;i++)hands({left:.055});assert.equal(members('left').length,0);assert.equal(c.sim.events.filter(e=>e.type==='flick').length,flicks);checks.push('one-frame-to30second gaps freeze all joints, pinched recovery retains, open recovery has no stale throw');
+cluster([[0,8,0],[.8,8,0],[-.8,8,0],[0,8,.8]]);at.left=world(c.villagers[0].parts.find(p=>p.bone.name==='head').body.translation());acquire();const flying=members('left').slice();assert.equal(flying.length,3);
+hands({},['left'],1000);at.left.x+=.12;hands();let anchors=flying.map(g=>g.anchor.translation());for(let i=0;i<30;i++){hands();qa.step(1/60);flying.forEach((g,n)=>{const current=g.anchor.translation();assert(new T.Vector3().copy(current).distanceTo(new T.Vector3().copy(anchors[n]))*xr.state().scale<=1.2/60+1e-6);anchors[n]=current;assert.equal(members('left')[n],g);});}
+for(let i=0;i<14;i++){at.left.x+=.004;hands();qa.step(1/60);}const beforeThrow=c.sim.events.filter(e=>e.type==='flick').length;for(let i=0;i<6;i++){at.left.x+=.004;hands({left:.055});qa.step(1/60);}assert.equal(members('left').length,0);assert.equal(c.sim.events.filter(e=>e.type==='flick').length,beforeThrow+3);checks.push('each recovery anchor obeys1.2metres/sec cap and a continuous deliberate group throw releases all three');
+cluster([[0,8,0],[.8,8,0],[5,8,0],[5.8,8,0]]);at.left=world(c.villagers[0].parts.find(p=>p.bone.name==='head').body.translation());at.right=world(c.villagers[2].parts.find(p=>p.bone.name==='head').body.translation());acquire(['left','right']);assert.equal(members('left').length,2);assert.equal(members('right').length,2);const left=members('left').slice(),right=members('right').slice();assert.equal(new Set(c.sim.activeGrabs().map(g=>g.body)).size,4);
+for(const g of left)assert(!c.sim.xrCanGrabBody('right',g.body,{append:true}));
+for(let i=0;i<120;i++){hands({right:i%7===0?.055:.01},['left']);assert.deepEqual(members('left'),left);assert.deepEqual(members('right'),right);}
+for(let i=0;i<6;i++)hands({right:.055},['left']);assert.equal(members('right').length,0);assert.deepEqual(members('left'),left);checks.push('both hands independently own two characters; no dual ownership or noisy release');
+session.sources([]);for(let i=0;i<5;i++)frame({},1000);assert.deepEqual(members('left'),left);sources.left=handSource('left');session.sources([sources.left]);at.right=null;for(let i=0;i<5;i++)hands();assert.deepEqual(members('left'),left);checks.push('removed/replaced sources retain exact group');
+qa.pause(true);for(let i=0;i<10;i++)hands();assert.deepEqual(members('left'),left);for(let i=0;i<6;i++)hands({left:.055});assert.equal(members('left').length,0);qa.pause(false);checks.push('paused simulation retains group and accepts deliberate tracked-open release');
+xr.releaseAll('controller setup');const controller=controllerSource('left');session.sources([controller]);let poses=aim(controller,at.left);for(let i=0;i<4;i++)frame({poses});controller.gamepad.buttons[0].pressed=true;frame({poses});assert.equal(members('left').length,2);controller.gamepad.buttons[1].pressed=true;frame({poses});controller.gamepad.buttons[0].pressed=false;frame({poses});assert.equal(members('left').length,2);controller.gamepad.buttons[1].pressed=false;frame({poses});assert.equal(members('left').length,0);checks.push('controller group trigger OR squeeze release policy preserved');
+session.sources([sources.left]);for(let i=0;i<4;i++)hands({left:.055});hands();assert.equal(members('left').length,2);const broken=members('left')[1].body;c.world.removeRigidBody(broken);frame({hands:new Map([[sources.left,handPoints(at.left,.01)]])});assert.equal(members('left').length,0);assert.equal(c.sim.xrGrabGroups.size,0);checks.push('destroyed group member safely cleans up all anchors without a throw');
+await xr.end();assert.equal(c.sim.xrGrabs.size,0);assert.equal(c.sim.xrGrabGroups.size,0);assert.equal(c.sim.activeGrabs().length,0);
+const report={pass:true,scope:'Controlled native-character fixture transforms, production input/picking/actions and Rapier. No headset, GPU or performance claims.',checks};fs.writeFileSync(new URL('./generated/group-interactions.json',import.meta.url),JSON.stringify(report,null,2));console.log(JSON.stringify(report));

@@ -1,0 +1,14 @@
+{
+  "pass": true,
+  "scope": "Controlled native-character fixture transforms, production input/picking/actions and Rapier. No headset, GPU or performance claims.",
+  "checks": [
+    "three distinct characters, fixed membership, offsets and one instanced ring draw",
+    "one-frame-to30second gaps freeze all joints, pinched recovery retains, open recovery has no stale throw",
+    "each recovery anchor obeys1.2metres/sec cap and a continuous deliberate group throw releases all three",
+    "both hands independently own two characters; no dual ownership or noisy release",
+    "removed/replaced sources retain exact group",
+    "paused simulation retains group and accepts deliberate tracked-open release",
+    "controller group trigger OR squeeze release policy preserved",
+    "destroyed group member safely cleans up all anchors without a throw"
+  ]
+}

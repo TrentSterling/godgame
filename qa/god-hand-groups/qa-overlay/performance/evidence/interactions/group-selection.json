@@ -1,0 +1,45 @@
+{
+  "pass": true,
+  "scope": "Native Rapier deterministic collider fixtures and unchanged production picker functions; no device measurements.",
+  "checks": [
+    {
+      "scale": 0.024,
+      "selected": [
+        10,
+        1,
+        2
+      ],
+      "repeatChecks": 40,
+      "limit": 3,
+      "occlusion": true,
+      "dualOwnershipExcluded": true,
+      "singleResource": true
+    },
+    {
+      "scale": 0.03,
+      "selected": [
+        10,
+        1,
+        2
+      ],
+      "repeatChecks": 40,
+      "limit": 3,
+      "occlusion": true,
+      "dualOwnershipExcluded": true,
+      "singleResource": true
+    },
+    {
+      "scale": 0.036,
+      "selected": [
+        10,
+        1,
+        2
+      ],
+      "repeatChecks": 40,
+      "limit": 3,
+      "occlusion": true,
+      "dualOwnershipExcluded": true,
+      "singleResource": true
+    }
+  ]
+}

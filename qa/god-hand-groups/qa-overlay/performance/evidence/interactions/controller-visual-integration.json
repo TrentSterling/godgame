@@ -1,0 +1,12 @@
+{
+  "pass": true,
+  "scope": "Production XR callbacks and existing rigs with synthetic WebXR poses; no browser or physical headset alignment claim.",
+  "checks": [
+    "both controller rigs visible, exact grip centres, independent native ray, no duplicate shells",
+    "analog finger curl has no inferred tracking or grab side effect",
+    "valid grip remains visible when ray missing, with no ray/input activation",
+    "invalid grip visuals expire within bounded retention",
+    "eight both-hand controller/tracked source cycles restore bone ownership and preserve mesh/material identity",
+    "exit/reentry hides stale visuals and clears ownership"
+  ]
+}

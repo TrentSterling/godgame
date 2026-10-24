@@ -1,0 +1,70 @@
+{
+  "pass": true,
+  "scope": "Production XR callbacks and real Rapier with synthetic poses; no Quest acceptance or FPS claim",
+  "checks": [
+    {
+      "name": "one-frame-to-thirty-second-loss-freezes-anchor-and-keeps-exact-native-joint",
+      "now": 38335.000000000015
+    },
+    {
+      "name": "intermittent-null-joints-and-open-noise-do-not-accumulate-release-evidence",
+      "now": 40904.44444444476
+    },
+    {
+      "name": "fast-continuous-motion-with-open-noise-keeps-grip-and-confirmed-release-can-throw",
+      "now": 41390.555555555926
+    },
+    {
+      "name": "45mm-release-threshold-and60ms-confirmation-reject-ambiguous-and-short-open-blips",
+      "now": 42432.222222222714
+    },
+    {
+      "name": "release-confirmation-time-consistent-at30-72-90-120Hz",
+      "now": 43046.11111111166
+    },
+    {
+      "name": "missing-sample-resets-open-confirmation-without-releasing",
+      "now": 43240.55555555613
+    },
+    {
+      "name": "open-on-distant-reacquisition-releases-without-stale-throw",
+      "now": 48393.333333333925
+    },
+    {
+      "name": "pinched-reacquisition-catches-up-at-bounded-native-anchor-speed",
+      "now": 53893.33333333398
+    },
+    {
+      "name": "removed-and-replaced-hand-sources-rebind-by-side-old-end-events-ignored",
+      "now": 57365.55555555661
+    },
+    {
+      "name": "passive-controller-presence-keeps-hand-grip-fresh-squeeze-explicitly-hands-over",
+      "now": 57573.88888888997
+    },
+    {
+      "name": "both-hands-own-independent-grips-and-independent-release-evidence",
+      "now": 59476.66666666797
+    },
+    {
+      "name": "visibility-and-desktop-pointer-cancel-do-not-drop-valid-hand-grip-open-release-works-while-paused",
+      "now": 61032.2222222237
+    },
+    {
+      "name": "held-hand-ui-overlap-neither-releases-nor-presses-a-button",
+      "now": 61212.77777777928
+    },
+    {
+      "name": "explicit-reference-reset-cleans-up",
+      "now": 61476.6666666682
+    },
+    {
+      "name": "destroyed-body-cleans-native-joint-and-anchor-without-stale-access",
+      "now": 61560.00000000154
+    },
+    {
+      "name": "explicit-session-end-cleans-up",
+      "now": 61560.00000000154
+    }
+  ]
+}

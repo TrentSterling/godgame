@@ -1,0 +1,153 @@
+{
+  "reviewedSourceCommit": "be71df7671bf82038f326b64e70b06f98ac30711",
+  "baselineSourceCommit": "989940e6ed8d447f59f61ccda18a64ac0a28367b",
+  "baselineReleaseCommit": "3b33a7f0c959ccd374e11617a8b2d2d41a19144c",
+  "rootHTML": {
+    "sha256": "d8b6e70255d8538d9b1253b76be5756eb25d26837a7ab521256009aefc9e62b5",
+    "bytes": 8522079,
+    "gitBlob": "c10ea7ceb43c87b3bf85d35bac32a1cf3a170567"
+  },
+  "sourceBundle": {
+    "sha256": "b046e6d47f5917be20a3a093b0dce78a56bb753b44df0782d28724c45afc850b",
+    "branch": "feat/god-hand-groups"
+  },
+  "runtimeModules": [
+    "controller-god-hand.js",
+    "physics.js",
+    "settlement-main.js",
+    "settlement-xr.js",
+    "xr-grab-feedback.js"
+  ],
+  "reviews": [
+    {
+      "result": "approved",
+      "sha": "be71df7671bf82038f326b64e70b06f98ac30711",
+      "reviewer": "/root/performance_monitor",
+      "scope": "controller-god-hand.js helper, production visual integration and source transitions",
+      "helperSHA256": "6f63ea3c085641d339531e32830cba6672e5a5f87656fad8b8baa5c96b4e803f",
+      "blockers": [],
+      "independentChecks": {
+        "nativeSuites": [
+          "controller-god-hand.test",
+          "controller-visual-integration.test"
+        ],
+        "analogBlends": 50,
+        "trackedControllerTransitions": 16,
+        "sourceIdentities": 119,
+        "nativeBundleHashMatched": true,
+        "nonuniformTransformsAndGripCentres": true,
+        "invalidPosesAndIndependentRays": true,
+        "resourcesReused": true,
+        "checkoutClean": true,
+        "browserOrGPUForReview": false
+      },
+      "knownCostPerEye": {
+        "additionalCalls": 4,
+        "additionalNonMonitorTriangles": 10978
+      },
+      "remaining": "Physical controller fit and Quest acceptance remain pending. No cheap-geometry claim."
+    },
+    {
+      "sha": "be71df7671bf82038f326b64e70b06f98ac30711",
+      "result": "approved_with_explicit_scope_exclusion",
+      "reviewer": "/root/grab_follow",
+      "repository": "C:\\Users\\trent\\Documents\\Codex\\2026-10-22\\task-8\\godgame-interactions",
+      "baselineSource": "989940e6ed8d447f59f61ccda18a64ac0a28367b",
+      "scope": {
+        "independentlyApprovedRuntime": [
+          "src/physics.js",
+          "src/settlement-main.js",
+          "src/settlement-xr.js",
+          "src/xr-grab-feedback.js"
+        ],
+        "alsoReviewed": [
+          "native test coverage",
+          "simulation evidence",
+          "renderer evidence and corrected expectation provenance",
+          "exact production build"
+        ],
+        "excludedFromIndependentApproval": "src/controller-god-hand.js was authored by this reviewer in helper commit 61f6092f137454d64cba3b419bae3ca3ff7c461b and requires a separate reviewer. Its integration is covered here."
+      },
+      "blockers": [],
+      "independentChecks": {
+        "exactHeadAndCleanWorktree": true,
+        "sourceTestAndAssetIdentitiesMatched": 145,
+        "sourceFilesMatched": 119,
+        "nativeBundleSHA256": "9a3360a84a38f0892fa8a01b832ca7b4e440dc6e2f32030d8a6191a97504ef7e",
+        "inMemoryProductionBuild": {
+          "byteIdentical": true,
+          "bytes": 8522079,
+          "sha256": "d8b6e70255d8538d9b1253b76be5756eb25d26837a7ab521256009aefc9e62b5"
+        },
+        "preservedBaselineModules": [
+          "xr-hand-grip.js",
+          "terrain.js",
+          "civilian-ground-point.js",
+          "civilian-navigation.js",
+          "settlement-land-regions.js"
+        ],
+        "nativeTestsRerunWithoutWrites": {
+          "group-interactions": "passed all eight groups: bounded membership/offsets, 30-second loss, bounded recovery and deliberate three-member throws, independent two-plus-two holds, source replacement, pause, controller combined buttons, destruction cleanup",
+          "sticky-grip": "passed all 16 existing regression groups",
+          "throw-gap": "passed all 22 cases including acquisition timestamp gaps and both hands",
+          "group-selection": "fresh in-memory production bundle passed three physical scales, 120 repeated ordering checks, occlusion, ownership exclusion and resource singleton behavior"
+        },
+        "simulationRerun": {
+          "baselinePhases": 13,
+          "candidatePhases": 13,
+          "sourceAndBundleIdentityVerified": true,
+          "exactPublicGameplayPhysicsCountsAndHud": true,
+          "viewerDiagnosticsAlsoCompared": true,
+          "excludedOnlyAddedHandDiagnostics": [
+            "visualKind",
+            "articulatedHandTracking",
+            "heldBodies",
+            "feedback"
+          ]
+        },
+        "recordedRendererEvidenceReadOnlyValidation": {
+          "completedCaptures": 10,
+          "browserClosed": true,
+          "originalReceiptHashMatches": true,
+          "rowsAndCapturesUnchangedFromOriginalReceipt": true,
+          "noBrowserRerunByReviewer": true,
+          "desktopPngByteIdentical": true,
+          "desktopCalls": [
+            239,
+            239
+          ],
+          "controllerMonoCalls": [
+            175,
+            179
+          ],
+          "controllerStereoCallsAlreadyIncludingBothEyes": [
+            350,
+            358
+          ],
+          "addedNonMonitorTrianglesPerEye": 10978,
+          "controllerFramebufferDimensionsPreserved": true,
+          "groupRingsInstanced": true,
+          "existingControllerAndTwoHandGroupPngsVisuallyInspected": true
+        }
+      },
+      "limits": [
+        "Native and synthetic XR tests do not establish Quest tracking, physical controller fit or headset performance.",
+        "Controller models add four calls and 10,978 non-monitor triangles per eye relative to the old shells.",
+        "Source approval does not replace required hosted release CI and live byte verification."
+      ],
+      "reviewExecution": "No repository edits, browser/GPU runs, physical input, focus changes or audio. Production build and test adaptations were evaluated in memory; only this requested receipt was written outside the repository."
+    }
+  ],
+  "rollback": {
+    "branch": "rollback/pre-god-hand-groups-20261024",
+    "commit": "3b33a7f0c959ccd374e11617a8b2d2d41a19144c"
+  },
+  "scope": "Bounded independent three-character grab groups per hand and controller-posed god hand models. CPU and sticky hand release policy unchanged.",
+  "knownRenderCost": {
+    "controllerCallsPerEye": 4,
+    "controllerNonMonitorTrianglesPerEye": 10978,
+    "desktopCallsBefore": 239,
+    "desktopCallsAfter": 239
+  },
+  "quest": "No measured Quest FPS or physical acceptance claim."
+}

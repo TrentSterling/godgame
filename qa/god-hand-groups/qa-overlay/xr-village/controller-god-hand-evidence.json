@@ -1,0 +1,40 @@
+{
+  "pass": true,
+  "scope": "CPU-only Three0.160 rig/matrix tests with synthetic grip/joint samples. No browser, GPU, physical controller alignment or Quest acceptance claim.",
+  "checks": [
+    "Analog/digital/event-only visual values are finite and bounded",
+    "Both hands reproduce four authored endpoints and25 analog blends",
+    "Metre-space grip centres, axes and size survive tabletop translation/rotation/nonuniform scale",
+    "Native target-ray endpoints survive independent visual transforms unchanged",
+    "Eight controller/tracked-hand transitions per side restore correct matrix ownership",
+    "Invalid/emulated poses hide controller visuals and never claim hand tracking",
+    "No meshes, geometries, materials or textures added; original identities preserved"
+  ],
+  "rows": [
+    {
+      "side": "left",
+      "poseCorners": 4,
+      "analogCombinations": 25,
+      "bones": 16,
+      "originalResources": {
+        "meshes": 2,
+        "geometries": 2,
+        "materials": 2,
+        "textures": 1
+      }
+    },
+    {
+      "side": "right",
+      "poseCorners": 4,
+      "analogCombinations": 25,
+      "bones": 16,
+      "originalResources": {
+        "meshes": 2,
+        "geometries": 2,
+        "materials": 2,
+        "textures": 1
+      }
+    }
+  ],
+  "helperSHA256": "7d5b3ffa60de7e32d1d7459ecbea89598ef7887f0b95bc5673408da7409f6eee"
+}
