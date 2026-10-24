@@ -1,0 +1,11 @@
+{
+  "result":"approved",
+  "sha":"8e51eabecb36fd852b684461d45e9d43ba9d1f54",
+  "reviewer":"/root/grab_follow",
+  "reviewerTask":"Existing independent grab-follow subagent in task-8; original reviewer reused, no duplicate review",
+  "blockers":[],
+  "fixedFindings":["XR timestamp freshness prevents stale throw after callback stall","Acquisition seeds first held-sample timestamp"],
+  "independentChecks":{"pureStateCases":25,"nativeThrowGapCases":22,"integratedStickyGroups":16,"fileIdentities":137,"sourceFiles":118,"testFiles":16,"runtimeAssets":3,"nativeBundleIdentity":true,"checkoutClean":true},
+  "html":{"bytes":8515767,"sha256":"d506523947486e8f929e0bbfa0e4db75c9832747d7cf7c559b9d9d1e85141a43","byteIdenticalIndependentRebuild":true},
+  "scope":"Approved for release CI. No edits, browser/GPU, input/focus/audio or publication by reviewer. Actual Quest acceptance remains pending."
+}

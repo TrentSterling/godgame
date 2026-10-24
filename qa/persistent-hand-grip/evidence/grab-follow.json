@@ -1,0 +1,234 @@
+{
+  "pass": true,
+  "scope": "Deterministic production BattlePhysics and anatomical joints in native Rapier0.21 at120Hz. XR target coordinates are synthetic; no browser, Quest timing or comfort claims.",
+  "baselineSHA": "15d852ba9996bfb927c0f1ffc85c94a6b6b76b36",
+  "baselinePhysicsSHA256": "e475e6f97ba17b4ffbf5fa2a010fcc8cd713a28b1237f75a3bc6ba3fb530766b",
+  "candidatePhysicsSHA256": "46cf738bca53982ffa173cfef5280e2e1154a58940009bd40b705dfa4cc9862f",
+  "trajectories": [
+    {
+      "variant": "baseline",
+      "scale": 0.024,
+      "handMetresPerSecond": 0.1,
+      "meanErrorMetres": 0.004524848708847831,
+      "maxErrorMetres": 0.006409822413295176,
+      "maxAnchorMetresPerSecond": 0.2000006103515625,
+      "maxBodyMetresPerSecond": 0.2728914664015236,
+      "maxJointErrorMetres": 0.0000059284718918088435
+    },
+    {
+      "variant": "candidate",
+      "scale": 0.024,
+      "handMetresPerSecond": 0.1,
+      "meanErrorMetres": 0.0006652530668663079,
+      "maxErrorMetres": 0.0011619198775430874,
+      "maxAnchorMetresPerSecond": 0.2000006103515625,
+      "maxBodyMetresPerSecond": 0.32986571842181045,
+      "maxJointErrorMetres": 0.000015044151406929625
+    },
+    {
+      "variant": "baseline",
+      "scale": 0.024,
+      "handMetresPerSecond": 0.3,
+      "meanErrorMetres": 0.04981694283419579,
+      "maxErrorMetres": 0.08769160191701222,
+      "maxAnchorMetresPerSecond": 0.24000045776367188,
+      "maxBodyMetresPerSecond": 0.46446604371137146,
+      "maxJointErrorMetres": 0.00003157092855264187
+    },
+    {
+      "variant": "candidate",
+      "scale": 0.024,
+      "handMetresPerSecond": 0.3,
+      "meanErrorMetres": 0.0029478835680324202,
+      "maxErrorMetres": 0.004407627002834421,
+      "maxAnchorMetresPerSecond": 0.6000018310546875,
+      "maxBodyMetresPerSecond": 0.6874611111663659,
+      "maxJointErrorMetres": 0.00002804026349150974
+    },
+    {
+      "variant": "baseline",
+      "scale": 0.024,
+      "handMetresPerSecond": 0.6,
+      "meanErrorMetres": 0.27709460460978297,
+      "maxErrorMetres": 0.537689752485233,
+      "maxAnchorMetresPerSecond": 0.24000045776367188,
+      "maxBodyMetresPerSecond": 0.46446604371137146,
+      "maxJointErrorMetres": 0.00003157092855264187
+    },
+    {
+      "variant": "candidate",
+      "scale": 0.024,
+      "handMetresPerSecond": 0.6,
+      "meanErrorMetres": 0.007981723427739838,
+      "maxErrorMetres": 0.010945272237565617,
+      "maxAnchorMetresPerSecond": 1.200003662109375,
+      "maxBodyMetresPerSecond": 1.2875688704132002,
+      "maxJointErrorMetres": 0.00006444271229596938
+    },
+    {
+      "variant": "baseline",
+      "scale": 0.03,
+      "handMetresPerSecond": 0.1,
+      "meanErrorMetres": 0.005665708856137026,
+      "maxErrorMetres": 0.007419540566909558,
+      "maxAnchorMetresPerSecond": 0.20000095367431642,
+      "maxBodyMetresPerSecond": 0.33076620657255523,
+      "maxJointErrorMetres": 0.000013340453513793332
+    },
+    {
+      "variant": "candidate",
+      "scale": 0.03,
+      "handMetresPerSecond": 0.1,
+      "meanErrorMetres": 0.0007684454434730809,
+      "maxErrorMetres": 0.0014481066400753781,
+      "maxAnchorMetresPerSecond": 0.20000095367431642,
+      "maxBodyMetresPerSecond": 0.3582210330956444,
+      "maxJointErrorMetres": 0.000006712294853178365
+    },
+    {
+      "variant": "baseline",
+      "scale": 0.03,
+      "handMetresPerSecond": 0.3,
+      "meanErrorMetres": 0.04972415932525544,
+      "maxErrorMetres": 0.09279674862496716,
+      "maxAnchorMetresPerSecond": 0.2400006294250488,
+      "maxBodyMetresPerSecond": 0.4534870272265253,
+      "maxJointErrorMetres": 0.000025223079162979732
+    },
+    {
+      "variant": "candidate",
+      "scale": 0.03,
+      "handMetresPerSecond": 0.3,
+      "meanErrorMetres": 0.0017937632655311974,
+      "maxErrorMetres": 0.004008995657524939,
+      "maxAnchorMetresPerSecond": 0.6000011444091796,
+      "maxBodyMetresPerSecond": 0.6656405823448867,
+      "maxJointErrorMetres": 0.00006919438281038402
+    },
+    {
+      "variant": "baseline",
+      "scale": 0.03,
+      "handMetresPerSecond": 0.6,
+      "meanErrorMetres": 0.276908462241365,
+      "maxErrorMetres": 0.5427629610358862,
+      "maxAnchorMetresPerSecond": 0.2400006294250488,
+      "maxBodyMetresPerSecond": 0.4534870272265253,
+      "maxJointErrorMetres": 0.000025223079162979732
+    },
+    {
+      "variant": "candidate",
+      "scale": 0.03,
+      "handMetresPerSecond": 0.6,
+      "meanErrorMetres": 0.0076135464352712935,
+      "maxErrorMetres": 0.009840439065353604,
+      "maxAnchorMetresPerSecond": 1.2000022888183592,
+      "maxBodyMetresPerSecond": 1.2770674017755859,
+      "maxJointErrorMetres": 0.00010431164602407915
+    },
+    {
+      "variant": "baseline",
+      "scale": 0.036,
+      "handMetresPerSecond": 0.1,
+      "meanErrorMetres": 0.006781804714634253,
+      "maxErrorMetres": 0.00852132943784246,
+      "maxAnchorMetresPerSecond": 0.2000012969970703,
+      "maxBodyMetresPerSecond": 0.33183649935763104,
+      "maxJointErrorMetres": 0.0000075505645323356316
+    },
+    {
+      "variant": "candidate",
+      "scale": 0.036,
+      "handMetresPerSecond": 0.1,
+      "meanErrorMetres": 0.0009174050335548937,
+      "maxErrorMetres": 0.0014696939000347368,
+      "maxAnchorMetresPerSecond": 0.2000012969970703,
+      "maxBodyMetresPerSecond": 0.3704296473068865,
+      "maxJointErrorMetres": 0.000008926962822196487
+    },
+    {
+      "variant": "baseline",
+      "scale": 0.036,
+      "handMetresPerSecond": 0.3,
+      "meanErrorMetres": 0.050467788007502304,
+      "maxErrorMetres": 0.09486978252251002,
+      "maxAnchorMetresPerSecond": 0.24000114440917966,
+      "maxBodyMetresPerSecond": 0.5758906099266521,
+      "maxJointErrorMetres": 0.00002367547260180489
+    },
+    {
+      "variant": "candidate",
+      "scale": 0.036,
+      "handMetresPerSecond": 0.3,
+      "meanErrorMetres": 0.0020510324110568265,
+      "maxErrorMetres": 0.0043793186834913435,
+      "maxAnchorMetresPerSecond": 0.6000018310546875,
+      "maxBodyMetresPerSecond": 0.6052378742765108,
+      "maxJointErrorMetres": 0.000054763932994464534
+    },
+    {
+      "variant": "baseline",
+      "scale": 0.036,
+      "handMetresPerSecond": 0.6,
+      "meanErrorMetres": 0.27753879339302767,
+      "maxErrorMetres": 0.5446932272466344,
+      "maxAnchorMetresPerSecond": 0.24000114440917966,
+      "maxBodyMetresPerSecond": 0.5758906099266521,
+      "maxJointErrorMetres": 0.00002367547260180489
+    },
+    {
+      "variant": "candidate",
+      "scale": 0.036,
+      "handMetresPerSecond": 0.6,
+      "meanErrorMetres": 0.006867800810317392,
+      "maxErrorMetres": 0.010128811737981275,
+      "maxAnchorMetresPerSecond": 1.200003662109375,
+      "maxBodyMetresPerSecond": 1.3250212772973065,
+      "maxJointErrorMetres": 0.00006624953653943863
+    }
+  ],
+  "collisions": [
+    {
+      "variant": "baseline",
+      "obstacle": "wall",
+      "minNativeY": 3.2195825576782227,
+      "maxNativeX": 2.6327176094055176,
+      "maxBodyMetresPerSecond": 0.3083835740169677,
+      "maxJointErrorMetres": 0.00008573488200150824,
+      "hp": 70
+    },
+    {
+      "variant": "candidate",
+      "obstacle": "wall",
+      "minNativeY": 3.2297563552856445,
+      "maxNativeX": 2.610258102416992,
+      "maxBodyMetresPerSecond": 0.2845047707850921,
+      "maxJointErrorMetres": 0.00002323029966104531,
+      "hp": 100
+    },
+    {
+      "variant": "baseline",
+      "obstacle": "floor",
+      "minNativeY": 0.10510130226612091,
+      "maxNativeX": 1.954497218132019,
+      "maxBodyMetresPerSecond": 0.43209430403218346,
+      "maxJointErrorMetres": 0.0010303187219599277,
+      "hp": 70
+    },
+    {
+      "variant": "candidate",
+      "obstacle": "floor",
+      "minNativeY": 0.11991124600172043,
+      "maxNativeX": 2.05924916267395,
+      "maxBodyMetresPerSecond": 0.38150354626780414,
+      "maxJointErrorMetres": 0.0005765055425572548,
+      "hp": 70
+    }
+  ],
+  "checks": [
+    "Matched head-hold trajectories at three tabletop scales and .1/.3/.6m/s",
+    "Floor/wall collision and anatomical-joint stability under obstructed targets",
+    "Desktop and touch native snapshots remain byte-identical",
+    "1/2/8 missed samples preserve joint and freeze anchor; reacquisition cannot fabricate flick",
+    "Elapsed-time throw smoothing across60/72/90/120Hz and irregular intervals; .24m/s cap retained"
+  ]
+}

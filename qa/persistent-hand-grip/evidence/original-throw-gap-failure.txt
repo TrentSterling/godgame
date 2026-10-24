@@ -1,0 +1,18 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: left 51ms wall gap must govern throw freshness independently of 0.016666666666666607s native time
+
+1 !== 0
+
+    at file:///C:/Users/trent/Documents/Codex/2026-10-22/task-8/godgame-sticky/qa/xr-village/throw-gap.test.mjs:21:43 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: 1,
+  expected: 0,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.22.1
