@@ -1,0 +1,8 @@
+{
+  "sha": "0a5bc526d4456687954fb63d938318e8b4eeec09",
+  "reviewer": "/root/grab_follow",
+  "result": "request_changes",
+  "blockers": [{"description":"An XR callback gap of 150 ms can release with old throw velocity because native simulation time barely advances.","reproducer":{"wallGapMs":150,"nativeSampleAgeSeconds":0.016666666666666663,"priorSampleSpeedMetresPerSecond":0.13770082097698372,"heldAfter":false,"addedFlicks":1}}],
+  "otherFindings": "No additional blockers in reviewed ownership/lifecycle paths. Independently passed 14 pure grip cases and 16 integration groups.",
+  "scope": "Independent read-only source and native synthetic execution; no browser, hardware or publication. Amended SHA requires re-review."
+}

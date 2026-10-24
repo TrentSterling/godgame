@@ -1,0 +1,8 @@
+{
+  "sha":"ca7fc3f38561e5a4de248c345225580557c609dc",
+  "reviewer":"/root/grab_follow",
+  "result":"request_changes",
+  "blockers":[{"description":"The first held callback bypasses throw freshness because acquisition leaves lastSampleAt null. A 150 ms gap generates 0.24 m/s velocity and an unintended flick.","fix":"Seed begin(now) from the acquisition XR timestamp, with conservative fallback for missing time."}],
+  "independentlyPassed":{"stateCases":19,"nativeThrowGapCases":12,"stickyIntegrationGroups":16,"identities":137,"htmlBytes":8515711,"htmlSHA256":"8f1803557bdae9454ffa919c0b5a5674a57dcb6360dcdd0c7de2b2d162d38cf9"},
+  "scope":"Read-only independent review. No edits, browser, hardware or publication."
+}

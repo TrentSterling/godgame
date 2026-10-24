@@ -1,0 +1,18 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: left: acquisition timestamp must cover the first 51ms gap
+
+true !== false
+
+    at file:///C:/Users/trent/Documents/Codex/2026-10-22/task-8/godgame-sticky/qa/xr-village/throw-gap.test.mjs:28:78 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: true,
+  expected: false,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.22.1

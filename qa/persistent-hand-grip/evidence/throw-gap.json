@@ -1,0 +1,136 @@
+{
+  "pass": true,
+  "scope": "Native Rapier and production XR callbacks with synthetic timestamp gaps; no headset claim",
+  "cases": [
+    {
+      "side": "left",
+      "interval": 49,
+      "nativeSampleAge": 0.016666666666666663,
+      "priorSampleSpeedMetres": 0.13770082097698372,
+      "addedFlicks": 1
+    },
+    {
+      "side": "right",
+      "interval": 49,
+      "nativeSampleAge": 0.01666666666666672,
+      "priorSampleSpeedMetres": 0.13770082097698372,
+      "addedFlicks": 1
+    },
+    {
+      "side": "left",
+      "interval": 50,
+      "nativeSampleAge": 0.016666666666666607,
+      "priorSampleSpeedMetres": 0.13770082097698497,
+      "addedFlicks": 1
+    },
+    {
+      "side": "right",
+      "interval": 50,
+      "nativeSampleAge": 0.016666666666666607,
+      "priorSampleSpeedMetres": 0.13770082097698497,
+      "addedFlicks": 1
+    },
+    {
+      "side": "left",
+      "interval": 51,
+      "nativeSampleAge": 0.016666666666666607,
+      "priorSampleSpeedMetres": 0.13770082097698497,
+      "addedFlicks": 0
+    },
+    {
+      "side": "right",
+      "interval": 51,
+      "nativeSampleAge": 0.016666666666666607,
+      "priorSampleSpeedMetres": 0.13770082097698497,
+      "addedFlicks": 0
+    },
+    {
+      "side": "left",
+      "interval": 100,
+      "nativeSampleAge": 0.016666666666666607,
+      "priorSampleSpeedMetres": 0.13770082097698497,
+      "addedFlicks": 0
+    },
+    {
+      "side": "right",
+      "interval": 100,
+      "nativeSampleAge": 0.016666666666666607,
+      "priorSampleSpeedMetres": 0.13770082097698497,
+      "addedFlicks": 0
+    },
+    {
+      "side": "left",
+      "interval": 150,
+      "nativeSampleAge": 0.016666666666666607,
+      "priorSampleSpeedMetres": 0.13770082097698497,
+      "addedFlicks": 0
+    },
+    {
+      "side": "right",
+      "interval": 150,
+      "nativeSampleAge": 0.016666666666666607,
+      "priorSampleSpeedMetres": 0.13770082097698497,
+      "addedFlicks": 0
+    },
+    {
+      "side": "left",
+      "firstSampleGap": 49,
+      "addedFlicks": 1
+    },
+    {
+      "side": "right",
+      "firstSampleGap": 49,
+      "addedFlicks": 1
+    },
+    {
+      "side": "left",
+      "firstSampleGap": 50,
+      "addedFlicks": 1
+    },
+    {
+      "side": "right",
+      "firstSampleGap": 50,
+      "addedFlicks": 1
+    },
+    {
+      "side": "left",
+      "firstSampleGap": 51,
+      "addedFlicks": 0
+    },
+    {
+      "side": "right",
+      "firstSampleGap": 51,
+      "addedFlicks": 0
+    },
+    {
+      "side": "left",
+      "firstSampleGap": 100,
+      "addedFlicks": 0
+    },
+    {
+      "side": "right",
+      "firstSampleGap": 100,
+      "addedFlicks": 0
+    },
+    {
+      "side": "left",
+      "firstSampleGap": 150,
+      "addedFlicks": 0
+    },
+    {
+      "side": "right",
+      "firstSampleGap": 150,
+      "addedFlicks": 0
+    },
+    {
+      "side": "left",
+      "sparseValidOpenInterval": 100,
+      "releasedWithoutFlick": true
+    },
+    {
+      "side": "right",
+      "sparseValidOpenInterval": 100,
+      "releasedWithoutFlick": true
+    }
+  ]
+}

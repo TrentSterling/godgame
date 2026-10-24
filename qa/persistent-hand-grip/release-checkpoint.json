@@ -1,0 +1,54 @@
+{
+  "reviewedSourceCommit": "8e51eabecb36fd852b684461d45e9d43ba9d1f54",
+  "baselineSourceCommit": "8f60f766c748f81cf665866ebdeed717104c3cba",
+  "baselineReleaseCommit": "30719b515eb4ea9ffd9287c2afeda1ab15494b3a",
+  "rootHTML": {
+    "sha256": "d506523947486e8f929e0bbfa0e4db75c9832747d7cf7c559b9d9d1e85141a43",
+    "bytes": 8515767,
+    "gitBlob": "fb0401a404e67b632f4465999e45ec163f81f352"
+  },
+  "sourceBundle": {
+    "sha256": "8e0458a288ca6a4ad7fb98dfac48d1d40c8916bda616632ed188ff073489532e",
+    "branch": "fix/persistent-hand-grip"
+  },
+  "runtimeModules": [
+    "physics.js",
+    "settlement-main.js",
+    "settlement-xr.js",
+    "xr-hand-grip.js"
+  ],
+  "review": {
+    "result": "approved",
+    "sha": "8e51eabecb36fd852b684461d45e9d43ba9d1f54",
+    "reviewer": "/root/grab_follow",
+    "reviewerTask": "Existing independent grab-follow subagent in task-8; original reviewer reused, no duplicate review",
+    "blockers": [],
+    "fixedFindings": [
+      "XR timestamp freshness prevents stale throw after callback stall",
+      "Acquisition seeds first held-sample timestamp"
+    ],
+    "independentChecks": {
+      "pureStateCases": 25,
+      "nativeThrowGapCases": 22,
+      "integratedStickyGroups": 16,
+      "fileIdentities": 137,
+      "sourceFiles": 118,
+      "testFiles": 16,
+      "runtimeAssets": 3,
+      "nativeBundleIdentity": true,
+      "checkoutClean": true
+    },
+    "html": {
+      "bytes": 8515767,
+      "sha256": "d506523947486e8f929e0bbfa0e4db75c9832747d7cf7c559b9d9d1e85141a43",
+      "byteIdenticalIndependentRebuild": true
+    },
+    "scope": "Approved for release CI. No edits, browser/GPU, input/focus/audio or publication by reviewer. Actual Quest acceptance remains pending."
+  },
+  "rollback": {
+    "branch": "rollback/pre-persistent-hand-grip-20261024",
+    "commit": "30719b515eb4ea9ffd9287c2afeda1ab15494b3a"
+  },
+  "scope": "Persistent hand-grab ownership across missing tracking; confirmed open release greater than45mm over3freshsamples and60ms; no multi-grab, controller visuals or performance changes.",
+  "quest": "Native Quest acceptance remains unverified."
+}

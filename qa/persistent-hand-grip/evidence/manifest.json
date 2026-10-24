@@ -1,0 +1,68 @@
+{
+  "at": "2026-10-24T05:48:02.430Z",
+  "baselineSource": "8f60f766c748f81cf665866ebdeed717104c3cba",
+  "baselineLive": "30719b515eb4ea9ffd9287c2afeda1ab15494b3a",
+  "html": {
+    "sha256": "d506523947486e8f929e0bbfa0e4db75c9832747d7cf7c559b9d9d1e85141a43",
+    "bytes": 8515767
+  },
+  "nativeSuites": [
+    {
+      "command": "node qa/xr-village/transformed-picker.test.mjs",
+      "passed": true
+    },
+    {
+      "command": "node qa/xr-village/bridge-lifecycle.test.mjs",
+      "passed": true
+    },
+    {
+      "command": "node qa/xr-village/native-interactions.test.mjs",
+      "passed": true
+    },
+    {
+      "command": "node qa/xr-village/native-placement.test.mjs",
+      "passed": true
+    },
+    {
+      "command": "node qa/xr-village/hand-ui.test.mjs",
+      "passed": true
+    },
+    {
+      "command": "node qa/xr-village/tracking-retention.test.mjs",
+      "passed": true
+    },
+    {
+      "command": "node qa/xr-village/sticky-grip.test.mjs",
+      "passed": true
+    },
+    {
+      "command": "node qa/xr-village/hand-grip-state.test.mjs",
+      "passed": true
+    },
+    {
+      "command": "node qa/xr-village/throw-gap.test.mjs",
+      "passed": true
+    },
+    {
+      "command": "node qa/xr-village/grab-follow.test.mjs",
+      "passed": true
+    }
+  ],
+  "simulationPhases": 13,
+  "sourceIdentity": {
+    "sourceFiles": 118,
+    "testFiles": 16,
+    "runtimeAssets": 3,
+    "settlementMainSHA256": "ba94f2d506b5b155bb81372be4e98602f2d31cd890320e9e91dacc4b2a27d887",
+    "deliveredHTMLSHA256": "d506523947486e8f929e0bbfa0e4db75c9832747d7cf7c559b9d9d1e85141a43",
+    "unchangedDuringRun": true,
+    "changed": []
+  },
+  "regression": "Published baseline fails Missing tracking must not release ownership; candidate passes.",
+  "scope": "Persistent tracked-hand grip only. Controller god-hand models, multi-grab and Quest CPU/render changes are separate. No new GPU resources, resolution or library changes. CPU/native synthetic evidence, not Quest acceptance.",
+  "pending": [
+    "Independent review",
+    "Release CI and deployment after review",
+    "Native Quest acceptance"
+  ]
+}

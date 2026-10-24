@@ -1,0 +1,15 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Missing tracking must not release ownership
+    at file:///C:/Users/trent/Documents/Codex/2026-10-22/task-8/godgame-sticky/qa/xr-village/sticky-grip.test.mjs:25:86 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v24.22.1
