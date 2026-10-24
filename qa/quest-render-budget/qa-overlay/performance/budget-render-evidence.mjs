@@ -1,0 +1,23 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import crypto from 'node:crypto';
+const read=name=>JSON.parse(fs.readFileSync(new URL('./generated/'+name+'.json',import.meta.url)));
+const hash=name=>crypto.createHash('sha256').update(fs.readFileSync(new URL('../../src/'+name,import.meta.url),'utf8').replace(/\r\n/g,'\n')).digest('hex');
+const profile=read('xr-render-budget-profile'),cues=read('cue-batching'),simulation=read('budget-render-simulation'),native=JSON.parse(fs.readFileSync(new URL('../xr-village/generated/summary.json',import.meta.url)));
+const frozen=new URL('./evidence/quest-budget-interactions-20261024/',import.meta.url);
+const browser=JSON.parse(fs.readFileSync(new URL('quest-budget-owned-fbo-browser.json',frozen))),pixels=JSON.parse(fs.readFileSync(new URL('pixels.json',frozen)));
+const sha=bytes=>crypto.createHash('sha256').update(bytes).digest('hex'),html=fs.readFileSync(new URL('../../dist/HOLLOW_HANDS_SETTLEMENT_FOOD_MISSION.html',import.meta.url));
+const modules=['settlement-main.js','settlement-world-cues.js','xr-render-budget.js'];
+assert(profile.pass&&cues.pass&&simulation.pass&&native.pass&&browser.pass&&browser.browserClosed&&pixels.pass);
+assert.equal(sha(html),browser.identities.candidate);
+for(const name of modules)assert.equal(hash(name),simulation.identities.candidate.sourceHashes[name],name+' final tested source');
+for(const capture of browser.captures)assert.equal(sha(fs.readFileSync(new URL(capture.name,frozen))),capture.sha256);
+for(const row of browser.rows)assert(row.gpu.valid&&!row.gpu.disjoint&&row.gpu.glError===0);
+const renderer=[...new Set(browser.rows.map(r=>r.label))].map(label=>{
+ const b=browser.rows.filter(r=>r.label===label&&r.variant==='baseline'),c=browser.rows.filter(r=>r.label===label&&r.variant==='candidate');
+ const triangles=r=>r.draws.filter(d=>!d.monitor).reduce((n,d)=>n+d.triangles,0);assert.equal(triangles(b[0]),triangles(c[0]));
+ return{label,baselineCalls:b[0].render.calls,candidateCalls:c[0].render.calls,nonMonitorTriangles:triangles(b[0]),eyes:b[0].eyes,baselineGPUMediansMs:b.map(r=>r.gpu.medianMs),candidateGPUMediansMs:c.map(r=>r.gpu.medianMs)};
+});
+const report={pass:true,parentCPUCommit:'989940e6ed8d447f59f61ccda18a64ac0a28367b',parentInteractionCommit:'be71df7671bf82038f326b64e70b06f98ac30711',baselineDeployment:'195e4972c7615b3c81043e75118e8ab9c91d2e6f',sourceHashes:Object.fromEntries(modules.map(n=>[n,hash(n)])),build:{bytes:html.length,sha256:sha(html)},integrationStatus:'Integrated production entry point creates one cached budget and brackets immersive world rendering with beginFrame/finally/endFrame. All application material references are restored before further input, physics or UI work.',unchanged:'No geometry/skeleton/physics/quality-scale/shadow/light/control changes. Current XR already disables shadows. Basic/transparent/custom/PBR-only materials remain unchanged; shared textures/source materials remain application-owned. Desktop uses Standard materials; sign batching applies in both modes.',profile,cues,simulation:{pass:simulation.pass,scope:simulation.scope,rows:simulation.rows,adapters:simulation.identities.candidate.adapters},native:{pass:native.pass,runs:native.runs.map(r=>({command:r.command,status:r.status})),identity:native.identity},renderer,pixels,browser:{backend:browser.backend,captureMethod:browser.captureMethod,captures:browser.captures,allQueriesValid:true,browserClosed:true,evidence:'evidence/quest-budget-interactions-20261024/quest-budget-owned-fbo-browser.json'},limitations:['Synthetic XR at1280x720, single-sample RGBA8/depth24 owned framebuffer. Controlled72Hz timestamps are fixture cadence, not Quest FPS or compositor evidence.','Host GPU durations are small/noisy. CPU submission timings include QA overhead and must not be called GPU time.','Eligible diffuse surfaces intentionally omit Standard GGX/specular. Lambert remains per-fragment lighting, not geometry LOD or vertex lighting.','Earlier wrong-loop, overwritten or ambiguous diagnostic receipts are excluded; final frozen ABBA run and hash-verified PNGs are the browser evidence.'],reviewGates:['Independent source review of this exact integrated candidate','Required CI and normal live verification','Physical Quest performance, lighting/readability and interaction acceptance remains user-owned; no publication by this agent']};
+fs.writeFileSync(new URL('./budget-render-evidence.json',import.meta.url),JSON.stringify(report,null,2)+'\n');
+console.log(JSON.stringify({pass:true,build:report.build,sourceHashes:report.sourceHashes,renderer,simulationPhases:simulation.rows.length}));

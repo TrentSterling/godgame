@@ -1,0 +1,51 @@
+{
+  "pass": true,
+  "scope": "Exact decoded PNG pixels, not image preview cache; lighting differences reported, not hidden by a tolerance.",
+  "rows": [
+    {
+      "label": "desktop",
+      "differentPixels": 0,
+      "meanRGBDifference": 0,
+      "maxRGBDifference": 0,
+      "menuDifferentPixels": 0,
+      "baselineMenuOpaquePixels": 232960,
+      "candidateMenuOpaquePixels": 232960
+    },
+    {
+      "label": "xr-mono",
+      "differentPixels": 138488,
+      "meanRGBDifference": 0.6506564670138889,
+      "maxRGBDifference": 211,
+      "menuDifferentPixels": 0,
+      "baselineMenuOpaquePixels": 64882,
+      "candidateMenuOpaquePixels": 64882
+    },
+    {
+      "label": "xr-hands",
+      "differentPixels": 155003,
+      "meanRGBDifference": 0.6961433015046297,
+      "maxRGBDifference": 211,
+      "menuDifferentPixels": 0,
+      "baselineMenuOpaquePixels": 64882,
+      "candidateMenuOpaquePixels": 64882
+    },
+    {
+      "label": "xr-stereo-hands",
+      "differentPixels": 231101,
+      "meanRGBDifference": 1.0323133680555556,
+      "maxRGBDifference": 211,
+      "menuDifferentPixels": 0,
+      "baselineMenuOpaquePixels": 129774,
+      "candidateMenuOpaquePixels": 129774
+    },
+    {
+      "label": "xr-stereo-built",
+      "differentPixels": 237313,
+      "meanRGBDifference": 1.0369307002314814,
+      "maxRGBDifference": 211,
+      "menuDifferentPixels": 0,
+      "baselineMenuOpaquePixels": 129774,
+      "candidateMenuOpaquePixels": 129774
+    }
+  ]
+}
