@@ -51,8 +51,8 @@ jobs:
           XR_CANDIDATE_PATH: ../../index.html
           QA_SCOPE: ${{ matrix.scope }}
           EXPECTED_HEAD: ${{ github.event.pull_request.head.sha }}
-          EXPECTED_CANDIDATE_SHA256: d506523947486e8f929e0bbfa0e4db75c9832747d7cf7c559b9d9d1e85141a43
-          EXPECTED_XR_CANDIDATE_SHA256: d506523947486e8f929e0bbfa0e4db75c9832747d7cf7c559b9d9d1e85141a43
+          EXPECTED_CANDIDATE_SHA256: 7fd2d69432ba5be28afbca952a128a990428826fe862b8343c6b2ec4dc65c187
+          EXPECTED_XR_CANDIDATE_SHA256: 7fd2d69432ba5be28afbca952a128a990428826fe862b8343c6b2ec4dc65c187
         run: |
           if [ "$QA_SCOPE" = "synthetic-xr" ]; then node xr-test.mjs; else node test.mjs; fi
       - name: Save browser evidence even on failure

@@ -5,16 +5,16 @@ import { execFileSync } from 'node:child_process';
 const git=(...args)=>execFileSync('git',args,{encoding:'utf8'}).trim();
 const sha=bytes=>crypto.createHash('sha256').update(bytes).digest('hex');
 const head=git('rev-parse','HEAD');assert.equal(head,process.env.EXPECTED_HEAD);
-const expected='d506523947486e8f929e0bbfa0e4db75c9832747d7cf7c559b9d9d1e85141a43';
+const expected='7fd2d69432ba5be28afbca952a128a990428826fe862b8343c6b2ec4dc65c187';
 const root=fs.readFileSync('../../index.html');
-assert.equal(sha(root),expected);assert.equal(root.length,8515767);
-assert(root.equals(fs.readFileSync('../persistent-hand-grip/candidate.html')),'Exact reviewed persistent hand-grip candidate equals release root');
+assert.equal(sha(root),expected);assert.equal(root.length,8516233);
+assert(root.equals(fs.readFileSync('../navigation-cpu/candidate.html')),'Exact reviewed navigation CPU candidate equals release root');
 const shrine=fs.readFileSync('../../shrine-v24.html');assert.equal(sha(shrine),'ba699ca9ad9b393c0be3cfec528c4ff8bc391cd117d6edac7e56e47578a7cebc');assert.equal(shrine.length,7031668);
 const expectedBlobs={
- 'index.html':'fb0401a404e67b632f4465999e45ec163f81f352',
+ 'index.html':'5676bbb07b38c68470413ceb5078b4dd33ad93f6',
  'shrine-v24.html':'36e7f52012164164ec6553607963df301ba6f798',
  'THIRD_PARTY_LICENSES.txt':'7c5bca6a6c7bbc43156ba6a1c34422adbca3e7c4',
  '.nojekyll':'e69de29bb2d1d6434b8b29ae775ad8c2e48c5391'
 };for(const [file,blob]of Object.entries(expectedBlobs))assert.equal(git('rev-parse',`HEAD:${file}`),blob,'Exact release/preserved file '+file);
-fs.mkdirSync('artifacts',{recursive:true});const report={passed:true,head,tree:git('rev-parse','HEAD^{tree}'),rootSha256:expected,rootBytes:root.length,shrineSha256:sha(shrine),shrineBytes:shrine.length,blobs:expectedBlobs,acceptedBrowserRun:'https://github.com/TrentSterling/godgame/actions/runs/38472384710',acceptedRePlacementRun:'https://github.com/TrentSterling/godgame/actions/runs/38376374722',scope:'Exact root bytes equal the reviewed persistent hand-grip candidate. The inherited four-case ordinary-input startup suite and village browser suites rerun against these bytes. Preserve unchanged Shrine v24, licenses and .nojekyll. Root-path smoke is separate; hardware HMD testing remains unverified.'};fs.writeFileSync('artifacts/release-identity.json',JSON.stringify(report,null,2));console.log(JSON.stringify(report));
+fs.mkdirSync('artifacts',{recursive:true});const report={passed:true,head,tree:git('rev-parse','HEAD^{tree}'),rootSha256:expected,rootBytes:root.length,shrineSha256:sha(shrine),shrineBytes:shrine.length,blobs:expectedBlobs,acceptedBrowserRun:'https://github.com/TrentSterling/godgame/actions/runs/38472384710',acceptedRePlacementRun:'https://github.com/TrentSterling/godgame/actions/runs/38376374722',scope:'Exact root bytes equal the reviewed navigation CPU candidate. The inherited four-case ordinary-input startup suite and village browser suites rerun against these bytes. Preserve unchanged Shrine v24, licenses and .nojekyll. Root-path smoke is separate; hardware HMD testing remains unverified.'};fs.writeFileSync('artifacts/release-identity.json',JSON.stringify(report,null,2));console.log(JSON.stringify(report));
 

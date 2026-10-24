@@ -1,0 +1,12 @@
+{
+  "pass": true,
+  "baseline": "8e51eabecb36fd852b684461d45e9d43ba9d1f54",
+  "pointChecks": 156904,
+  "footprintChecks": 12583,
+  "bridgeStates": 6,
+  "fullFootprintSupportReads": {
+    "baseline": 18,
+    "candidate": 9
+  },
+  "scope": "Exact JavaScript numeric results, original Float32 terrain, custom bounds, callback replacement and native dynamic bridge topology. No browser/GPU or Quest performance."
+}
